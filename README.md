@@ -6,7 +6,7 @@ Game scoring for Yahtzee, powered by the Costs to Expect API.
 
 ## Other Apps
 
-We plan to create Apps for each of the Board and dice games we play, the Apps are Open Source, you 
+We plan to create Apps for each of the Board and dice games we play, the Apps will all be Open Source, you 
 are free to create your own and then submit a PR to the Costs to Expect [API](https://github.com/costs-to-expect/api) 
 to add the new game type.
 
