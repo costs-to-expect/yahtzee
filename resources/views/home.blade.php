@@ -19,20 +19,24 @@
                 </h1>
             </div>
 
+            <nav class="nav nav-fill my-4 border-bottom border-top">
+                <a class="nav-link" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" href="#">Games</a>
+                <a class="nav-link" href="#">Players</a>
+                <a class="nav-link" href="#">Sign-out</a>
+            </nav>
+
             <main>
                 <h2>Open Games</h2>
                 <p class="fs-5 col-md-8">Resume your open games...</p>
 
-                <div class="mb-5">
-                    <a href="" class="btn btn-primary btn-lg px-4">New game</a>
-                </div>
+                <hr class="col-12 col-md-6 mb-4">
 
-                <hr class="col-12 col-md-6 mb-5">
-
-                <div class="row g-5">
+                <div class="row g-4">
                     <div class="col-md-6">
                         <h3>Recent games</h3>
                         <p>View your recent games, open a game to see all the statistics.</p>
+                        <p><a type="submit" class="btn btn-primary">New Game</a></p>
                         <ul class="icon-list ps-0">
                             <li class="d-flex align-items-start mb-1">Game 1</li>
                             <li class="d-flex align-items-start mb-1">Game 2</li>
@@ -44,7 +48,8 @@
 
                     <div class="col-md-6">
                         <h3>Players</h3>
-                        <p>Click a player for a detailed breakdown of their Yahtzee games.</p>
+                        <p>Select a player for a detailed breakdown of their Yahtzee games.</p>
+                        <p><a type="submit" class="btn btn-primary">New Player</a></p>
                         <ul class="icon-list ps-0">
                             <li class="d-flex align-items-start mb-1">Player 1</li>
                             <li class="d-flex align-items-start mb-1">Player 2</li>
@@ -55,7 +60,7 @@
                     </div>
                 </div>
             </main>
-            <footer class="pt-5 my-5 text-muted border-top">
+            <footer class="pt-5 my-5 text-muted border-top text-center">
                 Created by <a href="https://twitter.com/DBlackborough">Dean Blackborough</a> &
                 powered by the <a href="https://api.costs-to-expect.com">Costs to Expect API</a>
             </footer>
