@@ -10417,13 +10417,11 @@ body {
 }
 
 body {
-  align-items: center;
   padding-bottom: 40px;
 }
 
-form {
-  max-width: 320px;
-  margin: auto;
+body.align-items {
+  align-items: center;
 }
 
 div.header a {
