@@ -7,47 +7,18 @@
         <meta name="author" content="Dean Blackborough">
         <title>Yahtzee Game Scorer: Sign-in</title>
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
-
-        <style>
-            html,
-            body {
-                height: 100%;
-            }
-
-            body {
-                display: flex;
-                align-items: center;
-                padding-bottom: 40px;
-            }
-
-            form {
-                max-width: 320px;
-                margin: auto;
-            }
-
-            .btn-primary {
-                background-color: #392C70;
-                border-color: #392C70;
-                color: #ffffff;
-                padding: 0.3rem 1rem;
-            }
-
-            .btn-primary:hover {
-                background-color: #2d2d5c;
-            }
-        </style>
     </head>
-    <body>
+    <body class="d-flex">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <form>
-                        <div class="text-center">
+                        <div class="game-title text-center">
                             <h1 class="display-1">Yahtzee</h1>
                             <h2 class="display-6">Game Scorer</h2>
-                            powered by <a href="#" style="text-decoration: none; color: #000000;">
-                                <img style="margin-right: -1rem;" src="https://app.costs-to-expect.com/images/theme/logo-190.png" width="64" height="64" alt="Costs to Expect Logo">
-                                <span class="d-none">C</span>osts to Expect.com
+                            powered by <a href="https://api.costs-to-expect.com">
+                                <img src="{{ asset('images/logo.png') }}" width="64" height="64" alt="Costs to Expect Logo" title="Powered by Costs to Expect API">
+                                <span class="d-none">C</span>osts to Expect API
                             </a>
                         </div>
 
