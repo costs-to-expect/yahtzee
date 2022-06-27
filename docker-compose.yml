@@ -1,0 +1,40 @@
+version: '3'
+services:
+    yahtzee.app:
+        build:
+            context: .
+            dockerfile: .docker/app/Dockerfile
+        image: yahtzee.app
+        container_name: yahtzee.app
+        ports:
+            - "80:80"
+        volumes:
+            - .:/var/www/html
+        env_file: .env
+        environment:
+            TZ: UTC
+            DB_HOST: ${DB_HOST}
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+    yahtzee.mysql:
+        build:
+            context: .
+            dockerfile: .docker/mysql/Dockerfile
+        image: yahtzee.mysql
+        container_name: yahtzee.mysql
+        ports:
+            - "3306:3306"
+        env_file: .env
+        environment:
+            TZ: UTC
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        volumes:
+            - ./.docker/mysql/data:/var/lib/mysql
+networks:
+    default:
+        name: costs.network
+        external: true
