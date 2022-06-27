@@ -20,7 +20,7 @@
             </div>
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
-                <a class="nav-link" aria-current="page" href="#">Home</a>
+                <a class="nav-link" href="{{ route('home') }}">Home</a>
                 <a class="nav-link active" href="#">Games</a>
                 <a class="nav-link" href="#">Players</a>
                 <a class="nav-link" href="#">Sign-out</a>
