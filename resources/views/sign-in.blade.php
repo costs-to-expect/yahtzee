@@ -12,16 +12,16 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <form>
-                        <div class="game-title text-center">
-                            <h1 class="display-1">Yahtzee</h1>
-                            <h2 class="display-6">Game Scorer</h2>
-                            powered by <a href="https://api.costs-to-expect.com">
-                                <img src="{{ asset('images/logo.png') }}" width="64" height="64" alt="Costs to Expect Logo" title="Powered by Costs to Expect API">
-                                <span class="d-none">C</span>osts to Expect API
-                            </a>
-                        </div>
+                    <div class="game-title text-center">
+                        <h1 class="display-1">Yahtzee</h1>
+                        <h2 class="display-6">Game Scorer</h2>
+                        powered by <a href="https://api.costs-to-expect.com">
+                            <img src="{{ asset('images/logo.png') }}" width="64" height="64" alt="Costs to Expect Logo" title="Powered by Costs to Expect API">
+                            <span class="d-none">C</span>osts to Expect API
+                        </a>
+                    </div>
 
+                    <form>
                         <div class="mt-3 mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" aria-describedby="email-help">
