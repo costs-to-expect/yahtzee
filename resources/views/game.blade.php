@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h2 class="text-primary">Upper Section</h2>
-                        <h4>How to score</h4>
+                        <h5>How to score</h5>
                         <p class="text-muted mb-1">Score the total of the matched dice.</p>
                     </div>
                     <div class="col-2 text-center">
@@ -97,7 +97,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <h6>Three of a kind</h6>
+                        <h5>Three of a kind</h5>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -126,7 +126,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <h6>Four of a kind</h6>
+                        <h5>Four of a kind</h5>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -158,8 +158,14 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
-                        <h6>Full house</h6>
+                    <div class="col-6">
+                        <h5 class="mb-0">Full House</h5>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Score</h6>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Scratch</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -188,15 +194,32 @@
                             Score 25
                         </p>
                     </div>
-                    <div class="col-6">
-                        <input type="number" min="25" max="25" step="1" size="2" class="form-control form-control-sm" id="four_of_a_kind" placeholder="" value="">
-                        <label for="four_of_a_kind" class="visually-hidden">Four of a kind</label>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Yahtzee</label>
+                        </div>
+                        <input type="hidden" id="yahtzee" value="" />
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
+                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
-                        <h6>Small straight <small>(sequence of four)</small></h6>
+                    <div class="col-6">
+                        <h5 class="mb-0">Small Straight</h5>
+                        <p class="text-muted small mb-0">Sequence of four</p>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Score</h6>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Scratch</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -221,15 +244,32 @@
                             Score 30
                         </p>
                     </div>
-                    <div class="col-6">
-                        <input type="number" min="30" max="30" step="1" size="2" class="form-control form-control-sm" id="four_of_a_kind" placeholder="" value="">
-                        <label for="four_of_a_kind" class="visually-hidden">Four of a kind</label>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Yahtzee</label>
+                        </div>
+                        <input type="hidden" id="yahtzee" value="" />
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
+                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
-                        <h6>Large straight <small>(sequence of five)</small></h6>
+                    <div class="col-6">
+                        <h5 class="mb-0">Large Straight</h5>
+                        <p class="text-muted small mb-0">Sequence of five</p>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Score</h6>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Scratch</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -258,15 +298,32 @@
                             Score 40
                         </p>
                     </div>
-                    <div class="col-6">
-                        <input type="number" min="40" max="40" step="1" size="2" class="form-control form-control-sm" id="four_of_a_kind" placeholder="" value="">
-                        <label for="four_of_a_kind" class="visually-hidden">Four of a kind</label>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Yahtzee</label>
+                        </div>
+                        <input type="hidden" id="yahtzee" value="" />
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
+                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
-                        <h6>Yahtzee <small>(five of a kind)</small></h6>
+                    <div class="col-6">
+                        <h5 class="mb-0">Yahtzee</h5>
+                        <p class="text-muted small mb-0">Five of a kind</p>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Score</h6>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Scratch</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -295,15 +352,25 @@
                             Score 50
                         </p>
                     </div>
-                    <div class="col-6">
-                        <input type="number" min="40" max="40" step="1" size="2" class="form-control form-control-sm" id="four_of_a_kind" placeholder="" value="">
-                        <label for="four_of_a_kind" class="visually-hidden">Four of a kind</label>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Yahtzee</label>
+                        </div>
+                        <input type="hidden" id="yahtzee" value="" />
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
+                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-12">
-                        <h6>Chance<h6>
+                        <h5>Chance</h5>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
