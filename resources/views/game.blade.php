@@ -33,6 +33,8 @@
                         <h5>How to score</h5>
                         <p class="text-muted mb-1">Score the total of the matched dice.</p>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-2 text-center">
                         <label for="ones" class="form-label dice">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-dice-1" viewBox="0 0 16 16">
@@ -86,6 +88,55 @@
                             </svg>
                         </label>
                         <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm" id="sixes" placeholder="18">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p class="text-muted mb-0">Use the checkbox to scratch a turn if you can't score</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <div class="form-check ps-2">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        </div>
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-check ps-2">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        </div>
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-check ps-2">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        </div>
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-check ps-2">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        </div>
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-check ps-2">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        </div>
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-check ps-2">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
+                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        </div>
+                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                 </div>
 
@@ -402,6 +453,51 @@
                     <div class="col-6">
                         <input type="number" min="6" max="30" step="1" size="2" class="form-control form-control-sm" id="four_of_a_kind" placeholder="" value="">
                         <label for="four_of_a_kind" class="visually-hidden">Four of a kind</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Yahtzee Bonus</h5>
+                    </div>
+                    <div class="col-6">
+                        <p class="mb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-6" viewBox="0 0 16 16">
+                                <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-6" viewBox="0 0 16 16">
+                                <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-6" viewBox="0 0 16 16">
+                                <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-6" viewBox="0 0 16 16">
+                                <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-6" viewBox="0 0 16 16">
+                                <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                        </p>
+                        <p class="mb-1 text-muted">
+                            Score 100 per Yahtzee
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                        </div>
+                        <input type="hidden" name="yahtzee_bonus" id="yahtzee_bonus"/>
                     </div>
                 </div>
             </form>
