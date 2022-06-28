@@ -20,19 +20,19 @@
             </div>
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
-                <a class="nav-link" aria-current="page" href="#">Home</a>
+                <a class="nav-link" href="{{ route('home') }}">Home</a>
                 <a class="nav-link active" href="#">Games</a>
                 <a class="nav-link" href="#">Players</a>
                 <a class="nav-link" href="#">Sign-out</a>
             </nav>
 
             <main>
-                <form>
+                <form class="col-12 col-md-4 col-lg-3 mx-auto p-2">
                     <input name="name" type="hidden" value="Yahtzee [date]" />
                     <input name="description" type="hidden" value="Yahtzee game started @ [date]" />
 
                     <div class="mb-3">
-                        <h3>Start a new game of Yahtzee</h3>
+                        <h2>New Game</h2>
                         <p>Select the players.</p>
 
                         <div class="form-check">
@@ -52,15 +52,22 @@
                             <label class="form-check-label" for="player_">
                                 Player 3
                             </label>
+                            <div id="help" class="form-text">
+                                You can add <a href="#">new</a> players on the player management screen.
+                            </div>
                         </div>
                     </div>
 
                     <a type="submit" class="btn btn-primary w-100">Start Game</a>
                 </form>
             </main>
-            <footer class="pt-5 my-5 text-muted border-top text-center">
-                Created by <a href="https://twitter.com/DBlackborough">Dean Blackborough</a> &
+            <footer class="pt-4 my-4 text-muted border-top text-center">
+                Created by <a href="https://twitter.com/DBlackborough">Dean Blackborough</a><br />
                 powered by the <a href="https://api.costs-to-expect.com">Costs to Expect API</a>
+
+                <div class="mt-3 small">
+                    v0.01 - Released ##ordinal ## {{ date('Y') }}
+                </div>
             </footer>
         </div>
     </body>

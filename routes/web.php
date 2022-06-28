@@ -24,3 +24,7 @@ Route::get('/home', function () {
 Route::get('/new-game', function () {
     return view('new-game');
 })->name('new-game');
+
+Route::get('/game', function () {
+    return view('game');
+})->name('game');
