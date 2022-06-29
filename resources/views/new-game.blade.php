@@ -58,7 +58,7 @@
                         </div>
                     </div>
 
-                    <a type="submit" class="btn btn-primary w-100">Start Game</a>
+                    <button type="submit" class="btn btn-primary w-100">Start Game</button>
                 </form>
             </main>
             <footer class="pt-4 my-4 text-muted border-top text-center">

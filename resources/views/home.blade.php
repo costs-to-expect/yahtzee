@@ -34,9 +34,8 @@
 
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <h3>Recent games</h3>
+                        <h3>Recent Games</h3>
                         <p>View your recent games, open a game to see all the statistics.</p>
-                        <p><a type="submit" class="btn btn-primary">New Game</a></p>
                         <ul class="icon-list ps-0">
                             <li class="d-flex align-items-start mb-1">Game 1</li>
                             <li class="d-flex align-items-start mb-1">Game 2</li>
@@ -47,9 +46,8 @@
                     </div>
 
                     <div class="col-md-6">
-                        <h3>Players</h3>
+                        <h3>Recent Players</h3>
                         <p>Select a player for a detailed breakdown of their Yahtzee games.</p>
-                        <p><a type="submit" class="btn btn-primary">New Player</a></p>
                         <ul class="icon-list ps-0">
                             <li class="d-flex align-items-start mb-1">Player 1</li>
                             <li class="d-flex align-items-start mb-1">Player 2</li>
