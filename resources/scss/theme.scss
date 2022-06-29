@@ -1,10 +1,10 @@
 $theme-colors: (
-  "primary": #892b7c
+  "primary": rgba(137, 43, 124, 1)
 );
 
-$link-color: #892b7c;
-$input-focus-border-color: #892b7c;
-$form-check-input-checked-bg-color: #892b7c;
+$link-color: rgba(137, 43, 124, 1);
+$input-focus-border-color: rgba(137, 43, 124, 1);
+$form-check-input-checked-bg-color: rgba(137, 43, 124, 1);
 
 @import "../../public/node_modules/bootstrap/scss/bootstrap";
 
@@ -44,4 +44,19 @@ div.game-title {
             margin-right: -1rem;
         }
     }
+}
+
+input[type="number"] {
+    text-align: center;
+
+    &::placeholder {
+        color: rgba(137, 43, 124, 0.40);
+    }
+}
+
+.score {
+    border-bottom: 1px solid rgba(137, 43, 124, 1);
+    border-right: 1px solid rgba(137, 43, 124, 0.40);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }

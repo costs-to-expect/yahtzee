@@ -31,7 +31,7 @@
                     <div class="col-12">
                         <h2 class="text-primary">Upper Section</h2>
                         <h5>How to score</h5>
-                        <p class="text-muted mb-1">Score the total of the matched dice.</p>
+                        <p class="text-muted mb-2">Score the total of all the matched dice.</p>
                     </div>
                 </div>
                 <div class="row">
@@ -92,7 +92,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <p class="text-muted mb-0">Use the checkbox to scratch a turn if you can't score</p>
+                        <p class="text-muted mb-0">Use the checkbox to scratch a turn.</p>
                     </div>
                 </div>
                 <div class="row">
@@ -137,6 +137,20 @@
                             <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
                         </div>
                         <label for="yahtzee" class="visually-hidden">Yahtzee</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <h5 class="text-center"><strong>Upper</strong></h5>
+                        <h4 class="text-center mb-0 score">0</h4>
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-center"><strong>Bonus</strong></h5>
+                        <h4 class="text-center mb-0 score">0</h4>
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-center"><strong>Total</strong></h5>
+                        <h4 class="text-center mb-0 score">0</h4>
                     </div>
                 </div>
 
@@ -147,8 +161,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
-                        <h5>Three of a kind</h5>
+                    <div class="col-6">
+                        <h5 class="mb-0">Three of a kind</h5>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Score</h6>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Scratch</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -165,19 +185,31 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </p>
-                        <p class="mb-1 text-muted">
+                        <p class="mb-2 text-muted">
                             Score total of all dice.
                         </p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-3">
                         <input type="number" min="6" max="30" step="1" size="2" class="form-control form-control-sm" id="three_of_a_kind" placeholder="" value="">
                         <label for="three_of_a_kind" class="visually-hidden">Three of a kind</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
+                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
-                        <h5>Four of a kind</h5>
+                    <div class="col-6">
+                        <h5 class="mb-0">Four of a kind</h5>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Score</h6>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Scratch</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -198,13 +230,19 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </p>
-                        <p class="mb-1 text-muted">
+                        <p class="mb-2 text-muted">
                             Score total of all dice.
                         </p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-3">
                         <input type="number" min="6" max="30" step="1" size="2" class="form-control form-control-sm" id="four_of_a_kind" placeholder="" value="">
                         <label for="four_of_a_kind" class="visually-hidden">Four of a kind</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
+                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        </div>
                     </div>
                 </div>
 
@@ -241,7 +279,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </p>
-                        <p class="mb-1 text-muted">
+                        <p class="mb-2 text-muted">
                             Score 25
                         </p>
                     </div>
@@ -291,7 +329,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </p>
-                        <p class="mb-1 text-muted">
+                        <p class="mb-2 text-muted">
                             Score 30
                         </p>
                     </div>
@@ -345,7 +383,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </p>
-                        <p class="mb-1 text-muted">
+                        <p class="mb-2 text-muted">
                             Score 40
                         </p>
                     </div>
@@ -399,7 +437,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </p>
-                        <p class="mb-1 text-muted">
+                        <p class="mb-2 text-muted">
                             Score 50
                         </p>
                     </div>
@@ -420,8 +458,14 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
-                        <h5>Chance</h5>
+                    <div class="col-6">
+                        <h5 class="mb-0">Chance</h5>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Score</h6>
+                    </div>
+                    <div class="col-3 text-center">
+                        <h6>Scratch</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -446,19 +490,28 @@
                                 <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
                             </svg>
                         </p>
-                        <p class="mb-1 text-muted">
+                        <p class="mb-2 text-muted">
                             Score total of all dice
                         </p>
                     </div>
-                    <div class="col-6">
+                    <div class="col-3">
                         <input type="number" min="6" max="30" step="1" size="2" class="form-control form-control-sm" id="four_of_a_kind" placeholder="" value="">
                         <label for="four_of_a_kind" class="visually-hidden">Four of a kind</label>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
+                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
-                        <h5>Yahtzee Bonus</h5>
+                    <div class="col-6">
+                        <h5 class="mb-0">Yahtzee House</h5>
+                    </div>
+                    <div class="col-4 text-center">
+                        <h6>Score</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0">
@@ -498,6 +551,20 @@
                             <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
                         </div>
                         <input type="hidden" name="yahtzee_bonus" id="yahtzee_bonus"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <h5 class="text-center"><strong>Upper</strong></h5>
+                        <h4 class="text-center mb-0 score">0</h4>
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-center"><strong>Lower</strong></h5>
+                        <h4 class="text-center mb-0 score">0</h4>
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-center"><strong>Total</strong></h5>
+                        <h4 class="text-center mb-0 score">0</h4>
                     </div>
                 </div>
             </form>
