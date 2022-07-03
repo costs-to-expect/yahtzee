@@ -54,9 +54,18 @@ input[type="number"] {
     }
 }
 
-.score {
-    border-bottom: 1px solid rgba(137, 43, 124, 1);
+h3.score {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(137, 43, 124, 1);
     border-right: 1px solid rgba(137, 43, 124, 0.40);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: rgba(137, 43, 124, 1);
+}
+
+h2.score {
+    background-color: rgba(137, 43, 124, 1);
+    color: #ffffff;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }

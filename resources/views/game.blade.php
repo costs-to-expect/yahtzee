@@ -10,14 +10,7 @@
     </head>
     <body>
         <div class="col-lg-8 mx-auto p-3 py-md-5">
-            <div class="header">
-                <h1 class="display-1">
-                    <a href="{{ route('home') }}">
-                        <img src="{{ asset('images/logo.png') }}" width="64" height="64" alt="Costs to Expect Logo" title="Powered by Costs to Expect API">
-                    </a>
-                    Yahtzee
-                </h1>
-            </div>
+            <x-layout.header />
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
                 <a class="nav-link" href="{{ route('home') }}">Home</a>
@@ -141,16 +134,16 @@
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="text-center"><strong>Upper</strong></h5>
-                        <h4 class="text-center mb-0 score">0</h4>
+                        <h3 class="text-center score"><strong>Upper</strong></h3>
+                        <h2 class="text-center mb-0 score">0</h2>
                     </div>
                     <div class="col-4">
-                        <h5 class="text-center"><strong>Bonus</strong></h5>
-                        <h4 class="text-center mb-0 score">0</h4>
+                        <h3 class="text-center score"><strong>Bonus</strong></h3>
+                        <h2 class="text-center mb-0 score">0</h2>
                     </div>
                     <div class="col-4">
-                        <h5 class="text-center"><strong>Total</strong></h5>
-                        <h4 class="text-center mb-0 score">0</h4>
+                        <h3 class="text-center score text-black"><strong>Total</strong></h3>
+                        <h2 class="text-center mb-0 score">0</h2>
                     </div>
                 </div>
 
@@ -555,16 +548,16 @@
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="text-center"><strong>Upper</strong></h5>
-                        <h4 class="text-center mb-0 score">0</h4>
+                        <h3 class="text-center score"><strong>Upper</strong></h3>
+                        <h2 class="text-center mb-0 score">0</h2>
                     </div>
                     <div class="col-4">
-                        <h5 class="text-center"><strong>Lower</strong></h5>
-                        <h4 class="text-center mb-0 score">0</h4>
+                        <h3 class="text-center score"><strong>Lower</strong></h3>
+                        <h2 class="text-center mb-0 score">0</h2>
                     </div>
                     <div class="col-4">
-                        <h5 class="text-center"><strong>Total</strong></h5>
-                        <h4 class="text-center mb-0 score">0</h4>
+                        <h3 class="text-center score text-black"><strong>Total</strong></h3>
+                        <h2 class="text-center mb-0 score">0</h2>
                     </div>
                 </div>
             </form>
