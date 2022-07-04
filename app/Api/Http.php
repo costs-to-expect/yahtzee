@@ -160,12 +160,12 @@ class Http
 
                 $status_code = $response->getStatusCode();
 
-                if ($status_code === 201 || $status_code === 204 || $status_code === 422) {
+                if ($status_code === 201 || $status_code === 204 || $status_code === 422 || $status_code === 401) {
                     $result = [
                         'status' => $status_code,
                         'content' => ($status_code !== 204 ? json_decode($response->getBody()->getContents(), true) : null)
                     ];
-                } else if ($status_code === 401 || $status_code === 403) {
+                } else if ($status_code === 403) {
                     self::setError(
                         $uri,
                         $status_code,

@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', static function () {
-    return view('sign-in');
-})->name('sign-in.view');
+Route::get(
+    '/',
+    [\App\Http\Controllers\Authentication::class, 'signIn']
+)->name('sign-in.view');
 
 Route::post(
     '/sign-in',
-    [\App\Http\Controllers\Authentication::class, 'signIn']
+    [\App\Http\Controllers\Authentication::class, 'signInProcess']
 )->name('sign-in.process');
 
 Route::get(

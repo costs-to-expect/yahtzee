@@ -9,14 +9,17 @@ use Illuminate\Support\Facades\Auth;
 
 class Authentication extends Controller
 {
-    public function signOut(): RedirectResponse
+    public function signIn()
     {
-        Auth::guard()->logout();
-
-        return redirect()->route('sign-in.view');
+        return view(
+            'sign-in',
+            [
+                'errors' => session()->get('authentication.errors')
+            ]
+        );
     }
 
-    public function signIn(Request $request)
+    public function signInProcess(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
 
@@ -30,5 +33,12 @@ class Authentication extends Controller
                 'authentication.errors',
                 Auth::errors()
             );
+    }
+
+    public function signOut(): RedirectResponse
+    {
+        Auth::guard()->logout();
+
+        return redirect()->route('sign-in.view');
     }
 }
