@@ -10449,9 +10449,18 @@ input[type=number]::placeholder {
   color: rgba(137, 43, 124, 0.4);
 }
 
-.score {
-  border-bottom: 1px solid #892b7c;
+h3.score, .score.h3 {
+  margin-top: 1rem;
+  border-top: 1px solid #892b7c;
   border-right: 1px solid rgba(137, 43, 124, 0.4);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: #892b7c;
+}
+
+h2.score, .score.h2 {
+  background-color: #892b7c;
+  color: #ffffff;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }

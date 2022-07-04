@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
+use App\Auth\Guard\Api\Guard;
+use App\Auth\Guard\Api\UserProvider;
+use Illuminate\Container\Container;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -22,8 +27,16 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
+        Auth::extend('api', static function (Container $app) {
+            $config = Config::get('app.config');
+            $auth_config = [
+                'cookie_bearer' => $config['cookie_bearer'],
+                'cookie_user' => $config['cookie_user']
+            ];
 
-        //
+            return new Guard(new UserProvider($auth_config), $auth_config, $app['request']);
+        });
+
+        $this->registerPolicies();
     }
 }

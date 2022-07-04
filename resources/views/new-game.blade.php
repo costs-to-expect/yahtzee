@@ -10,47 +10,37 @@
     </head>
     <body>
         <div class="col-lg-8 mx-auto p-3 py-md-5">
-            <div class="header">
-                <h1 class="display-1">
-                    <a href="{{ route('home') }}">
-                        <img src="{{ asset('images/logo.png') }}" width="64" height="64" alt="Costs to Expect Logo" title="Powered by Costs to Expect API">
-                    </a>
-                    Yahtzee
-                </h1>
-            </div>
+            <x-layout.header />
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
                 <a class="nav-link" href="{{ route('home') }}">Home</a>
                 <a class="nav-link active" href="#">Games</a>
                 <a class="nav-link" href="#">Players</a>
-                <a class="nav-link" href="#">Sign-out</a>
+                <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
             <main>
                 <form class="col-12 col-md-4 col-lg-3 mx-auto p-2">
-                    <input name="name" type="hidden" value="Yahtzee [date]" />
-                    <input name="description" type="hidden" value="Yahtzee game started @ [date]" />
-
                     <div class="mb-3">
                         <h2>New Game</h2>
                         <p>Select the players.</p>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="hash" name="player_1" id="player_1">
-                            <label class="form-check-label" for="player_">
-                                Player 1
+                            <input class="form-check-input" type="checkbox" value="hash" name="category_id_for_player_1" id="category_id_for_player_1" />
+                            <label class="form-check-label" for="category_id_for_player_1">
+                                Name of Player 1
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="hash" name="player_1" id="player_1">
-                            <label class="form-check-label" for="player_">
-                                Player 2
+                            <input class="form-check-input" type="checkbox" value="hash" name="category_id_for_player_2" id="category_id_for_player_2" />
+                            <label class="form-check-label" for="category_id_for_player_2">
+                                Name of Player 2
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="hash" name="player_1" id="player_1">
-                            <label class="form-check-label" for="player_">
-                                Player 3
+                            <input class="form-check-input" type="checkbox" value="hash" name="category_id_for_player_3" id="category_id_for_player_3">
+                            <label class="form-check-label" for="category_id_for_player_3">
+                                Name of Player 3
                             </label>
                             <div id="help" class="form-text">
                                 You can add <a href="#">new</a> players on the player management screen.

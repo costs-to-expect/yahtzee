@@ -10,20 +10,13 @@
     </head>
     <body>
         <div class="col-lg-8 mx-auto p-3 py-md-5">
-            <div class="header">
-                <h1 class="display-1">
-                    <a href="{{ route('home') }}">
-                        <img src="{{ asset('images/logo.png') }}" width="64" height="64" alt="Costs to Expect Logo" title="Powered by Costs to Expect API">
-                    </a>
-                    Yahtzee
-                </h1>
-            </div>
+            <x-layout.header />
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
                 <a class="nav-link active" href="{{ route('home') }}">Home</a>
                 <a class="nav-link" href="#">Games</a>
                 <a class="nav-link" href="#">Players</a>
-                <a class="nav-link" href="#">Sign-out</a>
+                <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
             <main>
