@@ -5,33 +5,28 @@ namespace App\Api;
 
 class Service
 {
-    private ?string $bearer;
-
     private Http $http;
 
-    public function init(string $bearer = null): Service
+    public function __construct(string $bearer = null)
     {
-        $this->bearer = $bearer;
-        $this->http = Http::request($bearer);
-
-        return $this;
+        $this->http = new Http($bearer);
     }
 
     public function authSignIn(string $email, string $password): ?array
     {
-        $uri = Uri::signIn();
+        $uri = Uri::authSignIn();
 
-        return $this->http::post(
+        return $this->http->post(
             $uri['uri'],
             [
                 'email' => $email,
                 'password' => $password,
-                'device_name' => (app()->environment('local') ? 'app:local:' : 'app:')
+                'device_name' => (app()->environment('local') ? 'yahtzee:local:' : 'yahtzee:')
             ]
         );
     }
 
-    public function get(string $uri, string $name): ?Response
+    /*public function get(string $uri, string $name): ?Response
     {
         $response = $this->http::get($uri);
 
@@ -48,5 +43,5 @@ class Service
         }
 
         return null;
-    }
+    }*/
 }

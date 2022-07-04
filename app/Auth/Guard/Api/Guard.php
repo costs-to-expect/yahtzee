@@ -68,18 +68,14 @@ class Guard implements \Illuminate\Contracts\Auth\Guard
 
     public function validate(array $credentials = [], bool $remember_me = false): bool
     {
-        $api = new Service();
-        $api->init(
-            $this->request->cookie($this->config['cookie_user']),
-            $this->request->cookie($this->config['cookie_bearer'])
-        );
+        $api = new Service($this->request->cookie($this->config['cookie_bearer']));
 
         $response = $api->authSignIn(
             $credentials['email'],
             $credentials['password']
         );
 
-        if ($response !== null && $response['status'] === 201) {
+        if ($response['status'] === 201) {
 
             $life_time = 43200;
             if ($remember_me === false) {
@@ -100,12 +96,12 @@ class Guard implements \Illuminate\Contracts\Auth\Guard
             return true;
         }
 
-        if ($response !== null && $response['status'] === 422) {
+        if ($response['status'] === 422) {
             $this->errors = $response['content']['fields'];
             return false;
         }
 
-        if ($response !== null && $response['status'] === 401) {
+        if ($response['status'] === 401) {
             $this->errors = ['email' => [$response['content']['message']]];
             return false;
         }
