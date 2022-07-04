@@ -2,7 +2,7 @@
 
 namespace App\Auth\Guard\Api;
 
-//use App\Api;
+//use App\Service;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class UserProvider implements \Illuminate\Contracts\Auth\UserProvider
@@ -16,7 +16,7 @@ class UserProvider implements \Illuminate\Contracts\Auth\UserProvider
 
     public function retrieveById($identifier): ?Authenticatable
     {
-        /*$api = new Api();
+        /*$api = new Service();
         $api->init(
             request()->cookie($this->config['cookie_user']),
             request()->cookie($this->config['cookie_bearer'])

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-//use App\Api;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +24,11 @@ class Authentication extends Controller
             return redirect()->route('home');
         }
 
-        return redirect()->route('sign-in.view')->withInput()->with('authentication.errors', Auth::errors());
+        return redirect()->route('sign-in.view')
+            ->withInput()
+            ->with(
+                'authentication.errors',
+                Auth::errors()
+            );
     }
 }

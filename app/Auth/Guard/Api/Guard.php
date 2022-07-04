@@ -2,7 +2,7 @@
 
 namespace App\Auth\Guard\Api;
 
-//use App\Api;
+use App\Api\Service;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -17,7 +17,11 @@ class Guard implements \Illuminate\Contracts\Auth\Guard
     private ?Authenticatable $user;
     private array $errors = [];
 
-    public function __construct(UserProvider $user_provider, array $config, Request $request)
+    public function __construct(
+        UserProvider $user_provider,
+        array $config,
+        Request $request
+    )
     {
         $this->user_provider = $user_provider;
         $this->config = $config;
@@ -64,13 +68,16 @@ class Guard implements \Illuminate\Contracts\Auth\Guard
 
     public function validate(array $credentials = [], bool $remember_me = false): bool
     {
-        /*$api = new Api();
+        $api = new Service();
         $api->init(
             $this->request->cookie($this->config['cookie_user']),
             $this->request->cookie($this->config['cookie_bearer'])
         );
 
-        $response = $api->postSignIn($credentials['email'], $credentials['password']);
+        $response = $api->authSignIn(
+            $credentials['email'],
+            $credentials['password']
+        );
 
         if ($response !== null && $response['status'] === 201) {
 
@@ -79,8 +86,16 @@ class Guard implements \Illuminate\Contracts\Auth\Guard
                 $life_time = null;
             }
 
-            Cookie::queue($this->config['cookie_bearer'], $response['content']['token'], $life_time);
-            Cookie::queue($this->config['cookie_user'], $response['content']['id'], $life_time);
+            Cookie::queue(
+                $this->config['cookie_bearer'],
+                $response['content']['token'],
+                $life_time
+            );
+            Cookie::queue(
+                $this->config['cookie_user'],
+                $response['content']['id'],
+                $life_time
+            );
 
             return true;
         }
@@ -88,7 +103,7 @@ class Guard implements \Illuminate\Contracts\Auth\Guard
         if ($response !== null && $response['status'] === 422) {
             $this->errors = $response['content']['fields'];
             return false;
-        }*/
+        }
 
         return false;
     }

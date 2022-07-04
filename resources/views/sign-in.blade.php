@@ -21,16 +21,19 @@
                         </a>
                     </div>
 
-                    <form class="col-12 col-md-4 col-lg-3 mx-auto p-2">
+                    <form action="{{ route('sign-in.process') }}" method="POST" class="col-12 col-md-4 col-lg-3 mx-auto p-2">
+
+                        @csrf
+
                         <div class="mt-3 mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" aria-describedby="email-help">
+                            <input type="email" name="email" class="form-control" id="email" aria-describedby="email-help">
                             <div id="email-help" class="form-text">Please enter your email address, <em>we will never share
                                     your email address</em>.</div>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" aria-describedby="password-help">
+                            <input type="password" name="password" class="form-control" id="password" aria-describedby="password-help">
                             <div id="password-help" class="form-text">Please enter your password, <em>we will check this
                                     against the encrypted value in our database</em>.</div>
                         </div>

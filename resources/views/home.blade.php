@@ -16,7 +16,7 @@
                 <a class="nav-link active" href="{{ route('home') }}">Home</a>
                 <a class="nav-link" href="#">Games</a>
                 <a class="nav-link" href="#">Players</a>
-                <a class="nav-link" href="#">Sign-out</a>
+                <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
             <main>

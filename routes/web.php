@@ -22,6 +22,11 @@ Route::post(
     [\App\Http\Controllers\Authentication::class, 'signIn']
 )->name('sign-in.process');
 
+Route::get(
+    '/sign-out',
+    [\App\Http\Controllers\Authentication::class, 'signOut']
+)->name('sign-out');
+
 Route::group(
     [
         'middleware' => [
