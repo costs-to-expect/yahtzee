@@ -13,18 +13,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', static function () {
     return view('sign-in');
-})->name('sign-in');
+})->name('sign-in.view');
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
+Route::post(
+    '/sign-in',
+    [\App\Http\Controllers\Authentication::class, 'signIn']
+)->name('sign-in.process');
 
-Route::get('/new-game', function () {
-    return view('new-game');
-})->name('new-game');
+Route::group(
+    [
+        'middleware' => [
+            'auth'
+        ]
+    ],
+    static function() {
+        Route::get('/home', static function () {
+            return view('home');
+        })->name('home');
 
-Route::get('/game', function () {
-    return view('game');
-})->name('game');
+        Route::get('/new-game', static function () {
+            return view('new-game');
+        })->name('new-game');
+
+        Route::get('/game', static function () {
+            return view('game');
+        })->name('game');
+    }
+);
