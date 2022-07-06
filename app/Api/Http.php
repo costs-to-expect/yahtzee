@@ -23,6 +23,26 @@ class Http
         }
     }
 
+    public function get(string $uri): array
+    {
+        $response = $this->client->get($this->baseUri() . $uri);
+
+        return match ($response->status()) {
+            200 => [
+                'status' => $response->status(),
+                'content' => $response->json()
+            ],
+            404 => [
+                'status' => 404,
+                'content' => 'The requested endpoint was not found on the API [' . $this->baseUri() . $uri . ']',
+            ],
+            default => [
+                'status' => $response->status(),
+                'content' => 'We encountered an unknown error contacting the API',
+            ]
+        };
+    }
+
     public function post(string $uri, array $payload): array
     {
         $response = $this->client->post(
@@ -39,9 +59,13 @@ class Http
                 'status' => 204,
                 'content' => null,
             ],
+            404 => [
+                'status' => 404,
+                'content' => 'The requested endpoint was not found on the API [' . $this->baseUri() . $uri . ']',
+            ],
             default => [
                 'status' => $response->status(),
-                'content' => 'There was an error contacting the API',
+                'content' => 'We encountered an unknown error contacting the API',
             ],
         };
     }
