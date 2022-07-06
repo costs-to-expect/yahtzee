@@ -51,9 +51,9 @@ class Http
         );
 
         return match ($response->status()) {
-            201, 400, 401, 422, 500, 503 => [
-                'status' => $response->status(),
-                'content' => $response->json()
+            201, 400, 401, 422, 500, 503 => [ // Can't group all these, need to handle them differently
+                'status' => $response->status(), // Content gets passed to abort if not 201 and that
+                'content' => $response->json() // will not work as we have an array of content
             ],
             204 => [
                 'status' => 204,
