@@ -67,8 +67,6 @@ class Service
     {
         $uri = Uri::resources($resource_type_id, $parameters);
 
-        //dd($uri);
-
         return $this->http->get($uri['uri']);
     }
 

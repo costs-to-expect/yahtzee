@@ -16,11 +16,13 @@ class Controller extends BaseController
 
     protected array $config;
 
-    protected string $item_type_id = '2AP1axw6L7';
-    protected string $item_subtype_id = '3JgkeMkB4q';
+    protected string $item_type_id;
+    protected string $item_subtype_id;
 
     public function __construct()
     {
         $this->config = Config::get('app.config');
+        $this->item_type_id = $this->config['item_type_id'];
+        $this->item_subtype_id = $this->config['item_subtype_id'];
     }
 }
