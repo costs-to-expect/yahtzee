@@ -20,8 +20,26 @@
             </nav>
 
             <main>
-                <h2>Open Games</h2>
-                <p class="fs-5 col-md-8">Resume your open games...</p>
+                @if (count($open_games) > 0)
+                    <h2>Open Games</h2>
+                    <p class="fs-5 col-md-8">Resume your open games...</p>
+
+                    <ul class="icon-list ps-0">
+                        @foreach ($open_games as $game)
+                            <li class="d-flex align-items-start mb-1">
+                                <a href="{{ route('game', ['game' => $game->id]) }}">
+                                    Game started {{ $game['created'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <hr class="col-12 col-md-6 mb-4">
+                @endif
+
+                <h2>New game</h2>
+
+                <p class="fs-5 col-md-8">Start a new <a href="{{ route('new-game') }}">game</a></p>
 
                 <hr class="col-12 col-md-6 mb-4">
 
@@ -29,13 +47,22 @@
                     <div class="col-md-6">
                         <h3>Recent Games</h3>
                         <p>View your recent games, open a game to see all the statistics.</p>
+
+                        @if (count($closed_games) > 0)
                         <ul class="icon-list ps-0">
-                            <li class="d-flex align-items-start mb-1">Game 1</li>
-                            <li class="d-flex align-items-start mb-1">Game 2</li>
-                            <li class="d-flex align-items-start mb-1">Game 3</li>
-                            <li class="d-flex align-items-start mb-1">Game 4</li>
-                            <li class="d-flex align-items-start mb-1">Game 5</li>
+                            @foreach ($closed_games as $__closed_game)
+                                <li class="d-flex align-items-start mb-1">
+                                    <a href="#">
+                                        Game finished {{ $game['updated'] }}
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul>
+                        @else
+                        <p class="text-primary">You haven't finished any games yet, once you do,
+                            they will show up here.
+                        </p>
+                        @endif
                     </div>
 
                     <div class="col-md-6">
@@ -56,7 +83,7 @@
                 powered by the <a href="https://api.costs-to-expect.com">Costs to Expect API</a>
 
                 <div class="mt-3 small">
-                    v0.01 - Released ##ordinal ## {{ date('Y') }}
+                    v{{ $config['version'] }} - Released {{ $config['release_date'] }}
                 </div>
             </footer>
         </div>

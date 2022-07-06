@@ -3,50 +3,90 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 class Service
 {
-    private ?string $bearer;
-
     private Http $http;
 
-    public function init(string $bearer = null): Service
-    {
-        $this->bearer = $bearer;
-        $this->http = Http::request($bearer);
+    private string $item_type_id = '2AP1axw6L7';
+    private string $item_subtype_id = '3JgkeMkB4q';
 
-        return $this;
+    public function __construct(string $bearer = null)
+    {
+        $this->http = new Http($bearer);
     }
 
-    public function authSignIn(string $email, string $password): ?array
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function authSignIn(string $email, string $password): array
     {
-        $uri = Uri::signIn();
+        $uri = Uri::authSignIn();
 
-        return $this->http::post(
+        return $this->http->post(
             $uri['uri'],
             [
                 'email' => $email,
                 'password' => $password,
-                'device_name' => (app()->environment('local') ? 'app:local:' : 'app:')
+                'device_name' => (app()->environment('local') ? 'yahtzee:local:' : 'yahtzee:')
             ]
         );
     }
 
-    public function get(string $uri, string $name): ?Response
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function createResource(string $resource_type_id): array
     {
-        $response = $this->http::get($uri);
+        $uri = Uri::resources($resource_type_id);
 
-        if ($response !== null) {
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'name' => 'Yahtzee game tracker',
+                'description' => 'Yahtzee game tracker for Yahtzee app user',
+                'item_subtype_id' => $this->item_subtype_id
+            ]
+        );
+    }
 
-            $response_data = [
-                'type' => 'get',
-                'name' => $name,
-                'uri' => $uri,
-                'response' => $response
-            ];
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function createResourceType(): array
+    {
+        $uri = Uri::resourceTypes();
 
-            return new Response($response_data);
-        }
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'name' => 'Game trackers',
+                'description' => 'Game trackers for Yahtzee app user',
+                'item_type_id' => $this->item_type_id
+            ]
+        );
+    }
 
-        return null;
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getGames(
+        string $resource_type_id,
+        string $resource_id,
+        array $parameters = []
+    ): array
+    {
+        $uri = Uri::games($resource_type_id, $resource_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getResources(string $resource_type_id, array $parameters = []): array
+    {
+        $uri = Uri::resources($resource_type_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getResourceTypes(array $parameters = []): array
+    {
+        $uri = Uri::resourceTypes($parameters);
+
+        return $this->http->get($uri['uri']);
     }
 }

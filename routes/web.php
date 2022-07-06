@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Authentication;
+use App\Http\Controllers\Home;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,17 +17,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get(
     '/',
-    [\App\Http\Controllers\Authentication::class, 'signIn']
+    [Authentication::class, 'signIn']
 )->name('sign-in.view');
 
 Route::post(
     '/sign-in',
-    [\App\Http\Controllers\Authentication::class, 'signInProcess']
+    [Authentication::class, 'signInProcess']
 )->name('sign-in.process');
 
 Route::get(
     '/sign-out',
-    [\App\Http\Controllers\Authentication::class, 'signOut']
+    [Authentication::class, 'signOut']
 )->name('sign-out');
 
 Route::group(
@@ -35,9 +37,10 @@ Route::group(
         ]
     ],
     static function() {
-        Route::get('/home', static function () {
-            return view('home');
-        })->name('home');
+        Route::get(
+            '/home',
+            [Home::class, 'index']
+        )->name('home');
 
         Route::get('/new-game', static function () {
             return view('new-game');
