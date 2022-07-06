@@ -83,7 +83,7 @@
                 powered by the <a href="https://api.costs-to-expect.com">Costs to Expect API</a>
 
                 <div class="mt-3 small">
-                    v0.01 - Released ##ordinal ## {{ date('Y') }}
+                    v{{ $config['version'] }} - Released {{ $config['release_date'] }}
                 </div>
             </footer>
         </div>
