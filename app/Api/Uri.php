@@ -43,6 +43,21 @@ class Uri
     }
 
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
+    public static function players(string $resource_type_id, array $parameters = []): array
+    {
+        $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .
+            '/categories';
+        if (count($parameters) > 0) {
+            $uri .= '?' . http_build_query($parameters);
+        }
+
+        return [
+            'uri' => $uri,
+            'name' => 'Games'
+        ];
+    }
+
+    #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function resources(string $resource_type_id, array $parameters = []): array
     {
         $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id . '/resources';

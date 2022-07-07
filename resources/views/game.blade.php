@@ -17,7 +17,7 @@
             <nav class="nav nav-fill my-4 border-bottom border-top">
                 <a class="nav-link" href="{{ route('home') }}">Home</a>
                 <a class="nav-link active" href="#">Games</a>
-                <a class="nav-link" href="#">Players</a>
+                <a class="nav-link" href="{{ route('players') }}">Players</a>
                 <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 

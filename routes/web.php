@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authentication;
-use App\Http\Controllers\Home;
+use App\Http\Controllers\Index;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,7 +39,7 @@ Route::group(
     static function() {
         Route::get(
             '/home',
-            [Home::class, 'index']
+            [Index::class, 'home']
         )->name('home');
 
         Route::get('/new-game', static function () {
@@ -49,5 +49,10 @@ Route::group(
         Route::get('/game', static function () {
             return view('game');
         })->name('game');
+
+        Route::get(
+            '/players',
+            [Index::class, 'players']
+        )->name('players');
     }
 );

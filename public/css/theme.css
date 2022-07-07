@@ -10465,4 +10465,8 @@ h2.score, .score.h2 {
   padding-bottom: 0.5rem;
 }
 
+a.nav-link.active {
+  text-decoration: underline;
+}
+
 /*# sourceMappingURL=theme.css.map */

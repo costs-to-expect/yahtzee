@@ -5,22 +5,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Home extends Controller
+class Index extends Controller
 {
-    public function index(Request $request)
+    public function home(Request $request)
     {
         $this->boostrap($request);
 
-        $open_games = $this->games(
+        $open_games = $this->getGames(
             $this->resource_type_id,
             $this->resource_id,
             ['complete' => 0]
         );
-        $closed_games = $this->games(
+        $closed_games = $this->getGames(
             $this->resource_type_id,
             $this->resource_id,
             ['complete' => 1, 'limit' => 5]
         );
+        $players = $this->getPlayers($this->resource_type_id);
 
         return view(
             'home',
@@ -29,7 +30,22 @@ class Home extends Controller
                 'resource_id' => $this->resource_id,
 
                 'open_games' => $open_games,
-                'closed_games' => $closed_games
+                'closed_games' => $closed_games,
+                'players' => $players,
+            ]
+        );
+    }
+
+    public function players(Request $request)
+    {
+        $this->boostrap($request);
+
+        $players = $this->getPlayers($this->resource_type_id);
+
+        return view(
+            'players',
+            [
+                'players' => $players,
             ]
         );
     }

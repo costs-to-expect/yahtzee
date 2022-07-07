@@ -76,7 +76,7 @@ class Controller extends BaseController
         }
     }
 
-    protected function games(string $resource_type_id, string $resource_id, array $parameters): array
+    protected function getGames(string $resource_type_id, string $resource_id, array $parameters = []): array
     {
         $games_response = $this->api->getGames(
             $resource_type_id,
@@ -96,5 +96,22 @@ class Controller extends BaseController
         }
 
         return $games;
+    }
+
+    protected function getPlayers(string $resource_type_id, array $parameters = []): array
+    {
+        $players_response = $this->api->getPlayers($resource_type_id, $parameters);
+
+        $players = [];
+        if ($players_response['status'] === 200 && count($players_response['content']) > 0) {
+            foreach ($players_response['content'] as $player) {
+                $players[] = [
+                    'id' => $player['id'],
+                    'name' => $player['name']
+                ];
+            }
+        }
+
+        return $players;
     }
 }

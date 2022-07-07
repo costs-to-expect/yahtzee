@@ -83,6 +83,17 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getPlayers(
+        string $resource_type_id,
+        array $parameters = []
+    ): array
+    {
+        $uri = Uri::players($resource_type_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function getResources(string $resource_type_id, array $parameters = []): array
     {
         $uri = Uri::resources($resource_type_id, $parameters);
