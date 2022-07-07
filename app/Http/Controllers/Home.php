@@ -11,8 +11,16 @@ class Home extends Controller
     {
         $this->boostrap($request);
 
-        $open_games = $this->openGames();
-        $closed_games = $this->closedGames();
+        $open_games = $this->games(
+            $this->resource_type_id,
+            $this->resource_id,
+            ['complete' => 0]
+        );
+        $closed_games = $this->games(
+            $this->resource_type_id,
+            $this->resource_id,
+            ['complete' => 1, 'limit' => 5]
+        );
 
         return view(
             'home',
@@ -24,51 +32,5 @@ class Home extends Controller
                 'closed_games' => $closed_games
             ]
         );
-    }
-
-    private function closedGames(): array
-    {
-        $closed_games_response = $this->api->getGames(
-            $this->resource_type_id,
-            $this->resource_id,
-            [
-                'complete' => 1,
-                'limit' => 5
-            ]
-        );
-
-        $closed_games = [];
-        if ($closed_games_response['status'] === 200 && count($closed_games_response['content']) > 0) {
-            foreach ($closed_games_response['content'] as $game) {
-                $closed_games[] = [
-                    'id' => $game['id'],
-                    'created' => $game['created']
-                ];
-            }
-        }
-
-        return $closed_games;
-    }
-
-    private function openGames(): array
-    {
-        $open_games_response = $this->api->getGames(
-            $this->resource_type_id,
-            $this->resource_id,
-            ['complete' => 0]
-        );
-
-        $open_games = [];
-        if ($open_games_response['status'] === 200 && count($open_games_response['content']) > 0) {
-            foreach ($open_games_response['content'] as $game) {
-                $open_games[] = [
-                    'id' => $game['id'],
-                    'created' => $game['created'],
-                    'updated' => $game['updated']
-                ];
-            }
-        }
-
-        return $open_games;
     }
 }

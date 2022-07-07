@@ -19,6 +19,15 @@ class Uri
     }
 
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
+    public static function authUser(): array
+    {
+        return [
+            'uri' => '/' . self::VERSION . '/auth/user',
+            'name' => 'User'
+        ];
+    }
+
+    #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function games(string $resource_type_id, string $resource_id, array $parameters = []): array
     {
         $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .

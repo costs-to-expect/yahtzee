@@ -33,6 +33,14 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function authUser(): array
+    {
+        $uri = Uri::authUser();
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function createResource(string $resource_type_id): array
     {
         $uri = Uri::resources($resource_type_id);

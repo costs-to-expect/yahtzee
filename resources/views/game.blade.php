@@ -6,6 +6,8 @@
         <meta name="description" content="Yahtzee Game Score by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
         <title>Yahtzee Game Scorer: Game</title>
+        <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
+        <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
     </head>
     <body>

@@ -21,8 +21,8 @@ class Controller extends BaseController
     protected string $item_type_id;
     protected string $item_subtype_id;
 
-    protected string $resource_type_id;
-    protected string $resource_id;
+    protected ?string $resource_type_id = null;
+    protected ?string $resource_id = null;
 
     protected Service $api;
 
@@ -46,10 +46,11 @@ class Controller extends BaseController
                 $resources = $this->api->getResources($resource_type_id, ['item-subtype' => $this->item_subtype_id]);
                 if ($resources['status'] === 200) {
                     if (count($resources['content']) === 1) {
-                        return [
-                            $resource_type_id,
-                            $resources['content'][0]['id']
-                        ];
+
+                        $this->resource_type_id = $resource_type_id;
+                        $this->resource_id = $resources['content'][0]['id'];
+
+                        return true;
                     }
                     $create_resource_response = $this->api->createResource($resource_type_id);
                     if ($create_resource_response['status'] === 201) {
@@ -73,5 +74,27 @@ class Controller extends BaseController
         } else {
             abort($resource_types['status'], $resource_types['content']);
         }
+    }
+
+    protected function games(string $resource_type_id, string $resource_id, array $parameters): array
+    {
+        $games_response = $this->api->getGames(
+            $resource_type_id,
+            $resource_id,
+            $parameters
+        );
+
+        $games = [];
+        if ($games_response['status'] === 200 && count($games_response['content']) > 0) {
+            foreach ($games_response['content'] as $game) {
+                $games[] = [
+                    'id' => $game['id'],
+                    'created' => $game['created'],
+                    'updated' => $game['updated']
+                ];
+            }
+        }
+
+        return $games;
     }
 }
