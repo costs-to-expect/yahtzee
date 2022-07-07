@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Authentication;
 use App\Http\Controllers\Index;
+use App\Http\Controllers\Player;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,7 +53,12 @@ Route::group(
 
         Route::get(
             '/players',
-            [Index::class, 'players']
+            [Player::class, 'index']
         )->name('players');
+
+        Route::get(
+            '/new-player',
+            [Player::class, 'newPlayer']
+        )->name('new-player.view');
     }
 );

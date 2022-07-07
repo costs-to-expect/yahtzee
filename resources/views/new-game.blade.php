@@ -22,7 +22,7 @@
             </nav>
 
             <main>
-                <form class="col-12 col-md-4 col-lg-3 mx-auto p-2">
+                <form class="col-12 col-md-4 col-lg-4 mx-auto p-2">
                     <div class="mb-3">
                         <h2>New Game</h2>
                         <p>Select the players.</p>

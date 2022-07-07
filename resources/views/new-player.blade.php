@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Yahtzee Game Score by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
-        <title>Yahtzee Game Scorer: Players</title>
+        <title>Yahtzee Game Scorer: New Player</title>
         <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
         <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
@@ -22,27 +22,30 @@
             </nav>
 
             <main>
-                <h2>Players</h2>
+                <form class="col-12 col-md-4 col-lg-4 mx-auto p-2">
+                    <div class="mb-3">
+                        <h2>New Player</h2>
+                        <p>Add a new player, they will be selectable as a player in all new games.</p>
 
-                <p class="lead">Add a new <a href="{{ route('new-player.view') }}#">player</a>.</p>
+                        @csrf
 
-                <p>Select a player for a detailed breakdown of their Yahtzee games.</p>
+                        <div class="mt-3 mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" name="name" class="form-control @if($errors !== null && array_key_exists('name', $errors)) is-invalid @endif" id="name" aria-describedby="name-help" required value="{{ old('name') }}" />
+                            <div id="name-help" class="form-text">Please enter the name of the new player.</div>
+                            @if($errors !== null && array_key_exists('name', $errors))
+                                <div class="invalid-feedback">
+                                    @foreach ($errors['name'] as $error)
+                                        {{ $error }}
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
-                @if (count($players) > 0)
-                    <ul class="icon-list ps-0">
-                        @foreach ($players as $__player)
-                            <li class="d-flex align-items-start mb-1">
-                                {{ $__player['name'] }} - <a href="">[Statistics]</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                @else
-                    <p class="text-primary">You haven't added any players yet, you need to
-                        <a href="#">add</a>
-                        some players before you can start a game.
-                    </p>
-                @endif
-
+                    <input type="hidden" name="description" value="{{ old('description', 'New player - Added via the Yahtzee App') }}" />
+                    <button type="submit" class="btn btn-primary w-100">Add Player</button>
+                </form>
             </main>
             <footer class="pt-4 my-4 text-muted border-top text-center">
                 Created by <a href="https://twitter.com/DBlackborough">Dean Blackborough</a><br />
