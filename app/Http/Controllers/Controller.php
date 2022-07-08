@@ -89,6 +89,7 @@ class Controller extends BaseController
             foreach ($games_response['content'] as $game) {
                 $games[] = [
                     'id' => $game['id'],
+                    'name' => $game['name'],
                     'created' => $game['created'],
                     'updated' => $game['updated']
                 ];

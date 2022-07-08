@@ -48,7 +48,12 @@ Route::group(
         Route::get(
             '/new-game',
             [Game::class, 'newGame']
-        )->name('game.start.view');
+        )->name('game.create.view');
+
+        Route::post(
+            '/new-game',
+            [Game::class, 'newGameProcess']
+        )->name('game.create.process');
 
         Route::get('/game', static function () {
             return view('game');

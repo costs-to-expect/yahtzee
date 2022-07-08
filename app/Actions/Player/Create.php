@@ -3,14 +3,11 @@ declare(strict_types=1);
 
 namespace App\Actions\Player;
 
+use App\Actions\Action;
 use App\Api\Service;
 
-class Create
+class Create extends Action
 {
-    private string $message;
-
-    private array $validation_errors = [];
-
     public function __invoke(Service $api, string $resource_type_id, array $input): int
     {
         $create_player_response = $api->createPlayer(
@@ -23,24 +20,13 @@ class Create
             return $create_player_response['status'];
         }
 
+        $this->message = $create_player_response['content'];
+
         if ($create_player_response['status'] === 422) {
-            $this->message = $create_player_response['content'];
             $this->validation_errors = $create_player_response['fields'];
             return $create_player_response['status'];
         }
 
-        $this->message = $create_player_response['message'];
-
         return $create_player_response['status'];
-    }
-
-    public function getValidationErrors(): array
-    {
-        return $this->validation_errors;
-    }
-
-    public function getMessage(): string
-    {
-        return $this->message;
     }
 }
