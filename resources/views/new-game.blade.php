@@ -27,30 +27,23 @@
                         <h2>New Game</h2>
                         <p>Select the players.</p>
 
+                        @foreach ($players as $__player)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="hash" name="category_id_for_player_1" id="category_id_for_player_1" />
-                            <label class="form-check-label" for="category_id_for_player_1">
-                                Name of Player 1
+                            <input class="form-check-input" type="checkbox" value="{{ $__player['id'] }}" name="player[]" id="player_{{ $__player['id'] }}" />
+                            <label class="form-check-label" for="player_{{ $__player['id'] }}">
+                                {{ $__player['name'] }}
                             </label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="hash" name="category_id_for_player_2" id="category_id_for_player_2" />
-                            <label class="form-check-label" for="category_id_for_player_2">
-                                Name of Player 2
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="hash" name="category_id_for_player_3" id="category_id_for_player_3">
-                            <label class="form-check-label" for="category_id_for_player_3">
-                                Name of Player 3
-                            </label>
-                            <div id="help" class="form-text">
-                                You can add <a href="#">new</a> players on the player management screen.
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
 
+                    @if (count($players) > 0)
                     <button type="submit" class="btn btn-primary w-100">Start Game</button>
+                    @else
+                    <span class="text-primary">
+                        You can't start a game without players.
+                    </span>
+                    @endif
                 </form>
             </main>
             <footer class="pt-4 my-4 text-muted border-top text-center">
