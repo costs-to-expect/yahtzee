@@ -86,14 +86,7 @@ class Controller extends BaseController
 
         $games = [];
         if ($games_response['status'] === 200 && count($games_response['content']) > 0) {
-            foreach ($games_response['content'] as $game) {
-                $games[] = [
-                    'id' => $game['id'],
-                    'name' => $game['name'],
-                    'created' => $game['created'],
-                    'updated' => $game['updated']
-                ];
-            }
+            return $games_response['content'];
         }
 
         return $games;
