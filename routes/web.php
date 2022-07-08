@@ -69,6 +69,11 @@ Route::group(
             [Game::class, 'addPlayersToGame']
         )->name('add-players-to-game.create.view');
 
+        Route::post(
+            '/add-players-to-game/{game_id}',
+            [Game::class, 'addPlayersToGameProcess']
+        )->name('add-players-to-game.create.process');
+
 
         Route::get(
             '/players',

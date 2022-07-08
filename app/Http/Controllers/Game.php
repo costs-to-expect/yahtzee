@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Game\AddPlayersToGame;
 use App\Actions\Game\Create;
 use Illuminate\Http\Request;
 
@@ -94,5 +95,33 @@ class Game extends Controller
                 'errors' => session()->get('validation.errors')
             ]
         );
+    }
+
+    public function addPlayersToGameProcess(Request $request)
+    {
+        $this->boostrap($request);
+
+        $game_id = $request->route('game_id');
+
+        $action = new AddPlayersToGame();
+        $result = $action(
+            $this->api,
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id,
+            $request->only(['players'])
+        );
+
+        if ($result === 201) {
+            return redirect()->route('games');
+        }
+
+        if ($result === 422) {
+            return redirect()->route('add-players-to-game.create.view', ['game_id' => $game_id])
+                ->withInput()
+                ->with('validation.errors',$action->getValidationErrors());
+        }
+
+        abort($result, $action->getMessage());
     }
 }
