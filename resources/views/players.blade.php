@@ -24,7 +24,7 @@
             <main>
                 <h2>Players</h2>
 
-                <p class="lead">Add a new <a href="{{ route('new-player.view') }}#">player</a>.</p>
+                <p class="lead">Add a new <a href="{{ route('player.create.view') }}">player</a>.</p>
 
                 <p>Select a player for a detailed breakdown of their Yahtzee games.</p>
 

@@ -81,7 +81,7 @@
                         </ul>
                         @else
                         <p class="text-primary">You haven't added any players yet, you need to
-                            <a href="#">add</a>
+                            <a href="{{ route('player.create.view') }}">add</a>
                             some players before you can start a game.
                         </p>
                         @endif

@@ -59,6 +59,11 @@ Route::group(
         Route::get(
             '/new-player',
             [Player::class, 'newPlayer']
-        )->name('new-player.view');
+        )->name('player.create.view');
+
+        Route::post(
+            '/new-player',
+            [Player::class, 'newPlayerProcess']
+        )->name('player.create.process');
     }
 );

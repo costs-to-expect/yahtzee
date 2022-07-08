@@ -22,7 +22,7 @@
             </nav>
 
             <main>
-                <form class="col-12 col-md-4 col-lg-4 mx-auto p-2">
+                <form action="{{ route('player.create.process') }}" method="POST" class="col-12 col-md-4 col-lg-4 mx-auto p-2">
                     <div class="mb-3">
                         <h2>New Player</h2>
                         <p>Add a new player, they will be selectable as a player in all new games.</p>
@@ -35,7 +35,7 @@
                             <div id="name-help" class="form-text">Please enter the name of the new player.</div>
                             @if($errors !== null && array_key_exists('name', $errors))
                                 <div class="invalid-feedback">
-                                    @foreach ($errors['name'] as $error)
+                                    @foreach ($errors['name']['errors'] as $error)
                                         {{ $error }}
                                     @endforeach
                                 </div>

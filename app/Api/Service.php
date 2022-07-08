@@ -40,6 +40,20 @@ class Service
         return $this->http->get($uri['uri']);
     }
 
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function createPlayer(string $resource_type_id, string $name, string $description): array
+    {
+        $uri = Uri::players($resource_type_id);
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'name' => $name,
+                'description' => $description
+            ]
+        );
+    }
+
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function createResource(string $resource_type_id): array
     {
