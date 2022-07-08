@@ -16,7 +16,7 @@
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
                 <a class="nav-link active" href="{{ route('home') }}">Home</a>
-                <a class="nav-link" href="#">Games</a>
+                <a class="nav-link" href="{{ route('games') }}">Games</a>
                 <a class="nav-link" href="{{ route('players') }}">Players</a>
                 <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
@@ -26,7 +26,7 @@
                     <h2>Open Games</h2>
                     <p class="fs-5 col-md-8">Resume your open games...</p>
 
-                    <ul class="icon-list ps-0">
+                    <ul class="ps-0">
                         @foreach ($open_games as $game)
                             <li class="d-flex align-items-start mb-1">
                                 <a href="{{ route('game', ['game' => $game->id]) }}">
@@ -41,7 +41,7 @@
 
                 <h2>New game</h2>
 
-                <p class="fs-5 col-md-8">Start a new <a href="{{ route('new-game') }}">game</a></p>
+                <p class="fs-5 col-md-8">Start a new <a href="{{ route('game.start.view') }}">game</a></p>
 
                 <hr class="col-12 col-md-6 mb-4">
 
@@ -51,7 +51,7 @@
                         <p>View your recent games, open a game to see all the statistics.</p>
 
                         @if (count($closed_games) > 0)
-                        <ul class="icon-list ps-0">
+                        <ul class="ps-0">
                             @foreach ($closed_games as $__closed_game)
                                 <li class="d-flex align-items-start mb-1">
                                     <a href="#">
@@ -72,10 +72,13 @@
                         <p>Select a player for a detailed breakdown of their Yahtzee games.</p>
 
                         @if (count($players) > 0)
-                        <ul class="icon-list ps-0">
+                        <ul class="ps-0">
                             @foreach ($players as $__player)
                             <li class="d-flex align-items-start mb-1">
-                                {{ $__player['name'] }} - <a href="">[Statistics]</a>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                </svg>
+                                <a href="" class="ps-2">{{ $__player['name'] }}</a>
                             </li>
                             @endforeach
                         </ul>

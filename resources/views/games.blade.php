@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Yahtzee Game Score by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
-        <title>Yahtzee Game Scorer: Players</title>
+        <title>Yahtzee Game Scorer: Games</title>
         <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
         <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
@@ -16,34 +16,26 @@
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
                 <a class="nav-link" href="{{ route('home') }}">Home</a>
-                <a class="nav-link" href="{{ route('games') }}">Games</a>
-                <a class="nav-link active" href="{{ route('players') }}">Players</a>
+                <a class="nav-link active" href="{{ route('games') }}">Games</a>
+                <a class="nav-link" href="{{ route('players') }}">Players</a>
                 <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
             <main>
                 <h2>Players</h2>
 
-                <p class="lead">Add a new <a href="{{ route('player.create.view') }}">player</a>.</p>
+                <p class="lead">Start a new <a href="{{ route('game.start.view') }}">game</a>.</p>
 
-                <p>Select a player for a detailed breakdown of their Yahtzee games.</p>
-
-                @if (count($players) > 0)
+                @if (count($games) > 0)
                     <ul class="ps-0">
-                        @foreach ($players as $__player)
+                        @foreach ($games as $__game)
                             <li class="d-flex align-items-start mb-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                </svg>
-                                <a href="" class="ps-2">{{ $__player['name'] }}</a>
+                                {{ $__game['name'] }} - <a href="">[Statistics]</a>
                             </li>
                         @endforeach
                     </ul>
                 @else
-                    <p class="text-primary">You haven't added any players yet, you need to
-                        <a href="#">add</a>
-                        some players before you can start a game.
-                    </p>
+                    <p class="text-primary">You haven't played any games.</p>
                 @endif
 
             </main>

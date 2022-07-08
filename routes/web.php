@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authentication;
+use App\Http\Controllers\Game;
 use App\Http\Controllers\Index;
 use App\Http\Controllers\Player;
 use Illuminate\Support\Facades\Route;
@@ -43,13 +44,21 @@ Route::group(
             [Index::class, 'home']
         )->name('home');
 
-        Route::get('/new-game', static function () {
-            return view('new-game');
-        })->name('new-game');
+
+        Route::get(
+            '/new-game',
+            [Game::class, 'newGame']
+        )->name('game.start.view');
 
         Route::get('/game', static function () {
             return view('game');
         })->name('game');
+
+        Route::get(
+            '/games',
+            [Game::class, 'index']
+        )->name('games');
+
 
         Route::get(
             '/players',

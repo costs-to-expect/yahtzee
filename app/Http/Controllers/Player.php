@@ -12,12 +12,10 @@ class Player extends Controller
     {
         $this->boostrap($request);
 
-        $players = $this->getPlayers($this->resource_type_id);
-
         return view(
             'players',
             [
-                'players' => $players,
+                'players' => $this->getPlayers($this->resource_type_id),
             ]
         );
     }
@@ -25,8 +23,6 @@ class Player extends Controller
     public function newPlayer(Request $request)
     {
         $this->boostrap($request);
-
-        //dd(session()->get('validation.errors'));
 
         return view(
             'new-player',

@@ -35,18 +35,4 @@ class Index extends Controller
             ]
         );
     }
-
-    public function players(Request $request)
-    {
-        $this->boostrap($request);
-
-        $players = $this->getPlayers($this->resource_type_id);
-
-        return view(
-            'players',
-            [
-                'players' => $players,
-            ]
-        );
-    }
 }
