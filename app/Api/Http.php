@@ -34,11 +34,11 @@ class Http
             ],
             404 => [
                 'status' => 404,
-                'content' => 'The requested endpoint was not found on the API [' . $this->baseUri() . $uri . ']',
+                'content' => $response->json('message'),
             ],
             default => [
                 'status' => $response->status(),
-                'content' => 'We encountered an unknown error contacting the API',
+                'content' => 'We encountered an unknown error contacting the API [' . $response->json('message') . ']' ,
             ]
         };
     }
@@ -51,7 +51,7 @@ class Http
         );
 
         return match ($response->status()) {
-            201, 400, 401, 422, 500, 503 => [
+            201 => [
                 'status' => $response->status(),
                 'content' => $response->json()
             ],
@@ -59,9 +59,14 @@ class Http
                 'status' => 204,
                 'content' => null,
             ],
-            404 => [
-                'status' => 404,
-                'content' => 'The requested endpoint was not found on the API [' . $this->baseUri() . $uri . ']',
+            400, 401, 403, 404, 500, 503,  => [
+                'status' => $response->status(),
+                'content' => $response->json('message'),
+            ],
+            422 => [
+                'status' => $response->status(),
+                'content' => $response->json('message'),
+                'fields' => $response->json('fields'),
             ],
             default => [
                 'status' => $response->status(),

@@ -17,6 +17,24 @@ class Service
         $this->http = new Http($bearer);
     }
 
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function addPlayerToGame(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        string $player_id
+    ): array
+    {
+        $uri = Uri::gamePlayers($resource_type_id, $resource_id, $game_id);
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'category_id' => $player_id
+            ]
+        );
+    }
+
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function authSignIn(string $email, string $password): array
     {
@@ -28,6 +46,47 @@ class Service
                 'email' => $email,
                 'password' => $password,
                 'device_name' => (app()->environment('local') ? 'yahtzee:local:' : 'yahtzee:')
+            ]
+        );
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function authUser(): array
+    {
+        $uri = Uri::authUser();
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function createGame(
+        string $resource_type_id,
+        string $resource_id,
+        string $name,
+        string $description,
+    ): array
+    {
+        $uri = Uri::games($resource_type_id, $resource_id);
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'name' => $name,
+                'description' => $description
+            ]
+        );
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function createPlayer(string $resource_type_id, string $name, string $description): array
+    {
+        $uri = Uri::players($resource_type_id);
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'name' => $name,
+                'description' => $description
             ]
         );
     }
@@ -63,6 +122,32 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getGame(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        array $parameters = []
+    ): array
+    {
+        $uri = Uri::game($resource_type_id, $resource_id, $game_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getGamePlayers(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        array $parameters = []
+    ): array
+    {
+        $uri = Uri::gamePlayers($resource_type_id, $resource_id, $game_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function getGames(
         string $resource_type_id,
         string $resource_id,
@@ -70,6 +155,17 @@ class Service
     ): array
     {
         $uri = Uri::games($resource_type_id, $resource_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getPlayers(
+        string $resource_type_id,
+        array $parameters = []
+    ): array
+    {
+        $uri = Uri::players($resource_type_id, $parameters);
 
         return $this->http->get($uri['uri']);
     }

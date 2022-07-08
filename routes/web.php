@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Authentication;
-use App\Http\Controllers\Home;
+use App\Http\Controllers\Game;
+use App\Http\Controllers\Index;
+use App\Http\Controllers\Player;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,15 +41,53 @@ Route::group(
     static function() {
         Route::get(
             '/home',
-            [Home::class, 'index']
+            [Index::class, 'home']
         )->name('home');
 
-        Route::get('/new-game', static function () {
-            return view('new-game');
-        })->name('new-game');
+
+        Route::get(
+            '/new-game',
+            [Game::class, 'newGame']
+        )->name('game.create.view');
+
+        Route::post(
+            '/new-game',
+            [Game::class, 'newGameProcess']
+        )->name('game.create.process');
 
         Route::get('/game', static function () {
             return view('game');
         })->name('game');
+
+        Route::get(
+            '/games',
+            [Game::class, 'index']
+        )->name('games');
+
+        Route::get(
+            '/add-players-to-game/{game_id}',
+            [Game::class, 'addPlayersToGame']
+        )->name('add-players-to-game.create.view');
+
+        Route::post(
+            '/add-players-to-game/{game_id}',
+            [Game::class, 'addPlayersToGameProcess']
+        )->name('add-players-to-game.create.process');
+
+
+        Route::get(
+            '/players',
+            [Player::class, 'index']
+        )->name('players');
+
+        Route::get(
+            '/new-player',
+            [Player::class, 'newPlayer']
+        )->name('player.create.view');
+
+        Route::post(
+            '/new-player',
+            [Player::class, 'newPlayerProcess']
+        )->name('player.create.process');
     }
 );

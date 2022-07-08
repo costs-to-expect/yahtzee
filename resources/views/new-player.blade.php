@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Yahtzee Game Score by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
-        <title>Yahtzee Game Scorer: New Game</title>
+        <title>Yahtzee Game Scorer: New Player</title>
         <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
         <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
@@ -16,48 +16,35 @@
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
                 <a class="nav-link" href="{{ route('home') }}">Home</a>
-                <a class="nav-link active" href="{{ route('games') }}">Games</a>
-                <a class="nav-link" href="{{ route('players') }}">Players</a>
+                <a class="nav-link" href="{{ route('games') }}">Games</a>
+                <a class="nav-link active" href="{{ route('players') }}">Players</a>
                 <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
             <main>
-                <form action="{{ route('game.create.process') }}" method="POST" class="col-12 col-md-4 col-lg-4 mx-auto p-2">
-
-                    @csrf
-
+                <form action="{{ route('player.create.process') }}" method="POST" class="col-12 col-md-4 col-lg-4 mx-auto p-2">
                     <div class="mb-3">
-                        <h2>New Game</h2>
-                        <p>Select the players.</p>
+                        <h2>New Player</h2>
+                        <p>Add a new player, they will be selectable as a player in all new games.</p>
 
-                        @foreach ($players as $__player)
-                        <div class="form-check">
-                            <input class="form-check-input @if($errors !== null && array_key_exists('players', $errors)) is-invalid @endif" type="checkbox" value="{{ $__player['id'] }}" name="players[]" id="players_{{ $__player['id'] }}" />
-                            <label class="form-check-label" for="players_{{ $__player['id'] }}">
-                                {{ $__player['name'] }}
-                            </label>
-                            @if($errors !== null && array_key_exists('players', $errors))
+                        @csrf
+
+                        <div class="mt-3 mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" name="name" class="form-control @if($errors !== null && array_key_exists('name', $errors)) is-invalid @endif" id="name" aria-describedby="name-help" required value="{{ old('name') }}" />
+                            <div id="name-help" class="form-text">Please enter the name of the new player.</div>
+                            @if($errors !== null && array_key_exists('name', $errors))
                                 <div class="invalid-feedback">
-                                    @foreach ($errors['players']['errors'] as $error)
+                                    @foreach ($errors['name']['errors'] as $error)
                                         {{ $error }}
                                     @endforeach
                                 </div>
                             @endif
                         </div>
-                        @endforeach
                     </div>
 
-                    @if (count($players) > 0)
-
-                    <input type="hidden" name="name" value="Yahtzee game" />
-                    <input type="hidden" name="description" value="Yahtzee game create via the Yahtzee app" />
-
-                    <button type="submit" class="btn btn-primary w-100">Start Game</button>
-                    @else
-                    <span class="text-primary">
-                        You can't start a game without players.
-                    </span>
-                    @endif
+                    <input type="hidden" name="description" value="{{ old('description', 'New player - Added via the Yahtzee App') }}" />
+                    <button type="submit" class="btn btn-primary w-100">Add Player</button>
                 </form>
             </main>
             <footer class="pt-4 my-4 text-muted border-top text-center">

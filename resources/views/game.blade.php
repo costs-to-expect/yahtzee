@@ -6,6 +6,8 @@
         <meta name="description" content="Yahtzee Game Score by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
         <title>Yahtzee Game Scorer: Game</title>
+        <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
+        <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
     </head>
     <body>
@@ -14,8 +16,8 @@
 
             <nav class="nav nav-fill my-4 border-bottom border-top">
                 <a class="nav-link" href="{{ route('home') }}">Home</a>
-                <a class="nav-link active" href="#">Games</a>
-                <a class="nav-link" href="#">Players</a>
+                <a class="nav-link active" href="{{ route('games') }}">Games</a>
+                <a class="nav-link" href="{{ route('players') }}">Players</a>
                 <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
