@@ -64,6 +64,11 @@ Route::group(
             [Game::class, 'index']
         )->name('games');
 
+        Route::get(
+            '/add-players-to-game/{game_id}',
+            [Game::class, 'addPlayersToGame']
+        )->name('add-players-to-game.create.view');
+
 
         Route::get(
             '/players',

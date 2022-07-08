@@ -61,4 +61,38 @@ class Game extends Controller
 
         abort($result, $action->getMessage());
     }
+
+    public function addPlayersToGame(Request $request, string $game_id)
+    {
+        $this->boostrap($request);
+
+        $this->getGame($this->resource_type_id, $this->resource_id, $game_id);
+
+        $players = [];
+        $game_players = [];
+        $all_players = $this->getPlayers($this->resource_type_id);
+        $assigned_game_players = $this->getGamePlayers($this->resource_type_id, $this->resource_id, $game_id);
+
+        foreach ($all_players as $player) {
+            if (!in_array($player['id'], $assigned_game_players, true)) {
+                $players[] = $player;
+            } else {
+                $game_players[] = $player['name'];
+            }
+        }
+
+        return view(
+            'add-players-to-game',
+            [
+                'resource_type_id' => $this->resource_type_id,
+                'resource_id' => $this->resource_id,
+                'game_id' => $game_id,
+
+                'players' => $players,
+                'game_players' => $game_players,
+
+                'errors' => session()->get('validation.errors')
+            ]
+        );
+    }
 }

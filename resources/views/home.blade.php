@@ -37,7 +37,7 @@
                                     Yahtzee Game
                                 </a>
                                 <br />
-                                [Players] [<a href="">Add Player</a>]
+                                [Players] [<a href="{{ route('add-players-to-game.create.view', ['game_id' => $game['id']]) }}">Add Players</a>]
                             </li>
                         @endforeach
                     </ul>

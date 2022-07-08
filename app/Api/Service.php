@@ -122,6 +122,32 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getGame(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        array $parameters = []
+    ): array
+    {
+        $uri = Uri::game($resource_type_id, $resource_id, $game_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getGamePlayers(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        array $parameters = []
+    ): array
+    {
+        $uri = Uri::gamePlayers($resource_type_id, $resource_id, $game_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function getGames(
         string $resource_type_id,
         string $resource_id,

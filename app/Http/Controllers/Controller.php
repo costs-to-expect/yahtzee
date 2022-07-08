@@ -76,6 +76,31 @@ class Controller extends BaseController
         }
     }
 
+    protected function getGame(string $resource_type_id, string $resource_id, string $game_id)
+    {
+        $game_response = $this->api->getGame($resource_type_id, $resource_id, $game_id);
+
+        if ($game_response['status'] === 200) {
+            return $game_response['content'];
+        }
+
+        abort($game_response['status'], $game_response['content']);
+    }
+
+    protected function getGamePlayers(string $resource_type_id, string $resource_id, string $game_id)
+    {
+        $game_players_response = $this->api->getGamePlayers($resource_type_id, $resource_id, $game_id);
+
+        $players = [];
+        if ($game_players_response['status'] === 200 && count($game_players_response['content']) > 0) {
+            foreach ($game_players_response['content'] as $player) {
+                $players[] = $player['category']['id'];
+            }
+        }
+
+        return $players;
+    }
+
     protected function getGames(string $resource_type_id, string $resource_id, array $parameters = []): array
     {
         $games_response = $this->api->getGames(
