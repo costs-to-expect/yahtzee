@@ -37,7 +37,21 @@
                                     Yahtzee Game
                                 </a>
                                 <br />
-                                [Players] [<a href="{{ route('add-players-to-game.create.view', ['game_id' => $game['id']]) }}">Add Players</a>]
+
+                                @if (array_key_exists('collection', $game['players']))
+                                <ul class="list-inline mb-2">
+                                    @foreach ($game['players']['collection'] as $__player)
+                                        <li class="list-inline-item">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                            </svg>
+                                            {{ $__player['name'] }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                                @endif
+
+                                [<a href="{{ route('add-players-to-game.create.view', ['game_id' => $game['id']]) }}">Add Players</a>]
                             </li>
                         @endforeach
                     </ul>
@@ -63,6 +77,7 @@
                                     <a href="#">
                                         Yahtzee Game
                                     </a>
+
                                     &nbsp; [Show players]
                                 </li>
                             @endforeach

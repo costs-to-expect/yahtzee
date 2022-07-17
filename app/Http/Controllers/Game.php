@@ -16,7 +16,7 @@ class Game extends Controller
         return view(
             'games',
             [
-                'games' => $this->getGames($this->resource_type_id, $this->resource_id),
+                'games' => $this->getGames($this->resource_type_id, $this->resource_id, ['complete' => 1, 'include-players' => 1]),
             ]
         );
     }

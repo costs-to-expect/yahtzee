@@ -14,12 +14,19 @@ class Index extends Controller
         $open_games = $this->getGames(
             $this->resource_type_id,
             $this->resource_id,
-            ['complete' => 0]
+            [
+                'complete' => 0,
+                'include-players' => 1
+            ]
         );
         $closed_games = $this->getGames(
             $this->resource_type_id,
             $this->resource_id,
-            ['complete' => 1, 'limit' => 5]
+            [
+                'complete' => 1,
+                'limit' => 5,
+                'include-players' => 1
+            ]
         );
         $players = $this->getPlayers($this->resource_type_id);
 
