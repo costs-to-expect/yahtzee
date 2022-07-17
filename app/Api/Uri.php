@@ -7,7 +7,7 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class Uri
 {
-    private const VERSION = 'v2';
+    private const VERSION = 'v3';
 
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function authSignIn(): array
