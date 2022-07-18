@@ -181,7 +181,7 @@ class Game extends Controller
 
                 'player_name' => $player_name,
 
-                'score_sheet' => $player_score_sheet['content'],
+                'score_sheet' => $player_score_sheet['content']['value'],
                 'complete' => $game['complete']
             ]
         );
@@ -216,6 +216,7 @@ class Game extends Controller
 
         $score_sheet['score']['upper'] = $score_upper;
         $score_sheet['score']['bonus'] = $score_bonus;
+        $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
 
         $action = new ScoreUpper();
         $result = $action(
