@@ -22,7 +22,7 @@
             </nav>
 
             <main>
-                <form action="{{ route('add-players-to-game.create.process', ['game_id' => $game_id]) }}" method="POST" class="col-12 col-md-4 col-lg-4 mx-auto p-2">
+                <form action="{{ route('game.add-players.process', ['game_id' => $game_id]) }}" method="POST" class="col-12 col-md-4 col-lg-4 mx-auto p-2">
 
                     @csrf
 

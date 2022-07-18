@@ -117,11 +117,26 @@ class Game extends Controller
         }
 
         if ($result === 422) {
-            return redirect()->route('add-players-to-game.create.view', ['game_id' => $game_id])
+            return redirect()->route('game.add-players.view', ['game_id' => $game_id])
                 ->withInput()
                 ->with('validation.errors',$action->getValidationErrors());
         }
 
         abort($result, $action->getMessage());
+    }
+
+    public function scoreSheet(Request $request, string $game_id, string $player_id)
+    {
+        $this->boostrap($request);
+
+        return view(
+            'score-sheet',
+            [
+                'resource_type_id' => $this->resource_type_id,
+                'resource_id' => $this->resource_id,
+                'game_id' => $game_id,
+                'player_id' => $player_id,
+            ]
+        );
     }
 }

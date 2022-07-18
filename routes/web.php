@@ -44,9 +44,10 @@ Route::group(
             [Game::class, 'newGameProcess']
         )->name('game.create.process');
 
-        Route::get('/game', static function () {
-            return view('game');
-        })->name('game');
+        Route::get(
+            '/game/{game_id}/player/{player_id}/score-sheet',
+            [Game::class, 'scoreSheet']
+        )->name('game.score-sheet');
 
         Route::get(
             '/games',
@@ -56,12 +57,12 @@ Route::group(
         Route::get(
             '/add-players-to-game/{game_id}',
             [Game::class, 'addPlayersToGame']
-        )->name('add-players-to-game.create.view');
+        )->name('game.add-players.view');
 
         Route::post(
             '/add-players-to-game/{game_id}',
             [Game::class, 'addPlayersToGameProcess']
-        )->name('add-players-to-game.create.process');
+        )->name('game.add-players.process');
 
 
         Route::get(
