@@ -6,17 +6,6 @@ use App\Http\Controllers\Index;
 use App\Http\Controllers\Player;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get(
     '/',
     [Authentication::class, 'signIn']
@@ -55,24 +44,30 @@ Route::group(
             [Game::class, 'newGameProcess']
         )->name('game.create.process');
 
-        Route::get('/game', static function () {
-            return view('game');
-        })->name('game');
+        Route::get(
+            '/game/{game_id}/player/{player_id}/score-sheet',
+            [Game::class, 'scoreSheet']
+        )->name('game.score-sheet');
 
         Route::get(
             '/games',
             [Game::class, 'index']
         )->name('games');
 
+        Route::post(
+            '/game/score-upper',
+            [Game::class, 'scoreUpper']
+        )->name('game.score-upper');
+
         Route::get(
             '/add-players-to-game/{game_id}',
             [Game::class, 'addPlayersToGame']
-        )->name('add-players-to-game.create.view');
+        )->name('game.add-players.view');
 
         Route::post(
             '/add-players-to-game/{game_id}',
             [Game::class, 'addPlayersToGameProcess']
-        )->name('add-players-to-game.create.process');
+        )->name('game.add-players.process');
 
 
         Route::get(

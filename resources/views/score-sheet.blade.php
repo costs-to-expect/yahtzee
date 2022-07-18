@@ -21,7 +21,11 @@
                 <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
-            <form>
+            <h1>Player: {{ $player_name }}</h1>
+
+            <form name="upper-section">
+                <input type="hidden" id="game_id" name="game_id" value="{{ $game_id }}" />
+                <input type="hidden" id="player_id" name="player_id" value="{{ $player_id }}" />
                 <div class="row">
                     <div class="col-12">
                         <h2 class="text-primary">Upper Section</h2>
@@ -37,7 +41,7 @@
                                 <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
                             </svg>
                         </label>
-                        <input type="number" min="1" max="6" step="1" size="1" class="form-control form-control-sm" id="ones" placeholder="3">
+                        <input type="number" min="1" max="6" step="1" size="1" class="form-control form-control-sm @if(array_key_exists('ones', $score_sheet['upper-section'])) disabled @else active @endif" name="ones" id="ones" placeholder="3" @if(array_key_exists('ones', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['ones'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="twos" class="form-label dice">
@@ -46,7 +50,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="2" max="10" step="2" size="2" class="form-control form-control-sm" id="twos" placeholder="6">
+                        <input type="number" min="2" max="10" step="2" size="2" class="form-control form-control-sm @if(array_key_exists('twos', $score_sheet['upper-section'])) disabled @else active @endif" name="twos" id="twos" placeholder="6" @if(array_key_exists('twos', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['twos'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="threes" class="form-label dice">
@@ -55,7 +59,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="3" max="15" step="3" size="2" class="form-control form-control-sm" id="threes" placeholder="9">
+                        <input type="number" min="3" max="15" step="3" size="2" class="form-control form-control-sm @if(array_key_exists('threes', $score_sheet['upper-section'])) disabled @else active @endif" name="threes" id="threes" placeholder="9" @if(array_key_exists('threes', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['threes'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="fours" class="form-label dice">
@@ -64,7 +68,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="4" max="20" step="4" size="2" class="form-control form-control-sm" id="fours" placeholder="12">
+                        <input type="number" min="4" max="20" step="4" size="2" class="form-control form-control-sm @if(array_key_exists('fours', $score_sheet['upper-section'])) disabled @else active @endif" name="fours" id="fours" placeholder="12" @if(array_key_exists('fours', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['fours'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="fives" class="form-label dice">
@@ -73,7 +77,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="5" max="25" step="5" size="2" class="form-control form-control-sm" id="fives" placeholder="15">
+                        <input type="number" min="5" max="25" step="5" size="2" class="form-control form-control-sm @if(array_key_exists('fives', $score_sheet['upper-section'])) disabled @else active @endif" name="fives" id="fives" placeholder="15" @if(array_key_exists('fives', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['fives'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="sixes" class="form-label dice">
@@ -82,7 +86,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm" id="sixes" placeholder="18">
+                        <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm @if(array_key_exists('sixes', $score_sheet['upper-section'])) disabled @else active @endif" name="sixes" id="sixes" placeholder="18" @if(array_key_exists('sixes', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['sixes'] }}" @endif>
                     </div>
                 </div>
                 <div class="row">
@@ -137,15 +141,15 @@
                 <div class="row">
                     <div class="col-4">
                         <h3 class="text-center score"><strong>Upper</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score" id="upper-score">{{ $score_sheet['score']['upper'] }}</h2>
                     </div>
                     <div class="col-4">
                         <h3 class="text-center score"><strong>Bonus</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score bonus" id="upper-bonus">{{ $score_sheet['score']['bonus'] }}</h2>
                     </div>
                     <div class="col-4">
                         <h3 class="text-center score text-black"><strong>Total</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score total" id="upper-total">{{ $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] }}</h2>
                     </div>
                 </div>
 
@@ -265,13 +269,13 @@
                                 <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-4" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-3" viewBox="0 0 16 16">
                                 <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
-                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-4" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dice-3" viewBox="0 0 16 16">
                                 <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
-                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </p>
                         <p class="mb-2 text-muted">
@@ -503,7 +507,7 @@
 
                 <div class="row">
                     <div class="col-6">
-                        <h5 class="mb-0">Yahtzee House</h5>
+                        <h5 class="mb-0">Yahtzee Bonus</h5>
                     </div>
                     <div class="col-4 text-center">
                         <h6>Score</h6>
@@ -548,18 +552,18 @@
                         <input type="hidden" name="yahtzee_bonus" id="yahtzee_bonus"/>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row score-lower">
                     <div class="col-4">
                         <h3 class="text-center score"><strong>Upper</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score" id="lower-upper-total">{{ $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] }}</h2>
                     </div>
                     <div class="col-4">
                         <h3 class="text-center score"><strong>Lower</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score" id="lower-score">{{ $score_sheet['score']['lower'] }}</h2>
                     </div>
                     <div class="col-4">
                         <h3 class="text-center score text-black"><strong>Total</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score" id="total">{{ $score_sheet['score']['total'] }}</h2>
                     </div>
                 </div>
             </form>
@@ -572,5 +576,7 @@
                 </div>
             </footer>
         </div>
+        <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
+        <script src="{{ asset('js/score-sheet.js') }}" defer></script>
     </body>
 </html>

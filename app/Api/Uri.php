@@ -7,7 +7,7 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class Uri
 {
-    private const VERSION = 'v2';
+    private const VERSION = 'v3';
 
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function authSignIn(): array
@@ -58,6 +58,22 @@ class Uri
     }
 
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
+    public static function gameScoreSheets(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id
+    ): array
+    {
+        $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .
+            '/resources/' . $resource_id . '/items/' . $game_id . '/data';
+
+        return [
+            'uri' => $uri,
+            'name' => 'Game score sheets'
+        ];
+    }
+
+    #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function games(string $resource_type_id, string $resource_id, array $parameters = []): array
     {
         $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .
@@ -83,7 +99,24 @@ class Uri
 
         return [
             'uri' => $uri,
-            'name' => 'Games'
+            'name' => 'Player list'
+        ];
+    }
+
+    #[ArrayShape(['uri' => "string", 'name' => "string"])]
+    public static function playerScoreSheet(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        string $player_id
+    ): array
+    {
+        $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .
+            '/resources/' . $resource_id . '/items/' . $game_id . '/data/' . $player_id;
+
+        return [
+            'uri' => $uri,
+            'name' => 'Player score sheet'
         ];
     }
 
