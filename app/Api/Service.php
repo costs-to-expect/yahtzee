@@ -49,19 +49,16 @@ class Service
             $game_id
         );
 
-        $score_sheet = json_encode(
-            [
-                'upper-section' => [],
-                'lower-section' => [],
-                'score' => [
-                    'upper' => 0,
-                    'bonus' => 0,
-                    'lower' => 0,
-                    'total' => 0,
-                ]
-            ],
-            JSON_THROW_ON_ERROR
-        );
+        $score_sheet = [
+            'upper-section' => [],
+            'lower-section' => [],
+            'score' => [
+                'upper' => 0,
+                'bonus' => 0,
+                'lower' => 0,
+                'total' => 0,
+            ]
+        ];
 
         return $this->http->post(
             $uri['uri'],
@@ -234,5 +231,24 @@ class Service
         $uri = Uri::resourceTypes($parameters);
 
         return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function updateScoreSheetForPlayer(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        string $player_id,
+        array $score_sheet
+    ): array
+    {
+        $uri = Uri::playerScoreSheet($resource_type_id, $resource_id, $game_id, $player_id);
+
+        return $this->http->patch(
+            $uri['uri'],
+            [
+                'value' => json_encode($score_sheet, JSON_THROW_ON_ERROR)
+            ]
+        );
     }
 }

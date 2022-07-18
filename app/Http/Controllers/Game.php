@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Game\AddPlayersToGame;
 use App\Actions\Game\Create;
+use App\Actions\Game\ScoreUpper;
 use Illuminate\Http\Request;
 
 class Game extends Controller
@@ -170,12 +171,6 @@ class Game extends Controller
             abort($player_score_sheet['status'], $player_score_sheet['content']);
         }
 
-        try {
-            $score_sheet = json_decode($player_score_sheet['content']['value'], true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
-            abort(500, 'Invalid Score Sheet JSON');
-        }
-
         return view(
             'score-sheet',
             [
@@ -186,9 +181,45 @@ class Game extends Controller
 
                 'player_name' => $player_name,
 
-                'score_sheet' => $score_sheet,
+                'score_sheet' => $player_score_sheet['content'],
                 'complete' => $game['complete']
             ]
         );
+    }
+
+    public function scoreUpper(Request $request)
+    {
+        $this->boostrap($request);
+
+        $score_sheet = $this->api->getPlayerScoreSheet(
+            $this->resource_type_id,
+            $this->resource_id,
+            $request->input('game_id'),
+            $request->input('player_id')
+        );
+
+        if ($score_sheet['status'] !== 200) {
+            return response()->json(['message' => 'Unable to fetch your score sheet'], $score_sheet['status']);
+        }
+
+        $score_sheet = $score_sheet['content']['value'];
+
+        $score_sheet['upper'][$request->input('dice')] = $request->input('score');
+
+        $action = new ScoreUpper();
+        $result = $action(
+            $this->api,
+            $this->resource_type_id,
+            $this->resource_id,
+            $request->input('game_id'),
+            $request->input('player_id'),
+            $score_sheet
+        );
+
+        if ($result === 204) {
+            return response()->json(['message' => 'Score updated']); // Should be a 204, but I want to see a message
+        }
+
+        return response()->json(['message' => 'Failed to update your score sheet'], $result);
     }
 }

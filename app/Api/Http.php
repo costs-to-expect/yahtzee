@@ -43,6 +43,34 @@ class Http
         };
     }
 
+    public function patch(string $uri, array $payload): array
+    {
+        $response = $this->client->patch(
+            $this->baseUri() . $uri,
+            $payload
+        );
+
+        return match ($response->status()) {
+            204 => [
+                'status' => 204,
+                'content' => null,
+            ],
+            400, 401, 403, 404, 500, 503,  => [
+                'status' => $response->status(),
+                'content' => $response->json('message'),
+            ],
+            422 => [
+                'status' => $response->status(),
+                'content' => $response->json('message'),
+                'fields' => $response->json('fields'),
+            ],
+            default => [
+                'status' => $response->status(),
+                'content' => 'We encountered an unknown error contacting the API',
+            ],
+        };
+    }
+
     public function post(string $uri, array $payload): array
     {
         $response = $this->client->post(
