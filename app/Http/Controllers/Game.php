@@ -136,6 +136,14 @@ class Game extends Controller
             ['include-players' => 1]
         );
 
+        $player_name = '';
+        foreach ($game['players']['collection'] as $__player) {
+            if ($__player['id'] === $player_id) {
+                $player_name = $__player['name'];
+                break;
+            }
+        }
+
         $player_score_sheet = $this->api->getPlayerScoreSheet(
             $this->resource_type_id,
             $this->resource_id,
@@ -143,21 +151,30 @@ class Game extends Controller
             $player_id
         );
 
-        $player = '';
-        foreach ($game['players']['collection'] as $__player) {
-
-        }
-
-
-        /*dd($player_id, $game);
-
         if ($player_score_sheet['status'] === 404) {
-            // Create and redirect
+            $add_score_sheet_response = $this->api->addScoreSheetForPlayer(
+                $this->resource_type_id,
+                $this->resource_id,
+                $game_id,
+                $player_id
+            );
+
+            if ($add_score_sheet_response['status'] === 201) {
+                return redirect()->route('game.score-sheet', ['game_id' => $game_id, 'player_id' => $player_id]);
+            }
+
+            abort($add_score_sheet_response['status'], $add_score_sheet_response['content']);
         }
 
         if ($player_score_sheet['status'] !== 200) {
             abort($player_score_sheet['status'], $player_score_sheet['content']);
-        }*/
+        }
+
+        try {
+            $score_sheet = json_decode($player_score_sheet['content']['value'], true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            abort(500, 'Invalid Score Sheet JSON');
+        }
 
         return view(
             'score-sheet',
@@ -167,8 +184,9 @@ class Game extends Controller
                 'game_id' => $game_id,
                 'player_id' => $player_id,
 
-                'player' => [],
+                'player_name' => $player_name,
 
+                'score_sheet' => $score_sheet,
                 'complete' => $game['complete']
             ]
         );

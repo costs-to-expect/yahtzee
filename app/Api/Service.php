@@ -43,7 +43,11 @@ class Service
         string $player_id
     ): array
     {
-        $uri = Uri::gamePlayers($resource_type_id, $resource_id, $game_id);
+        $uri = Uri::gameScoreSheets(
+            $resource_type_id,
+            $resource_id,
+            $game_id
+        );
 
         $score_sheet = json_encode(
             [
