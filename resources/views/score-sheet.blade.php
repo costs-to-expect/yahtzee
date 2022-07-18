@@ -21,6 +21,8 @@
                 <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
+            <h1>Player: {{ $player_name }}</h1>
+
             <form name="upper-section">
                 <input type="hidden" id="game_id" name="game_id" value="{{ $game_id }}" />
                 <input type="hidden" id="player_id" name="player_id" value="{{ $player_id }}" />
@@ -48,7 +50,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="2" max="10" step="2" size="2" class="form-control form-control-sm" name="twos" id="twos" placeholder="6">
+                        <input type="number" min="2" max="10" step="2" size="2" class="form-control form-control-sm active" name="twos" id="twos" placeholder="6">
                     </div>
                     <div class="col-2 text-center">
                         <label for="threes" class="form-label dice">
@@ -66,7 +68,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="4" max="20" step="4" size="2" class="form-control form-control-sm" name="fours" id="fours" placeholder="12">
+                        <input type="number" min="4" max="20" step="4" size="2" class="form-control form-control-sm active" name="fours" id="fours" placeholder="12">
                     </div>
                     <div class="col-2 text-center">
                         <label for="fives" class="form-label dice">
@@ -75,7 +77,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="5" max="25" step="5" size="2" class="form-control form-control-sm" name="fives" id="fives" placeholder="15">
+                        <input type="number" min="5" max="25" step="5" size="2" class="form-control form-control-sm active" name="fives" id="fives" placeholder="15">
                     </div>
                     <div class="col-2 text-center">
                         <label for="sixes" class="form-label dice">
@@ -84,7 +86,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm" name="sixes" id="sixes" placeholder="18">
+                        <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm active" name="sixes" id="sixes" placeholder="18">
                     </div>
                 </div>
                 <div class="row">
@@ -139,15 +141,15 @@
                 <div class="row">
                     <div class="col-4">
                         <h3 class="text-center score"><strong>Upper</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score" id="upper-score">0</h2>
                     </div>
                     <div class="col-4">
                         <h3 class="text-center score"><strong>Bonus</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score bonus" id="upper-bonus">0</h2>
                     </div>
                     <div class="col-4">
                         <h3 class="text-center score text-black"><strong>Total</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score total" id="upper-total">0</h2>
                     </div>
                 </div>
 
@@ -550,18 +552,18 @@
                         <input type="hidden" name="yahtzee_bonus" id="yahtzee_bonus"/>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row score-lower">
                     <div class="col-4">
                         <h3 class="text-center score"><strong>Upper</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score" id="lower-upper-total">0</h2>
                     </div>
                     <div class="col-4">
                         <h3 class="text-center score"><strong>Lower</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score" id="lower-score">0</h2>
                     </div>
                     <div class="col-4">
                         <h3 class="text-center score text-black"><strong>Total</strong></h3>
-                        <h2 class="text-center mb-0 score">0</h2>
+                        <h2 class="text-center mb-0 score" id="total">0</h2>
                     </div>
                 </div>
             </form>

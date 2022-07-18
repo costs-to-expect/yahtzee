@@ -5,8 +5,15 @@
     let player_id = document.getElementById('player_id');
 
     let timeout = null;
-    let delay = 2000;
-    let factors = { "ones": 1, "twos": 2, "threes": 3, "fours": 5, "fives": 5, "sixes": 6 }
+    let delay = 1500;
+    let factors = { "ones": 1, "twos": 2, "threes": 3, "fours": 4, "fives": 5, "sixes": 6 }
+
+    let score_upper = document.getElementById('upper-score');
+    let score_bonus = document.getElementById('upper-bonus');
+    let score_upper_total = document.getElementById('upper-total');
+    let score_lower_upper = document.getElementById('lower-upper-total');
+    let score_lower = document.getElementById('lower-score');
+    let total_score = document.getElementById('total');
 
     // Score the upper section
     document.querySelectorAll('form[name="upper-section"] input[type="number"].active').forEach(upper =>
@@ -37,10 +44,16 @@
                         upper.classList.add('disabled');
                         upper.disabled = true;
 
-                        console.log(response.data.message);
+                        score_upper.innerText= response.data.score.upper;
+                        score_bonus.innerText = response.data.score.bonus;
+                        score_upper_total.innerText = response.data.score.upper + response.data.score.bonus;
+                        score_lower_upper.innerText = response.data.score.upper + response.data.score.bonus;
+                        total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+
+                        console.log(response.data);
                     })
                     .catch(error => {
-                        console.log(error.data.message);
+                        console.log(error);
                     });
                 }, delay);
             }

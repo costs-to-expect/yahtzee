@@ -204,7 +204,18 @@ class Game extends Controller
 
         $score_sheet = $score_sheet['content']['value'];
 
-        $score_sheet['upper'][$request->input('dice')] = $request->input('score');
+        $score_sheet['upper-section'][$request->input('dice')] = $request->input('score');
+        $score_upper = 0;
+        $score_bonus = 0;
+        foreach ($score_sheet['upper-section'] as $value) {
+            $score_upper += $value;
+        }
+        if ($score_upper >= 63) {
+            $score_bonus = 35;
+        }
+
+        $score_sheet['score']['upper'] = $score_upper;
+        $score_sheet['score']['bonus'] = $score_bonus;
 
         $action = new ScoreUpper();
         $result = $action(
@@ -217,7 +228,10 @@ class Game extends Controller
         );
 
         if ($result === 204) {
-            return response()->json(['message' => 'Score updated']); // Should be a 204, but I want to see a message
+            return response()->json([
+                'message' => 'Score updated',
+                'score' => $score_sheet['score']
+            ]);
         }
 
         return response()->json(['message' => 'Failed to update your score sheet'], $result);
