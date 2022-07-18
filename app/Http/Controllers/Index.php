@@ -28,7 +28,7 @@ class Index extends Controller
                 'include-players' => 1
             ]
         );
-        $players = $this->getPlayers($this->resource_type_id);
+        $players = $this->getPlayers($this->resource_type_id, ['limit' => 5]);
 
         return view(
             'home',
