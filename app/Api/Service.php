@@ -35,6 +35,39 @@ class Service
         );
     }
 
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function addScoreSheetForPlayer(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        string $player_id
+    ): array
+    {
+        $uri = Uri::gamePlayers($resource_type_id, $resource_id, $game_id);
+
+        $score_sheet = json_encode(
+            [
+                'upper-section' => [],
+                'lower-section' => [],
+                'score' => [
+                    'upper' => 0,
+                    'bonus' => 0,
+                    'lower' => 0,
+                    'total' => 0,
+                ]
+            ],
+            JSON_THROW_ON_ERROR
+        );
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'key' => $player_id,
+                'value' => json_encode($score_sheet, JSON_THROW_ON_ERROR)
+            ]
+        );
+    }
+
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function authSignIn(string $email, string $password): array
     {
@@ -166,6 +199,19 @@ class Service
     ): array
     {
         $uri = Uri::players($resource_type_id, $parameters);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getPlayerScoreSheet(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        string $player_id
+    ): array
+    {
+        $uri = Uri::playerScoreSheet($resource_type_id, $resource_id, $game_id, $player_id);
 
         return $this->http->get($uri['uri']);
     }

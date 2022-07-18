@@ -83,7 +83,24 @@ class Uri
 
         return [
             'uri' => $uri,
-            'name' => 'Games'
+            'name' => 'Player list'
+        ];
+    }
+
+    #[ArrayShape(['uri' => "string", 'name' => "string"])]
+    public static function playerScoreSheet(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        string $player_id
+    ): array
+    {
+        $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .
+            '/resources/' . $resource_id . '/items/' . $game_id . '/data/' . $player_id;
+
+        return [
+            'uri' => $uri,
+            'name' => 'Player score sheet'
         ];
     }
 

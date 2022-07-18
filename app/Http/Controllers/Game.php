@@ -129,6 +129,36 @@ class Game extends Controller
     {
         $this->boostrap($request);
 
+        $game = $this->getGame(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id,
+            ['include-players' => 1]
+        );
+
+        $player_score_sheet = $this->api->getPlayerScoreSheet(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id,
+            $player_id
+        );
+
+        $player = '';
+        foreach ($game['players']['collection'] as $__player) {
+
+        }
+
+
+        /*dd($player_id, $game);
+
+        if ($player_score_sheet['status'] === 404) {
+            // Create and redirect
+        }
+
+        if ($player_score_sheet['status'] !== 200) {
+            abort($player_score_sheet['status'], $player_score_sheet['content']);
+        }*/
+
         return view(
             'score-sheet',
             [
@@ -136,6 +166,10 @@ class Game extends Controller
                 'resource_id' => $this->resource_id,
                 'game_id' => $game_id,
                 'player_id' => $player_id,
+
+                'player' => [],
+
+                'complete' => $game['complete']
             ]
         );
     }

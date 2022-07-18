@@ -76,9 +76,14 @@ class Controller extends BaseController
         }
     }
 
-    protected function getGame(string $resource_type_id, string $resource_id, string $game_id)
+    protected function getGame(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        array $parameters = []
+    )
     {
-        $game_response = $this->api->getGame($resource_type_id, $resource_id, $game_id);
+        $game_response = $this->api->getGame($resource_type_id, $resource_id, $game_id, $parameters);
 
         if ($game_response['status'] === 200) {
             return $game_response['content'];
