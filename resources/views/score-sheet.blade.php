@@ -21,7 +21,9 @@
                 <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
             </nav>
 
-            <form>
+            <form name="upper-section">
+                <input type="hidden" id="game_id" name="game_id" value="{{ $game_id }}" />
+                <input type="hidden" id="player_id" name="player_id" value="{{ $player_id }}" />
                 <div class="row">
                     <div class="col-12">
                         <h2 class="text-primary">Upper Section</h2>
@@ -37,7 +39,7 @@
                                 <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
                             </svg>
                         </label>
-                        <input type="number" min="1" max="6" step="1" size="1" class="form-control form-control-sm" id="ones" placeholder="3">
+                        <input type="number" min="1" max="6" step="1" size="1" class="form-control form-control-sm active" name="ones" id="ones" placeholder="3">
                     </div>
                     <div class="col-2 text-center">
                         <label for="twos" class="form-label dice">
@@ -46,7 +48,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="2" max="10" step="2" size="2" class="form-control form-control-sm" id="twos" placeholder="6">
+                        <input type="number" min="2" max="10" step="2" size="2" class="form-control form-control-sm" name="twos" id="twos" placeholder="6">
                     </div>
                     <div class="col-2 text-center">
                         <label for="threes" class="form-label dice">
@@ -55,7 +57,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="3" max="15" step="3" size="2" class="form-control form-control-sm" id="threes" placeholder="9">
+                        <input type="number" min="3" max="15" step="3" size="2" class="form-control form-control-sm active" name="threes" id="threes" placeholder="9">
                     </div>
                     <div class="col-2 text-center">
                         <label for="fours" class="form-label dice">
@@ -64,7 +66,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="4" max="20" step="4" size="2" class="form-control form-control-sm" id="fours" placeholder="12">
+                        <input type="number" min="4" max="20" step="4" size="2" class="form-control form-control-sm" name="fours" id="fours" placeholder="12">
                     </div>
                     <div class="col-2 text-center">
                         <label for="fives" class="form-label dice">
@@ -73,7 +75,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="5" max="25" step="5" size="2" class="form-control form-control-sm" id="fives" placeholder="15">
+                        <input type="number" min="5" max="25" step="5" size="2" class="form-control form-control-sm" name="fives" id="fives" placeholder="15">
                     </div>
                     <div class="col-2 text-center">
                         <label for="sixes" class="form-label dice">
@@ -82,7 +84,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm" id="sixes" placeholder="18">
+                        <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm" name="sixes" id="sixes" placeholder="18">
                     </div>
                 </div>
                 <div class="row">
@@ -572,5 +574,7 @@
                 </div>
             </footer>
         </div>
+        <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
+        <script src="{{ asset('js/score-sheet.js') }}" defer></script>
     </body>
 </html>
