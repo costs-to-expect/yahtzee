@@ -16,7 +16,7 @@
     let total_score = document.getElementById('total');
 
     // Score the upper section
-    document.querySelectorAll('form[name="upper-section"] input[type="number"].active').forEach(upper =>
+    document.querySelectorAll('div.upper-section input[type="number"].active').forEach(upper =>
         upper.addEventListener('change', function() {
 
             let score = parseInt(upper.value);

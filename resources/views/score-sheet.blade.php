@@ -23,7 +23,7 @@
 
             <h1>Player: {{ $player_name }}</h1>
 
-            <form name="upper-section">
+            <form>
                 <input type="hidden" id="game_id" name="game_id" value="{{ $game_id }}" />
                 <input type="hidden" id="player_id" name="player_id" value="{{ $player_id }}" />
                 <div class="row">
@@ -33,7 +33,7 @@
                         <p class="text-muted mb-2">Score the total of all the matched dice.</p>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row upper-section">
                     <div class="col-2 text-center">
                         <label for="ones" class="form-label dice">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-dice-1" viewBox="0 0 16 16">
@@ -96,46 +96,34 @@
                 </div>
                 <div class="row">
                     <div class="col-2">
-                        <div class="form-check ps-2">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
-                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        <div class="text-center">
+                            <input class="form-check-input" type="checkbox" id="scratch_ones" value="ones" aria-label="Scratch the ones">
                         </div>
-                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                     <div class="col-2">
-                        <div class="form-check ps-2">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
-                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        <div class="text-center">
+                            <input class="form-check-input" type="checkbox" id="scratch_twos" value="twos" aria-label="Scratch the twos">
                         </div>
-                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                     <div class="col-2">
-                        <div class="form-check ps-2">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
-                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        <div class="text-center">
+                            <input class="form-check-input" type="checkbox" id="scratch_threes" value="threes" aria-label="Scratch the threes">
                         </div>
-                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                     <div class="col-2">
-                        <div class="form-check ps-2">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
-                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        <div class="text-center">
+                            <input class="form-check-input" type="checkbox" id="scratch_fours" value="fours" aria-label="Scratch the fours">
                         </div>
-                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                     <div class="col-2">
-                        <div class="form-check ps-2">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
-                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        <div class="text-center">
+                            <input class="form-check-input" type="checkbox" id="scratch_fives" value="fives" aria-label="Scratch the fives">
                         </div>
-                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                     <div class="col-2">
-                        <div class="form-check ps-2">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
-                            <label class="form-check-label visually-hidden" for="yahtzee_check">Scratch</label>
+                        <div class="text-center">
+                            <input class="form-check-input" type="checkbox" id="scratch_sixes" value="sixes" aria-label="Scratch the sixes">
                         </div>
-                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                 </div>
                 <div class="row">
