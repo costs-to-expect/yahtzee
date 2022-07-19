@@ -1,3 +1,5 @@
+![Score sheet](/resources/art/score-sheet.png)
+
 # Yahtzee Game Scoring
 
 ## Overview

@@ -59,6 +59,11 @@ Route::group(
             [Game::class, 'scoreUpper']
         )->name('game.score-upper');
 
+        Route::post(
+            '/game/score-lower',
+            [Game::class, 'scoreLower']
+        )->name('game.score-lower');
+
         Route::get(
             '/add-players-to-game/{game_id}',
             [Game::class, 'addPlayersToGame']
