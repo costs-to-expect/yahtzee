@@ -15,7 +15,6 @@
     let score_lower = document.getElementById('lower-score');
     let total_score = document.getElementById('total');
 
-    // Scratch the upper section
     document.querySelectorAll('div.upper-section-scratch input[type="checkbox"].active').forEach(upper_scratch => {
        upper_scratch.addEventListener('change', function () {
 
@@ -53,7 +52,6 @@
        });
     });
 
-    // Score the upper section
     document.querySelectorAll('div.upper-section input[type="number"].active').forEach(upper =>
         upper.addEventListener('change', function() {
 
@@ -139,6 +137,13 @@
         });
     }
 
+    let scratch_chance = document.querySelector('input[type="checkbox"]#scratch_chance.active');
+    if (scratch_chance !== null) {
+        scratch_chance.addEventListener('change', function () {
+            scratch_lower_combo(this);
+        });
+    }
+
     let score_lower_combo = function(element, score) {
         clearTimeout(timeout);
 
@@ -164,6 +169,36 @@
 
                     score_lower.innerText = response.data.score.lower;
                     total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }, delay);
+    }
+
+    let scratch_lower_combo = function(element) {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+            axios.post(
+                '/game/score-lower',
+                {
+                    game_id: game_id.value,
+                    player_id: player_id.value,
+                    combo: element.id.toString().replace('scratch_', ''),
+                    score: 0
+                }
+            )
+                .then(response => {
+                    element.classList.remove('active');
+                    element.classList.add('disabled');
+                    element.disabled = true;
+
+                    let lower = document.getElementById(element.id.toString().replace('scratch_', ''));
+                    lower.classList.remove('active');
+                    lower.classList.add('disabled');
+                    lower.disabled = true;
+                    lower.value = 0;
                 })
                 .catch(error => {
                     console.log(error);
