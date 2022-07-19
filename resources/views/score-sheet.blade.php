@@ -182,7 +182,7 @@
                     </div>
                     <div class="col-3">
                         <div class="text-center">
-                            <input class="form-check-input @if(array_key_exists('three_of_a_kind', $score_sheet['upper-section'])) disabled @else active @endif" type="checkbox" id="scratch_three_of_a_kind" value="three_of_a_kind" aria-label="Scratch three of a kind" @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section']) && $score_sheet['lower-section']['three_of_a_kind'] === 0) checked="checked" @endif>
+                            <input class="form-check-input @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section'])) disabled @else active @endif" type="checkbox" id="scratch_three_of_a_kind" value="three_of_a_kind" aria-label="Scratch three of a kind" @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section']) && $score_sheet['lower-section']['three_of_a_kind'] === 0) checked="checked" @endif>
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,7 @@
                     </div>
                     <div class="col-3">
                         <div class="text-center">
-                            <input class="form-check-input @if(array_key_exists('four_of_a_kind', $score_sheet['upper-section'])) disabled @else active @endif" type="checkbox" id="scratch_four_of_a_kind" value="four_of_a_kind" aria-label="Scratch four of a kind" @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section']) && $score_sheet['lower-section']['four_of_a_kind'] === 0) checked="checked" @endif>
+                            <input class="form-check-input @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section'])) disabled @else active @endif" type="checkbox" id="scratch_four_of_a_kind" value="four_of_a_kind" aria-label="Scratch four of a kind" @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section']) && $score_sheet['lower-section']['four_of_a_kind'] === 0) checked="checked" @endif>
                         </div>
                     </div>
                 </div>
@@ -269,17 +269,13 @@
                         </p>
                     </div>
                     <div class="col-3">
-                        <div class="form-check">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
-                            <label class="form-check-label visually-hidden" for="yahtzee_check">Yahtzee</label>
+                        <div class="text-center">
+                            <input class="form-check-input @if(array_key_exists('full_house', $score_sheet['lower-section'])) disabled @else active @endif" type="checkbox" id="full_house" value="25" aria-label="Full house" @if(array_key_exists('full_house', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('full_house', $score_sheet['lower-section']) && $score_sheet['lower-section']['full_house'] === 25) checked="checked" @endif>
                         </div>
-                        <input type="hidden" id="yahtzee" value="" />
-                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                     <div class="col-3">
-                        <div class="form-check">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
-                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        <div class="text-center">
+                            <input class="form-check-input @if(array_key_exists('full_house', $score_sheet['lower-section'])) disabled @else active @endif" type="checkbox" id="scratch_full_house" value="full_house" aria-label="Scratch full house" @if(array_key_exists('full_house', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('full_house', $score_sheet['lower-section']) && $score_sheet['lower-section']['full_house'] === 0) checked="checked" @endif>
                         </div>
                     </div>
                 </div>
@@ -319,17 +315,13 @@
                         </p>
                     </div>
                     <div class="col-3">
-                        <div class="form-check">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_check">
-                            <label class="form-check-label visually-hidden" for="yahtzee_check">Yahtzee</label>
+                        <div class="text-center">
+                            <input class="form-check-input @if(array_key_exists('small_straight', $score_sheet['lower-section'])) disabled @else active @endif" type="checkbox" id="small_straight" value="30" aria-label="Small straight" @if(array_key_exists('small_straight', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('small_straight', $score_sheet['lower-section']) && $score_sheet['lower-section']['small_straight'] === 30) checked="checked" @endif>
                         </div>
-                        <input type="hidden" id="yahtzee" value="" />
-                        <label for="yahtzee" class="visually-hidden">Yahtzee</label>
                     </div>
                     <div class="col-3">
-                        <div class="form-check">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="yahtzee_scratch">
-                            <label class="form-check-label visually-hidden" for="yahtzee_scratch">Yahtzee (scratch)</label>
+                        <div class="text-center">
+                            <input class="form-check-input @if(array_key_exists('small_straight', $score_sheet['lower-section'])) disabled @else active @endif" type="checkbox" id="scratch_small_straight" value="full_house" aria-label="Scratch small straight" @if(array_key_exists('small_straight', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('small_straight', $score_sheet['lower-section']) && $score_sheet['lower-section']['small_straight'] === 0) checked="checked" @endif>
                         </div>
                     </div>
                 </div>

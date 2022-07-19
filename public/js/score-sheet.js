@@ -115,6 +115,13 @@
         });
     }
 
+    let scratch_three_of_a_kind = document.querySelector('input[type="checkbox"]#scratch_three_of_a_kind.active');
+    if (scratch_three_of_a_kind !== null) {
+        scratch_three_of_a_kind.addEventListener('change', function () {
+            scratch_lower_combo(this);
+        });
+    }
+
     let four_of_a_kind = document.querySelector('input[type="number"]#four_of_a_kind.active');
     if (four_of_a_kind !== null) {
         four_of_a_kind.addEventListener('change', function () {
@@ -123,6 +130,41 @@
             if (score >= 6 && score <= 30) {
                 score_lower_combo(this, score);
             }
+        });
+    }
+
+    let scratch_four_of_a_kind = document.querySelector('input[type="checkbox"]#scratch_four_of_a_kind.active');
+    if (scratch_four_of_a_kind !== null) {
+        scratch_four_of_a_kind.addEventListener('change', function () {
+            scratch_lower_combo(this);
+        });
+    }
+
+    let full_house = document.querySelector('input[type="checkbox"]#full_house.active');
+    if (full_house !== null) {
+        full_house.addEventListener('change', function () {
+            score_lower_combo(this, 25);
+        });
+    }
+
+    let scratch_full_house = document.querySelector('input[type="checkbox"]#scratch_full_house.active');
+    if (scratch_full_house !== null) {
+        scratch_full_house.addEventListener('change', function () {
+            scratch_lower_fixed_combo(this);
+        });
+    }
+
+    let small_straight = document.querySelector('input[type="checkbox"]#small_straight.active');
+    if (small_straight !== null) {
+        small_straight.addEventListener('change', function () {
+            score_lower_combo(this, 25);
+        });
+    }
+
+    let scratch_small_straight = document.querySelector('input[type="checkbox"]#scratch_small_straight.active');
+    if (scratch_small_straight !== null) {
+        scratch_small_straight.addEventListener('change', function () {
+            scratch_lower_fixed_combo(this);
         });
     }
 
@@ -157,26 +199,56 @@
                     score: score
                 }
             )
-                .then(response => {
-                    element.classList.remove('active');
-                    element.classList.add('disabled');
-                    element.disabled = true;
+            .then(response => {
+                element.classList.remove('active');
+                element.classList.add('disabled');
+                element.disabled = true;
 
-                    let scratch = document.getElementById('scratch_' + element.id);
-                    scratch.classList.remove('active');
-                    scratch.classList.add('disabled');
-                    scratch.disabled = true;
+                let scratch = document.getElementById('scratch_' + element.id);
+                scratch.classList.remove('active');
+                scratch.classList.add('disabled');
+                scratch.disabled = true;
 
-                    score_lower.innerText = response.data.score.lower;
-                    total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+                score_lower.innerText = response.data.score.lower;
+                total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+            })
+            .catch(error => {
+                console.log(error);
+            });
         }, delay);
     }
 
     let scratch_lower_combo = function(element) {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+            axios.post(
+                '/game/score-lower',
+                {
+                    game_id: game_id.value,
+                    player_id: player_id.value,
+                    combo: element.id.toString().replace('scratch_', ''),
+                    score: 0
+                }
+            )
+            .then(response => {
+                element.classList.remove('active');
+                element.classList.add('disabled');
+                element.disabled = true;
+
+                let lower = document.getElementById(element.id.toString().replace('scratch_', ''));
+                lower.classList.remove('active');
+                lower.classList.add('disabled');
+                lower.disabled = true;
+                lower.value = 0;
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }, delay);
+    }
+
+    let scratch_lower_fixed_combo = function(element) {
         clearTimeout(timeout);
 
         timeout = setTimeout(() => {
@@ -198,7 +270,6 @@
                     lower.classList.remove('active');
                     lower.classList.add('disabled');
                     lower.disabled = true;
-                    lower.value = 0;
                 })
                 .catch(error => {
                     console.log(error);
