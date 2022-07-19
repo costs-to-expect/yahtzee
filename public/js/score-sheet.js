@@ -157,13 +157,41 @@
     let small_straight = document.querySelector('input[type="checkbox"]#small_straight.active');
     if (small_straight !== null) {
         small_straight.addEventListener('change', function () {
-            score_lower_combo(this, 25);
+            score_lower_combo(this, 30);
         });
     }
 
     let scratch_small_straight = document.querySelector('input[type="checkbox"]#scratch_small_straight.active');
     if (scratch_small_straight !== null) {
         scratch_small_straight.addEventListener('change', function () {
+            scratch_lower_fixed_combo(this);
+        });
+    }
+
+    let large_straight = document.querySelector('input[type="checkbox"]#large_straight.active');
+    if (large_straight !== null) {
+        large_straight.addEventListener('change', function () {
+            score_lower_combo(this, 40);
+        });
+    }
+
+    let scratch_large_straight = document.querySelector('input[type="checkbox"]#scratch_large_straight.active');
+    if (scratch_large_straight !== null) {
+        scratch_large_straight.addEventListener('change', function () {
+            scratch_lower_fixed_combo(this);
+        });
+    }
+
+    let yahtzee = document.querySelector('input[type="checkbox"]#yahtzee.active');
+    if (yahtzee !== null) {
+        yahtzee.addEventListener('change', function () {
+            score_lower_combo(this, 50);
+        });
+    }
+
+    let scratch_yahtzee = document.querySelector('input[type="checkbox"]#scratch_yahtzee.active');
+    if (scratch_yahtzee !== null) {
+        scratch_yahtzee.addEventListener('change', function () {
             scratch_lower_fixed_combo(this);
         });
     }
@@ -183,6 +211,27 @@
     if (scratch_chance !== null) {
         scratch_chance.addEventListener('change', function () {
             scratch_lower_combo(this);
+        });
+    }
+
+    let yahtzee_bonus_one = document.querySelector('input[type="checkbox"]#yahtzee_bonus_one.active');
+    if (yahtzee_bonus_one !== null) {
+        yahtzee_bonus_one.addEventListener('change', function () {
+            score_yahtzee_bonus(this);
+        });
+    }
+
+    let yahtzee_bonus_two = document.querySelector('input[type="checkbox"]#yahtzee_bonus_two.active');
+    if (yahtzee_bonus_two !== null) {
+        yahtzee_bonus_two.addEventListener('change', function () {
+            score_yahtzee_bonus(this);
+        });
+    }
+
+    let yahtzee_bonus_three = document.querySelector('input[type="checkbox"]#yahtzee_bonus_three.active');
+    if (yahtzee_bonus_three !== null) {
+        yahtzee_bonus_three.addEventListener('change', function () {
+            score_yahtzee_bonus(this);
         });
     }
 
@@ -208,6 +257,33 @@
                 scratch.classList.remove('active');
                 scratch.classList.add('disabled');
                 scratch.disabled = true;
+
+                score_lower.innerText = response.data.score.lower;
+                total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }, delay);
+    }
+
+    let score_yahtzee_bonus = function(element) {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+            axios.post(
+                '/game/score-lower',
+                {
+                    game_id: game_id.value,
+                    player_id: player_id.value,
+                    combo: element.id,
+                    score: 100
+                }
+            )
+            .then(response => {
+                element.classList.remove('active');
+                element.classList.add('disabled');
+                element.disabled = true;
 
                 score_lower.innerText = response.data.score.lower;
                 total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
