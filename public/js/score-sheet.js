@@ -42,8 +42,6 @@
                            upper.classList.add('disabled');
                            upper.value = 0;
                            upper.disabled = true;
-
-                           console.log(response.data);
                        })
                        .catch(error => {
                            console.log(error);
@@ -99,8 +97,6 @@
                         score_upper_total.innerText = response.data.score.upper + response.data.score.bonus;
                         score_lower_upper.innerText = response.data.score.upper + response.data.score.bonus;
                         total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
-
-                        console.log(response.data);
                     })
                     .catch(error => {
                         console.log(error);
@@ -109,4 +105,69 @@
             }
         })
     );
+
+    let three_of_a_kind = document.querySelector('input[type="number"]#three_of_a_kind.active');
+    if (three_of_a_kind !== null) {
+        three_of_a_kind.addEventListener('change', function () {
+            let score = parseInt(this.value);
+
+            if (score >= 6 && score <= 30) {
+                score_lower_combo(this, score);
+            }
+        });
+    }
+
+    let four_of_a_kind = document.querySelector('input[type="number"]#four_of_a_kind.active');
+    if (four_of_a_kind !== null) {
+        four_of_a_kind.addEventListener('change', function () {
+            let score = parseInt(this.value);
+
+            if (score >= 6 && score <= 30) {
+                score_lower_combo(this, score);
+            }
+        });
+    }
+
+    let chance = document.querySelector('input[type="number"]#chance.active');
+    if (chance !== null) {
+        chance.addEventListener('change', function () {
+            let score = parseInt(this.value);
+
+            if (score >= 6 && score <= 30) {
+                score_lower_combo(this, score);
+            }
+        });
+    }
+
+    let score_lower_combo = function(element, score) {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+            axios.post(
+                '/game/score-lower',
+                {
+                    game_id: game_id.value,
+                    player_id: player_id.value,
+                    combo: element.id,
+                    score: score
+                }
+            )
+                .then(response => {
+                    element.classList.remove('active');
+                    element.classList.add('disabled');
+                    element.disabled = true;
+
+                    let scratch = document.getElementById('scratch_' + element.id);
+                    scratch.classList.remove('active');
+                    scratch.classList.add('disabled');
+                    scratch.disabled = true;
+
+                    score_lower.innerText = response.data.score.lower;
+                    total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }, delay);
+    }
 })(axios);

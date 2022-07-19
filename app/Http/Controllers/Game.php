@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Game\AddPlayersToGame;
 use App\Actions\Game\Create;
-use App\Actions\Game\ScoreUpper;
+use App\Actions\Game\Score;
 use Illuminate\Http\Request;
 
 class Game extends Controller
@@ -218,7 +218,53 @@ class Game extends Controller
         $score_sheet['score']['bonus'] = $score_bonus;
         $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
 
-        $action = new ScoreUpper();
+        $action = new Score();
+        $result = $action(
+            $this->api,
+            $this->resource_type_id,
+            $this->resource_id,
+            $request->input('game_id'),
+            $request->input('player_id'),
+            $score_sheet
+        );
+
+        if ($result === 204) {
+            return response()->json([
+                'message' => 'Score updated',
+                'score' => $score_sheet['score']
+            ]);
+        }
+
+        return response()->json(['message' => 'Failed to update your score sheet'], $result);
+    }
+
+    public function scoreLower(Request $request)
+    {
+        $this->boostrap($request);
+
+        $score_sheet = $this->api->getPlayerScoreSheet(
+            $this->resource_type_id,
+            $this->resource_id,
+            $request->input('game_id'),
+            $request->input('player_id')
+        );
+
+        if ($score_sheet['status'] !== 200) {
+            return response()->json(['message' => 'Unable to fetch your score sheet'], $score_sheet['status']);
+        }
+
+        $score_sheet = $score_sheet['content']['value'];
+
+        $score_sheet['lower-section'][$request->input('combo')] = $request->input('score');
+        $score_lower = 0;
+        foreach ($score_sheet['lower-section'] as $value) {
+            $score_lower += $value;
+        }
+
+        $score_sheet['score']['lower'] = $score_lower;
+        $score_sheet['score']['total'] = $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] + $score_lower;
+
+        $action = new Score();
         $result = $action(
             $this->api,
             $this->resource_type_id,

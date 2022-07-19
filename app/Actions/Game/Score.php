@@ -6,7 +6,7 @@ namespace App\Actions\Game;
 use App\Actions\Action;
 use App\Api\Service;
 
-class ScoreUpper extends Action
+class Score extends Action
 {
     public function __invoke(
         Service $api,
