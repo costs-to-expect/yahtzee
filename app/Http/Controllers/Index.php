@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\ShareToken;
 use Illuminate\Http\Request;
 
 class Index extends Controller
@@ -39,6 +40,8 @@ class Index extends Controller
                 'open_games' => $open_games,
                 'closed_games' => $closed_games,
                 'players' => $players,
+
+                'share_tokens' => (new ShareToken())->getShareTokens(),
             ]
         );
     }

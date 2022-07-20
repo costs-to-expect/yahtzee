@@ -4,6 +4,7 @@ use App\Http\Controllers\Authentication;
 use App\Http\Controllers\Game;
 use App\Http\Controllers\Index;
 use App\Http\Controllers\Player;
+use App\Http\Controllers\Share;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
@@ -20,6 +21,11 @@ Route::get(
     '/sign-out',
     [Authentication::class, 'signOut']
 )->name('sign-out');
+
+Route::get(
+    '/score-sheet/{token}',
+    [Share::class, 'scoreSheet']
+)->name('public.score-sheet');
 
 Route::group(
     [

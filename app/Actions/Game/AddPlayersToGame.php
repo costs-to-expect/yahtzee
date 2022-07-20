@@ -5,6 +5,9 @@ namespace App\Actions\Game;
 
 use App\Actions\Action;
 use App\Api\Service;
+use App\Models\ShareToken;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class AddPlayersToGame extends Action
 {
@@ -31,6 +34,27 @@ class AddPlayersToGame extends Action
             );
 
             if ($response['status'] === 201) {
+
+                $config = Config::get('app.config');
+
+                try {
+                    $token = new ShareToken();
+                    $token->token = Str::uuid();
+                    $token->game_id = $game_id;
+                    $token->player_id = $player;
+                    $token->parameters = json_encode([
+                        'resource_type_id' => $resource_type_id,
+                        'resource_id' => $resource_id,
+                        'game_id' => $game_id,
+                        'player_id' => $player,
+                        'owner_bearer' => request()->cookie($config['cookie_bearer'])
+                    ], JSON_THROW_ON_ERROR);
+                    $token->save();
+
+                } catch (\JsonException $e) {
+                    abort(500, 'Failed to create share token for player, create token manually');
+                }
+
                 continue;
             }
 
