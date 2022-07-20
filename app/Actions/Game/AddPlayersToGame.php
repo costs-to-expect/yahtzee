@@ -6,6 +6,7 @@ namespace App\Actions\Game;
 use App\Actions\Action;
 use App\Api\Service;
 use App\Models\ShareToken;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 class AddPlayersToGame extends Action
@@ -34,6 +35,8 @@ class AddPlayersToGame extends Action
 
             if ($response['status'] === 201) {
 
+                $config = Config::get('app.config');
+
                 try {
                     $token = new ShareToken();
                     $token->token = Str::uuid();
@@ -44,6 +47,7 @@ class AddPlayersToGame extends Action
                         'resource_id' => $resource_id,
                         'game_id' => $game_id,
                         'player_id' => $player,
+                        'owner_bearer' => request()->cookie($config['cookie_bearer'])
                     ], JSON_THROW_ON_ERROR);
                     $token->save();
 

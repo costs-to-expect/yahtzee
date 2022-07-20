@@ -50,7 +50,7 @@
                                             <a href="{{ route('game.score-sheet', ['game_id' => $game['id'], 'player_id' => $__player['id']]) }}">[Score sheet]</a>
 
                                             @if (array_key_exists($game['id'], $share_tokens) && array_key_exists($__player['id'], $share_tokens[$game['id']]))
-                                                <a href="/score-sheet/{{ $share_tokens[$game['id']][$__player['id']] }}">[Public score sheet]</a>
+                                                <a href="{{ route('public.score-sheet', ['token' => $share_tokens[$game['id']][$__player['id']]]) }}">[Public score sheet]</a>
                                             @endif
                                         </li>
                                     @endforeach
