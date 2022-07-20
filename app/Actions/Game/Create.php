@@ -5,6 +5,8 @@ namespace App\Actions\Game;
 
 use App\Actions\Action;
 use App\Api\Service;
+use App\Models\ShareToken;
+use Illuminate\Support\Str;
 
 class Create extends Action
 {
@@ -32,6 +34,22 @@ class Create extends Action
                     $create_game_response['content']['id'],
                     $player
                 );
+
+                try {
+                    $token = new ShareToken();
+                    $token->token = Str::uuid();
+                    $token->game_id = $create_game_response['content']['id'];
+                    $token->player_id = $player;
+                    $token->parameters = json_encode([
+                        'resource_type_id' => $resource_type_id,
+                        'resource_id' => $resource_id,
+                        'game_id' => $create_game_response['content']['id'],
+                        'player_id' => $player,
+                    ], JSON_THROW_ON_ERROR);
+                    $token->save();
+                } catch (\Exception) {
+                    abort(500, 'Failed to create share token for player, create token manually');
+                }
             }
 
             return 201;

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->collation = 'utf8mb4_unicode_ci';
 
             $table->string('token')->primary();
+            $table->string('game_id');
+            $table->string('player_id');
             $table->json('parameters');
             $table->timestamps();
 

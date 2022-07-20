@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
  *
  * @property string $token
+ * @property string $game_id
+ * @property string $player_id
  * @property string $parameters
  */
 class ShareToken extends Model

@@ -52,7 +52,7 @@ class Game extends Controller
         );
 
         if ($result === 201) {
-            return redirect()->route('games');
+            return redirect()->route('home');
         }
 
         if ($result === 422) {
@@ -114,7 +114,7 @@ class Game extends Controller
         );
 
         if ($result === 201) {
-            return redirect()->route('games');
+            return redirect()->route('home');
         }
 
         if ($result === 422) {
