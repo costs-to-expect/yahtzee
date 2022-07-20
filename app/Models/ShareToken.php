@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,4 +17,15 @@ use Illuminate\Database\Eloquent\Model;
 class ShareToken extends Model
 {
     protected $table = 'share_token';
+
+    public function getShareTokens(): array
+    {
+        $tokens = [];
+
+        foreach (self::query()->get() as $token) {
+            $tokens[$token->game_id][$token->player_id] = $token->token;
+        }
+
+        return $tokens;
+    }
 }

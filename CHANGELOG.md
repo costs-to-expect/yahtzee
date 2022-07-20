@@ -9,6 +9,7 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 ### Changed
 - Create a game and adding additional players to a game adds the share token for the player.
 - Redirect to the home page after game creation and adding additional players.
+- SHow the link for the public score sheet next to the player name.
 
 ## [0.3.0] - Initial playable release
 
