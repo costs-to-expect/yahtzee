@@ -20,6 +20,7 @@ class Index extends Controller
                 'include-players' => 1
             ]
         );
+
         $closed_games = $this->getGames(
             $this->resource_type_id,
             $this->resource_id,

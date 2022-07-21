@@ -8,9 +8,14 @@ use App\Api\Service;
 
 class Complete extends Action
 {
-    public function __invoke(Service $api, string $resource_type_id, string $resource_id, string $game_id): bool
+    public function __invoke(Service $api, string $resource_type_id, string $resource_id, string $game_id): int
     {
-        $game_response = $api->getGame($resource_type_id, $resource_id, $game_id);
+        $game_response = $api->getGame(
+            $resource_type_id,
+            $resource_id,
+            $game_id,
+            ['include-players' => true]
+        );
         if ($game_response['status'] !== 200) {
             abort(404, 'Unable to find the game');
         }
@@ -26,23 +31,46 @@ class Complete extends Action
             $game_id
         );
 
-        $max = 0;
-        $winner = null;
+        $scores = [];
         if ($game_score_sheets_response['status'] !== 200) {
             abort(404, 'Unable to fetch the game scores');
         }
 
         foreach ($game_score_sheets_response['content'] as $score_sheet) {
-            if ($score_sheet['value']['score']['total'] > $max) {
-                $max = $score_sheet['value']['score']['total'];
-                $winner = $score_sheet['key'];
+
+            $player_name = 'Unknown';
+            foreach ($game_response['content']['players']['collection'] as $player) {
+                if ($player['id'] === $score_sheet['key']) {
+                    $player_name = $player['name'];
+                }
             }
+
+            $scores[$score_sheet['value']['score']['total']] = [
+                'player_id' => $score_sheet['key'],
+                'player_name' => $player_name,
+                'score' => $score_sheet['value']['score']['total']
+            ];
         }
 
-        if ($winner === null) {
-            abort(500, 'Unable to determine the winner');
+        krsort($scores);
+        $winner = $scores[array_key_first($scores)];
+
+        $update_game_response = $api->updateGame(
+            $resource_type_id,
+            $resource_id,
+            $game_id,
+            [
+                'game' => json_encode(['scores' => $scores,'winner' => $winner], JSON_THROW_ON_ERROR),
+                'winner_id' => $winner['player_id'],
+                'score' => $winner['score'],
+                'complete' => 1
+            ]
+        );
+
+        if ($update_game_response['status'] === 204) {
+            return 204;
         }
 
-        return true;
+        return $update_game_response['status'];
     }
 }

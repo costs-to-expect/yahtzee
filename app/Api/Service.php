@@ -246,6 +246,19 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function updateGame(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        array $payload,
+    ): array
+    {
+        $uri = Uri::game($resource_type_id, $resource_id, $game_id);
+
+        return $this->http->patch($uri['uri'], $payload);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
     public function updateScoreSheetForPlayer(
         string $resource_type_id,
         string $resource_id,
