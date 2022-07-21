@@ -9,7 +9,8 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 ### Changed
 - Creating a game and adding additional players to a game creates a unique share token for each player.
 - Redirect to the home page after game creation and adding additional players, not the games list.
-- Show the link for the public score sheet next to the player name so it can be easily shared by the game starter.
+- Show the link for the public score sheet next to each player name, it can then be easily shared by the game starter.
+- Adjusted the spacing and sizes of inputs in the upper section to increase accessibility.
 
 ## [0.3.0] - Initial playable release
 
