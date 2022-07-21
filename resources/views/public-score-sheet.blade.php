@@ -15,8 +15,7 @@
             <x-layout.header />
 
             <form>
-                <input type="hidden" id="game_id" name="game_id" value="{{ $game_id }}" />
-                <input type="hidden" id="player_id" name="player_id" value="{{ $player_id }}" />
+                <input type="hidden" id="token" name="token" value="{{ $token }}" />
                 <div class="row">
                     <div class="col-12">
                         <h2 class="text-primary">Upper Section</h2>
@@ -532,6 +531,6 @@
             </footer>
         </div>
         <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
-        <script src="{{ asset('js/score-sheet.js') }}" defer></script>
+        <script src="{{ asset('js/public-score-sheet.js') }}" defer></script>
     </body>
 </html>

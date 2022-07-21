@@ -2,14 +2,14 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [0.4.0] - 
+## [0.4.0] - [Date]
 ### Added
-- Added a share token table to store token for the sharable gaming page links.
+- Added a public score sheet for players, accessible without an account via a unique token.
 
 ### Changed
-- Create a game and adding additional players to a game adds the share token for the player.
-- Redirect to the home page after game creation and adding additional players.
-- Show the link for the public score sheet next to the player name.
+- Creating a game and adding additional players to a game creates a unique share token for each player.
+- Redirect to the home page after game creation and adding additional players, not the games list.
+- Show the link for the public score sheet next to the player name so it can be easily shared by the game starter.
 
 ## [0.3.0] - Initial playable release
 

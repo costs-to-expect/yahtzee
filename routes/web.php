@@ -27,6 +27,16 @@ Route::get(
     [Share::class, 'scoreSheet']
 )->name('public.score-sheet');
 
+Route::post(
+    '/score-sheet/{token}/score-upper',
+    [Share::class, 'scoreUpper']
+)->name('public.score-upper');
+
+Route::post(
+    '/score-sheet/{token}/score-lower',
+    [Share::class, 'scoreLower']
+)->name('public.score-lower');
+
 Route::group(
     [
         'middleware' => [
