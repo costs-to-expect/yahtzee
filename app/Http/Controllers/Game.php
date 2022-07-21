@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\Game\AddPlayersToGame;
+use App\Actions\Game\AddPlayers;
+use App\Actions\Game\Complete;
 use App\Actions\Game\Create;
 use App\Actions\Game\Score;
 use Illuminate\Http\Request;
@@ -104,7 +105,7 @@ class Game extends Controller
 
         $game_id = $request->route('game_id');
 
-        $action = new AddPlayersToGame();
+        $action = new AddPlayers();
         $result = $action(
             $this->api,
             $this->resource_type_id,
@@ -124,6 +125,29 @@ class Game extends Controller
         }
 
         abort($result, $action->getMessage());
+    }
+
+    public function complete(Request $request, string $game_id)
+    {
+        $this->boostrap($request);
+
+        $action = new Complete();
+        try {
+            $result = $action(
+                $this->api,
+                $this->resource_type_id,
+                $this->resource_id,
+                $game_id
+            );
+
+            if ($result === 204) {
+                return redirect()->route('home');
+            }
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+
+        abort(500, 'Unable to complete the game, returned status code: ' . $result['status']);
     }
 
     public function scoreSheet(Request $request, string $game_id, string $player_id)

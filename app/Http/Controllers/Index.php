@@ -20,6 +20,7 @@ class Index extends Controller
                 'include-players' => 1
             ]
         );
+
         $closed_games = $this->getGames(
             $this->resource_type_id,
             $this->resource_id,
@@ -30,6 +31,21 @@ class Index extends Controller
             ]
         );
         $players = $this->getPlayers($this->resource_type_id, ['limit' => 5]);
+
+        $game_scores = [];
+        foreach ($open_games as $game) {
+            $game_score_sheets_response = $this->api->getGameScoreSheets(
+                $this->resource_type_id,
+                $this->resource_id,
+                $game['id']
+            );
+
+            if ($game_score_sheets_response['status'] === 200) {
+                foreach ($game_score_sheets_response['content'] as $score_sheet) {
+                    $game_scores[$game['id']][$score_sheet['key']] = $score_sheet['value']['score']['total'];
+                }
+            }
+        }
 
         return view(
             'home',
@@ -42,6 +58,8 @@ class Index extends Controller
                 'players' => $players,
 
                 'share_tokens' => (new ShareToken())->getShareTokens(),
+
+                'game_scores' => $game_scores
             ]
         );
     }

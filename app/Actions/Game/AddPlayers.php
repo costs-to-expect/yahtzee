@@ -9,7 +9,7 @@ use App\Models\ShareToken;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
-class AddPlayersToGame extends Action
+class AddPlayers extends Action
 {
     public function __invoke(
         Service $api,

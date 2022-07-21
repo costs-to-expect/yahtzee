@@ -2,6 +2,14 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.5.0] - [Date]
+### Added
+- Added a complete game action, sets the winner, player scores and updates the game status.
+
+### Changed
+- Show the player scores next to open games.
+- Updated the layout of completed games to match open games.
+
 ## [0.4.0] - 2022-07-21
 ### Added
 - Added a public score sheet for players, accessible without an account via a unique token.

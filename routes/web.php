@@ -71,6 +71,11 @@ Route::group(
         )->name('games');
 
         Route::post(
+            '/game/{game_id}/complete',
+            [Game::class, 'complete']
+        )->name('game.complete');
+
+        Route::post(
             '/game/score-upper',
             [Game::class, 'scoreUpper']
         )->name('game.score-upper');
