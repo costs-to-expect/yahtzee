@@ -8,6 +8,7 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 
 ### Changed
 - Show the player scores next to open games.
+- Updated the layout of completed games to match open games.
 
 ## [0.4.0] - 2022-07-21
 ### Added
