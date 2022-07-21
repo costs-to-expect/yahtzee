@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Yahtzee Game Score by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
-        <title>Yahtzee Game Scorer: Score Sheet</title>
+        <title>Let's play Yahtzee</title>
         <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
         <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />

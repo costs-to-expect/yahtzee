@@ -2,7 +2,7 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [0.4.0] - [Date]
+## [0.4.0] - 2022-07-21
 ### Added
 - Added a public score sheet for players, accessible without an account via a unique token.
 
