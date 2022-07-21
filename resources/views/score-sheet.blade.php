@@ -41,7 +41,7 @@
                                 <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
                             </svg>
                         </label>
-                        <input type="number" min="1" max="6" step="1" size="1" class="form-control form-control-sm @if(array_key_exists('ones', $score_sheet['upper-section'])) disabled @else active @endif" name="ones" id="ones" placeholder="3" @if(array_key_exists('ones', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['ones'] }}" @endif>
+                        <input type="number" min="1" max="6" step="1" size="1" class="form-control form-control-sm accessible @if(array_key_exists('ones', $score_sheet['upper-section'])) disabled @else active @endif" name="ones" id="ones" placeholder="3" @if(array_key_exists('ones', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['ones'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="twos" class="form-label dice">
@@ -50,7 +50,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="2" max="10" step="2" size="2" class="form-control form-control-sm @if(array_key_exists('twos', $score_sheet['upper-section'])) disabled @else active @endif" name="twos" id="twos" placeholder="6" @if(array_key_exists('twos', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['twos'] }}" @endif>
+                        <input type="number" min="2" max="10" step="2" size="2" class="form-control form-control-sm accessible @if(array_key_exists('twos', $score_sheet['upper-section'])) disabled @else active @endif" name="twos" id="twos" placeholder="6" @if(array_key_exists('twos', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['twos'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="threes" class="form-label dice">
@@ -59,7 +59,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="3" max="15" step="3" size="2" class="form-control form-control-sm @if(array_key_exists('threes', $score_sheet['upper-section'])) disabled @else active @endif" name="threes" id="threes" placeholder="9" @if(array_key_exists('threes', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['threes'] }}" @endif>
+                        <input type="number" min="3" max="15" step="3" size="2" class="form-control form-control-sm accessible @if(array_key_exists('threes', $score_sheet['upper-section'])) disabled @else active @endif" name="threes" id="threes" placeholder="9" @if(array_key_exists('threes', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['threes'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="fours" class="form-label dice">
@@ -68,7 +68,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="4" max="20" step="4" size="2" class="form-control form-control-sm @if(array_key_exists('fours', $score_sheet['upper-section'])) disabled @else active @endif" name="fours" id="fours" placeholder="12" @if(array_key_exists('fours', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['fours'] }}" @endif>
+                        <input type="number" min="4" max="20" step="4" size="2" class="form-control form-control-sm accessible @if(array_key_exists('fours', $score_sheet['upper-section'])) disabled @else active @endif" name="fours" id="fours" placeholder="12" @if(array_key_exists('fours', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['fours'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="fives" class="form-label dice">
@@ -77,7 +77,7 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="5" max="25" step="5" size="2" class="form-control form-control-sm @if(array_key_exists('fives', $score_sheet['upper-section'])) disabled @else active @endif" name="fives" id="fives" placeholder="15" @if(array_key_exists('fives', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['fives'] }}" @endif>
+                        <input type="number" min="5" max="25" step="5" size="2" class="form-control form-control-sm accessible @if(array_key_exists('fives', $score_sheet['upper-section'])) disabled @else active @endif" name="fives" id="fives" placeholder="15" @if(array_key_exists('fives', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['fives'] }}" @endif>
                     </div>
                     <div class="col-2 text-center">
                         <label for="sixes" class="form-label dice">
@@ -86,12 +86,12 @@
                                 <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             </svg>
                         </label>
-                        <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm @if(array_key_exists('sixes', $score_sheet['upper-section'])) disabled @else active @endif" name="sixes" id="sixes" placeholder="18" @if(array_key_exists('sixes', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['sixes'] }}" @endif>
+                        <input type="number" min="6" max="30" step="6" size="2" class="form-control form-control-sm accessible @if(array_key_exists('sixes', $score_sheet['upper-section'])) disabled @else active @endif" name="sixes" id="sixes" placeholder="18" @if(array_key_exists('sixes', $score_sheet['upper-section'])) disabled="disabled" value="{{ $score_sheet['upper-section']['sixes'] }}" @endif>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <p class="text-muted mb-0">Use the checkbox to scratch a turn.</p>
+                        <p class="text-muted mb-0 mt-3">Use the checkbox to scratch a turn.</p>
                     </div>
                 </div>
                 <div class="row upper-section-scratch">

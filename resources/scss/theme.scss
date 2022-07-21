@@ -52,6 +52,10 @@ input[type="number"] {
     &::placeholder {
         color: rgba(137, 43, 124, 0.40);
     }
+
+    &.accessible {
+        padding: 0.5rem;
+    }
 }
 
 h3.score {

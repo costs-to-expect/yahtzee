@@ -7,21 +7,13 @@ use App\Actions\Game\Score;
 use App\Api\Service;
 use App\Models\ShareToken;
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
 
 class Share extends Controller
 {
     public function scoreSheet(Request $request, string $token)
     {
-        $parameters = ShareToken::query()->where('token', $token)->first();
-        if ($parameters === null) {
-            abort(404, 'The game page for the token does not exist');
-        }
-
-        try {
-            $parameters = json_decode($parameters->parameters, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
-            abort(500, 'Failed to decode the parameters for the token');
-        }
+        $parameters = $this->getParameters($token);
 
         $api = new Service($parameters['owner_bearer']);
 
@@ -66,10 +58,7 @@ class Share extends Controller
         return view(
             'public-score-sheet',
             [
-                'resource_type_id' => $parameters['resource_type_id'],
-                'resource_id' => $parameters['resource_id'],
-                'game_id' => $parameters['game_id'],
-                'player_id' => $parameters['player_id'],
+                'token' => $token,
 
                 'score_sheet' => $player_score_sheet['content']['value'],
                 'complete' => $game['complete']
@@ -77,24 +66,13 @@ class Share extends Controller
         );
     }
 
-    public function scoreUpper(Request $request)
+    public function scoreUpper(Request $request, $token)
     {
-        $this->boostrap($request);
+        $parameters = $this->getParameters($token);
 
-        // We need share actions and we need the owner bearer
+        $api = new Service($parameters['owner_bearer']);
 
-        $score_sheet = $this->api->getPlayerScoreSheet(
-            $this->resource_type_id,
-            $this->resource_id,
-            $request->input('game_id'),
-            $request->input('player_id')
-        );
-
-        if ($score_sheet['status'] !== 200) {
-            return response()->json(['message' => 'Unable to fetch your score sheet'], $score_sheet['status']);
-        }
-
-        $score_sheet = $score_sheet['content']['value'];
+        $score_sheet = $this->getScoreSheet($api, $parameters);
 
         $score_sheet['upper-section'][$request->input('dice')] = $request->input('score');
         $score_upper = 0;
@@ -112,11 +90,11 @@ class Share extends Controller
 
         $action = new Score();
         $result = $action(
-            $this->api,
-            $this->resource_type_id,
-            $this->resource_id,
-            $request->input('game_id'),
-            $request->input('player_id'),
+            $api,
+            $parameters['resource_type_id'],
+            $parameters['resource_id'],
+            $parameters['game_id'],
+            $parameters['player_id'],
             $score_sheet
         );
 
@@ -130,24 +108,13 @@ class Share extends Controller
         return response()->json(['message' => 'Failed to update your score sheet'], $result);
     }
 
-    public function scoreLower(Request $request)
+    public function scoreLower(Request $request, $token)
     {
-        $this->boostrap($request);
+        $parameters = $this->getParameters($token);
 
-        // We need share actions and we need the owner bearer
+        $api = new Service($parameters['owner_bearer']);
 
-        $score_sheet = $this->api->getPlayerScoreSheet(
-            $this->resource_type_id,
-            $this->resource_id,
-            $request->input('game_id'),
-            $request->input('player_id')
-        );
-
-        if ($score_sheet['status'] !== 200) {
-            return response()->json(['message' => 'Unable to fetch your score sheet'], $score_sheet['status']);
-        }
-
-        $score_sheet = $score_sheet['content']['value'];
+        $score_sheet = $this->getScoreSheet($api, $parameters);
 
         $score_sheet['lower-section'][$request->input('combo')] = $request->input('score');
         $score_lower = 0;
@@ -160,11 +127,11 @@ class Share extends Controller
 
         $action = new Score();
         $result = $action(
-            $this->api,
-            $this->resource_type_id,
-            $this->resource_id,
-            $request->input('game_id'),
-            $request->input('player_id'),
+            $api,
+            $parameters['resource_type_id'],
+            $parameters['resource_id'],
+            $parameters['game_id'],
+            $parameters['player_id'],
             $score_sheet
         );
 
@@ -176,5 +143,44 @@ class Share extends Controller
         }
 
         return response()->json(['message' => 'Failed to update your score sheet'], $result);
+    }
+
+    #[ArrayShape([
+        'resource_type_id' => "string",
+        'resource_id' => "string",
+        'game_id' => "string",
+        'player_id' => "string",
+        'owner_bearer' => "string"
+    ])]
+    private function getParameters($token): array
+    {
+        $parameters = ShareToken::query()->where('token', $token)->first();
+        if ($parameters === null) {
+            abort(404, 'The game page for the token does not exist');
+        }
+
+        try {
+            $parameters = json_decode($parameters->parameters, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            abort(500, 'Failed to decode the parameters for the token');
+        }
+
+        return $parameters;
+    }
+
+    private function getScoreSheet(Service $api, array $parameters)
+    {
+        $score_sheet = $api->getPlayerScoreSheet(
+            $parameters['resource_type_id'],
+            $parameters['resource_id'],
+            $parameters['game_id'],
+            $parameters['player_id']
+        );
+
+        if ($score_sheet['status'] !== 200) {
+            return response()->json(['message' => 'Unable to fetch your score sheet'], $score_sheet['status']);
+        }
+
+        return $score_sheet['content']['value'];
     }
 }
