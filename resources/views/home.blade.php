@@ -47,6 +47,16 @@
                                                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                                             </svg>
                                             {{ $__player['name'] }}
+
+                                            @if (
+                                                array_key_exists($game['id'], $game_scores) &&
+                                                array_key_exists($__player['id'], $game_scores[$game['id']])
+                                            )
+                                                ({{ $game_scores[$game['id']][$__player['id']] }} points)
+                                            @else
+                                                (0 points)
+                                            @endif
+
                                             <a href="{{ route('game.score-sheet', ['game_id' => $game['id'], 'player_id' => $__player['id']]) }}">[Score sheet]</a>
 
                                             @if (array_key_exists($game['id'], $share_tokens) && array_key_exists($__player['id'], $share_tokens[$game['id']]))

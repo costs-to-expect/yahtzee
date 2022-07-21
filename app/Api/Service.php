@@ -194,6 +194,18 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function getGameScoreSheets(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id
+    ): array
+    {
+        $uri = Uri::gameScoreSheets($resource_type_id, $resource_id, $game_id);
+
+        return $this->http->get($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function getPlayers(
         string $resource_type_id,
         array $parameters = []
