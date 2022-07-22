@@ -23,19 +23,24 @@ Route::get(
 )->name('sign-out');
 
 Route::get(
-    '/score-sheet/{token}',
+    '/public/score-sheet/{token}',
     [Share::class, 'scoreSheet']
 )->name('public.score-sheet');
 
 Route::post(
-    '/score-sheet/{token}/score-upper',
+    '/public/score-sheet/{token}/score-upper',
     [Share::class, 'scoreUpper']
 )->name('public.score-upper');
 
 Route::post(
-    '/score-sheet/{token}/score-lower',
+    '/public/score-sheet/{token}/score-lower',
     [Share::class, 'scoreLower']
 )->name('public.score-lower');
+
+Route::get(
+    '/public/game/{token}/player-scores',
+    [Share::class, 'playerScores']
+)->name('public.player-scores');
 
 Route::group(
     [
@@ -84,6 +89,11 @@ Route::group(
             '/game/score-lower',
             [Game::class, 'scoreLower']
         )->name('game.score-lower');
+
+        Route::get(
+            '/game/{game_id}/player-scores',
+            [Game::class, 'playerScores']
+        )->name('game.player-scores');
 
         Route::get(
             '/add-players-to-game/{game_id}',

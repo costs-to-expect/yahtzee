@@ -277,32 +277,36 @@
     }
 
     let score_yahtzee_bonus = function(element, show_toast = 'none') {
-        clearTimeout(timeout);
 
-        timeout = setTimeout(() => {
-            axios.post(
-                '/game/score-lower',
-                {
-                    game_id: game_id.value,
-                    player_id: player_id.value,
-                    combo: element.id,
-                    score: 100
-                }
-            )
-            .then(response => {
-                element.classList.remove('active');
-                element.classList.add('disabled');
-                element.disabled = true;
+        let yahtzee = document.querySelector('input[type="checkbox"]#yahtzee.disabled');
+        if (yahtzee !== null && yahtzee.checked === true) {
+            clearTimeout(timeout);
 
-                score_lower.innerText = response.data.score.lower;
-                total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+            timeout = setTimeout(() => {
+                axios.post(
+                    '/game/score-lower',
+                    {
+                        game_id: game_id.value,
+                        player_id: player_id.value,
+                        combo: element.id,
+                        score: 100
+                    }
+                )
+                    .then(response => {
+                        element.classList.remove('active');
+                        element.classList.add('disabled');
+                        element.disabled = true;
 
-                display_toast(show_toast);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        }, delay);
+                        score_lower.innerText = response.data.score.lower;
+                        total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+
+                        display_toast(show_toast);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }, delay);
+        }
     }
 
     let scratch_lower_combo = function(element, show_toast = 'none') {

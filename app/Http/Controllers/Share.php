@@ -16,6 +16,50 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class Share extends Controller
 {
+    public function playerScores(Request $request, string $token)
+    {
+        $parameters = $this->getParameters($token);
+
+        $api = new Service($parameters['owner_bearer']);
+
+        $players_response = $api->getGamePlayers(
+            $parameters['resource_type_id'],
+            $parameters['resource_id'],
+            $parameters['game_id']
+        );
+
+        if ($players_response['status'] !== 200) {
+            abort(404, 'Unable to find the game players');
+        }
+
+        $game_score_sheets_response = $api->getGameScoreSheets(
+            $parameters['resource_type_id'],
+            $parameters['resource_id'],
+            $parameters['game_id'],
+        );
+
+        if ($game_score_sheets_response['status'] !== 200) {
+            abort(404, 'Unable to fetch the game scores');
+        }
+
+        $scores = [];
+        foreach ($players_response['content'] as $player) {
+            $scores[$player['category']['id']] = [
+                'name' => $player['category']['name'],
+                'score' => 0
+            ];
+        }
+
+        foreach ($game_score_sheets_response['content'] as $score_sheet) {
+            $scores[$score_sheet['key']]['score'] = $score_sheet['value']['score']['total'];
+        }
+
+        return view(
+            'player-scores',
+            ['scores' => $scores]
+        );
+    }
+
     public function scoreSheet(Request $request, string $token)
     {
         $parameters = $this->getParameters($token);

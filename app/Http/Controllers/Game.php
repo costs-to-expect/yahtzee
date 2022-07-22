@@ -155,6 +155,47 @@ class Game extends Controller
         abort(500, 'Unable to complete the game, returned status code: ' . $result['status']);
     }
 
+    public function playerScores(Request $request, string $game_id)
+    {
+        $this->boostrap($request);
+
+        $players_response = $this->api->getGamePlayers(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id
+        );
+        if ($players_response['status'] !== 200) {
+            abort(404, 'Unable to find the game players');
+        }
+
+        $game_score_sheets_response = $this->api->getGameScoreSheets(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id
+        );
+
+        if ($game_score_sheets_response['status'] !== 200) {
+            abort(404, 'Unable to fetch the game scores');
+        }
+
+        $scores = [];
+        foreach ($players_response['content'] as $player) {
+            $scores[$player['category']['id']] = [
+                'name' => $player['category']['name'],
+                'score' => 0
+            ];
+        }
+
+        foreach ($game_score_sheets_response['content'] as $score_sheet) {
+            $scores[$score_sheet['key']]['score'] = $score_sheet['value']['score']['total'];
+        }
+
+        return view(
+            'player-scores',
+            ['scores' => $scores]
+        );
+    }
+
     public function scoreSheet(Request $request, string $game_id, string $player_id)
     {
         $this->boostrap($request);
