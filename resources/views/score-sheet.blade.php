@@ -540,7 +540,8 @@
                 </div>
             </footer>
         </div>
-        <x-toasts />
+
+        <x-toast />
         <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
         <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
         <script src="{{ asset('js/score-sheet.js') }}" defer></script>
