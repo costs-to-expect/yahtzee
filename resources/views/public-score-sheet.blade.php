@@ -534,6 +534,6 @@
         <x-toast />
         <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
         <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
-        <script src="{{ asset('js/public-score-sheet.js') }}" defer></script>
+        <script src="{{ asset('js/public-score-sheet.js?v0.7.0') }}" defer></script>
     </body>
 </html>
