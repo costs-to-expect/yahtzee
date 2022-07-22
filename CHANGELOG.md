@@ -2,6 +2,17 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.6.0] - 2022-07-22
+### Added
+- Added toast messages for scoreboard actions, toasts are selected from a random list for each action.
+
+### Changed
+- Added the @copyright headers for any files not part of a default Laravel project.
+- Don't load any Javascript (scoring) or the toasts view component when looking at the score sheet for a completed game.
+
+### Fixed
+- Delete the share tokens when a game completes.
+
 ## [0.5.0] - 2022-7-22
 ### Added
 - Added a complete game action, sets the winner, player scores and updates the game status.
