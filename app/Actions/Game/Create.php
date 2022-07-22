@@ -9,6 +9,11 @@ use App\Models\ShareToken;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ */
 class Create extends Action
 {
     public function __invoke(Service $api, string $resource_type_id, string $resource_id, array $input): int

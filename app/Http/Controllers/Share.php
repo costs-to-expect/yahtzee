@@ -9,6 +9,11 @@ use App\Models\ShareToken;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ */
 class Share extends Controller
 {
     public function scoreSheet(Request $request, string $token)

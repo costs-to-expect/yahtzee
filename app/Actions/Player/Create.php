@@ -6,6 +6,11 @@ namespace App\Actions\Player;
 use App\Actions\Action;
 use App\Api\Service;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ */
 class Create extends Action
 {
     public function __invoke(Service $api, string $resource_type_id, array $input): int

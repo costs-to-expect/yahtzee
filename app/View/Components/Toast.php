@@ -5,6 +5,11 @@ namespace App\View\Components;
 use Illuminate\Support\Arr;
 use Illuminate\View\Component;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ */
 class Toast extends Component
 {
     public array $messages;
