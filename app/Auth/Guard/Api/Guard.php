@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ */
 class Guard implements \Illuminate\Contracts\Auth\Guard
 {
     private UserProvider $user_provider;

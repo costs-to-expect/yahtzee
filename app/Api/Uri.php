@@ -5,6 +5,11 @@ namespace App\Api;
 
 use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ */
 class Uri
 {
     private const VERSION = 'v3';

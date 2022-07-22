@@ -540,7 +540,12 @@
                 </div>
             </footer>
         </div>
+
+        @if ($complete === 0)
+        <x-toast />
         <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
+        <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
         <script src="{{ asset('js/score-sheet.js') }}" defer></script>
+        @endif
     </body>
 </html>

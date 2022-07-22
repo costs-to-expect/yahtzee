@@ -7,6 +7,11 @@ namespace App\Auth\Guard\Api;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ */
 class User extends Authenticatable
 {
     protected $keyType = 'string';

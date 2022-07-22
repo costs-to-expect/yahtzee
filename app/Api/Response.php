@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ */
 class Response
 {
     private array $response;
