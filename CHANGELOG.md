@@ -2,7 +2,13 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [0.7.0] - [DATE]
+## [0.7.0] - [2022-07-23]
+### Added
+- Added a table to the bottom of each score sheet, shows all the player scores, delayed by thirty seconds.
+
+### Changed
+- Changed the URIs for all the share pages.
+
 ### Fixed
 - You can only score a Yahtzee bonus when a Yahtzee has been scored.
 

@@ -11,5 +11,5 @@ return [
     'cookie_user' => env('SESSION_NAME_USER'),
     'cookie_bearer' => env('SESSION_NAME_BEARER'),
     'version' => '0.7.0',
-    'release_date' => '22nd July 2022'
+    'release_date' => '23rd July 2022'
 ];
