@@ -22,7 +22,7 @@
                clearTimeout(timeout);
                timeout = setTimeout(() => {
                    axios.post(
-                       '/score-sheet/' + token.value + '/score-upper',
+                       '/public/score-sheet/' + token.value + '/score-upper',
                        {
                            dice: this.value,
                            score: 0
@@ -69,7 +69,7 @@
                 clearTimeout(timeout);
                 timeout = setTimeout(() => {
                     axios.post(
-                        '/score-sheet/' + token.value + '/score-upper',
+                        '/public/score-sheet/' + token.value + '/score-upper',
                         {
                             dice: this.id,
                             score: score
@@ -242,7 +242,7 @@
 
         timeout = setTimeout(() => {
             axios.post(
-                '/score-sheet/' + token.value + '/score-lower',
+                '/public/score-sheet/' + token.value + '/score-lower',
                 {
                     combo: element.id,
                     score: score
@@ -277,7 +277,7 @@
 
             timeout = setTimeout(() => {
                 axios.post(
-                    '/score-sheet/' + token.value + '/score-lower',
+                    '/public/score-sheet/' + token.value + '/score-lower',
                     {
                         combo: element.id,
                         score: 100
@@ -305,7 +305,7 @@
 
         timeout = setTimeout(() => {
             axios.post(
-                '/score-sheet/' + token.value + '/score-lower',
+                '/public/score-sheet/' + token.value + '/score-lower',
                 {
                     combo: element.id.toString().replace('scratch_', ''),
                     score: 0
@@ -335,7 +335,7 @@
 
         timeout = setTimeout(() => {
             axios.post(
-                '/score-sheet/' + token.value + '/score-lower',
+                '/public/score-sheet/' + token.value + '/score-lower',
                 {
                     combo: element.id.toString().replace('scratch_', ''),
                     score: 0

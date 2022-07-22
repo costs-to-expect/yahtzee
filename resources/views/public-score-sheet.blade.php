@@ -521,6 +521,7 @@
                     </div>
                 </div>
             </form>
+            <div class="player-scores"></div>
             <footer class="pt-4 my-4 text-muted border-top text-center">
                 Created by <a href="https://twitter.com/DBlackborough">Dean Blackborough</a><br />
                 powered by the <a href="https://api.costs-to-expect.com">Costs to Expect API</a>
@@ -535,5 +536,6 @@
         <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
         <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
         <script src="{{ asset('js/public-score-sheet.js?v0.7.0') }}" defer></script>
+        <script src="{{ asset('js/public-player-scores.js?v0.7.0') }}" defer></script>
     </body>
 </html>
