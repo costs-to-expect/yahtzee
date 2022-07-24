@@ -2,6 +2,13 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.8.0] - [2022-07-24]
+### Added
+- Confetti, who doesn't like confetti?
+
+### Changed
+- Slightly decreased the time before a save happens.
+
 ## [0.7.0] - [2022-07-23]
 ### Added
 - Added a table to the bottom of each score sheet, shows all the player scores, delayed by thirty seconds.
