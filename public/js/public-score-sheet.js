@@ -1,10 +1,10 @@
-(function (axios, bootstrap) {
+(function (axios, bootstrap, confetti) {
     'use strict'
 
     let token = document.getElementById('token');
 
     let timeout = null;
-    let delay = 1500;
+    let delay = 1000;
     let factors = { "ones": 1, "twos": 2, "threes": 3, "fours": 4, "fives": 5, "sixes": 6 }
 
     let score_upper = document.getElementById('upper-score');
@@ -233,7 +233,18 @@
     let display_toast = function (show_toast) {
         if (show_toast !== 'none') {
             const toast = new bootstrap.Toast(document.getElementById('toast_' + show_toast))
-            toast.show()
+            toast.show();
+
+            if (show_toast === 'yahtzee') {
+                confetti({
+                    particleCount: 100,
+                })
+            }
+            if (show_toast.startsWith('yahtzee_bonus')) {
+                confetti({
+                    particleCount: 500,
+                })
+            }
         }
     }
 
@@ -356,4 +367,4 @@
                 });
         }, delay);
     }
-})(axios, bootstrap);
+})(axios, bootstrap, confetti);
