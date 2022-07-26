@@ -7,6 +7,7 @@ use App\Actions\Game\AddPlayers;
 use App\Actions\Game\Complete;
 use App\Actions\Game\Create;
 use App\Actions\Game\Score;
+use App\Models\ShareToken;
 use Illuminate\Http\Request;
 
 /**
@@ -26,6 +27,45 @@ class Game extends Controller
                 'games' => $this->getGames($this->resource_type_id, $this->resource_id, ['complete' => 1, 'include-players' => 1]),
             ]
         );
+    }
+
+    public function show(Request $request, $game_id)
+    {
+        $this->boostrap($request);
+
+        $game = $this->api->getGame(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id,
+            ['include-players' => 1]
+        );
+
+        if ($game['status'] !== 200) {
+            abort(404, 'Unable to find the game');
+        }
+
+        $game_scores = [];
+        $game_score_sheets_response = $this->api->getGameScoreSheets(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game['content']['id']
+        );
+
+        if ($game_score_sheets_response['status'] === 200) {
+            foreach ($game_score_sheets_response['content'] as $score_sheet) {
+                $game_scores[$game['content']['id']][$score_sheet['key']] = $score_sheet['value']['score']['total'];
+            }
+        }
+
+        return view(
+            'game',
+            [
+                'game' => $game['content'],
+                'game_scores' => $game_scores,
+                'share_tokens' => (new ShareToken())->getShareTokens(),
+            ]
+        );
+
     }
 
     public function newGame(Request $request)
@@ -58,7 +98,7 @@ class Game extends Controller
         );
 
         if ($result === 201) {
-            return redirect()->route('home');
+            return redirect()->route('game.show', ['game_id' => $action->getGameId()]);
         }
 
         if ($result === 422) {
