@@ -69,7 +69,9 @@
                                 @endif
 
                                 <a href="{{ route('game.add-players.view', ['game_id' => $__open_game['id']]) }}" class="btn btn-sm btn-primary">Add Players</a>
+                                @if ($__open_game['complete'] !== 1)
                                 <form action="{{ route('game.complete', ['game_id' => $__open_game['id']]) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-sm btn-primary">Complete</button></form>
+                                @endif
                             </li>
                         @endforeach
                     </ul>
