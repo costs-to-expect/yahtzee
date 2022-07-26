@@ -2,6 +2,17 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.9.0] - [2022-07-26]
+### Added
+- Added a game detail page, for now, no extra data or statistics.
+
+### Changed
+- More details added to the player scores table at the bottom of the score sheet.
+- Start game redirects to the game detail page, no need to wait for API cache to be invalidated.
+
+### Fixed
+- The `complete` and `add players` buttons should only display when a game is incomplete.
+
 ## [0.8.0] - [2022-07-24]
 ### Added
 - Confetti, who doesn't like confetti?

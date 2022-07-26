@@ -75,6 +75,11 @@ Route::group(
             [Game::class, 'index']
         )->name('games');
 
+        Route::get(
+            '/games/{game_id}',
+            [Game::class, 'show']
+        )->name('game.show');
+
         Route::post(
             '/game/{game_id}/complete',
             [Game::class, 'complete']

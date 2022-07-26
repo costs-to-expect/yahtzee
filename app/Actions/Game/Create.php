@@ -35,23 +35,25 @@ class Create extends Action
 
             $config = Config::get('app.config');
 
+            $this->game_id = $create_game_response['content']['id'];
+
             foreach ($input['players'] as $player) {
                 $api->addPlayerToGame(
                     $resource_type_id,
                     $resource_id,
-                    $create_game_response['content']['id'],
+                    $this->game_id,
                     $player
                 );
 
                 try {
                     $token = new ShareToken();
                     $token->token = Str::uuid();
-                    $token->game_id = $create_game_response['content']['id'];
+                    $token->game_id = $this->game_id;
                     $token->player_id = $player;
                     $token->parameters = json_encode([
                         'resource_type_id' => $resource_type_id,
                         'resource_id' => $resource_id,
-                        'game_id' => $create_game_response['content']['id'],
+                        'game_id' => $this->game_id,
                         'player_id' => $player,
                         'owner_bearer' => request()->cookie($config['cookie_bearer'])
                     ], JSON_THROW_ON_ERROR);

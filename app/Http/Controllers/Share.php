@@ -46,12 +46,16 @@ class Share extends Controller
         foreach ($players_response['content'] as $player) {
             $scores[$player['category']['id']] = [
                 'name' => $player['category']['name'],
-                'score' => 0
+                'upper' => 0,
+                'lower' => 0,
+                'total' => 0
             ];
         }
 
         foreach ($game_score_sheets_response['content'] as $score_sheet) {
-            $scores[$score_sheet['key']]['score'] = $score_sheet['value']['score']['total'];
+            $scores[$score_sheet['key']]['upper'] = $score_sheet['value']['score']['upper'] + $score_sheet['value']['score']['bonus'];
+            $scores[$score_sheet['key']]['lower'] = $score_sheet['value']['score']['lower'];
+            $scores[$score_sheet['key']]['total'] = $score_sheet['value']['score']['total'];
         }
 
         return view(
