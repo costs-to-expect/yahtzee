@@ -2,6 +2,16 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.10.0] - [2022-07-28]
+### Added
+- Added player turns to the player scores table.
+
+### Changed
+- Removed some code scoring duplication in the `Game` and `Share` controllers.
+
+### Fixed
+- Disable the Yahtzee bonus inputs after player has made all their turns, page load and via Ajax.
+
 ## [0.9.0] - [2022-07-26]
 ### Added
 - Added a game detail page, for now, no extra data or statistics.
