@@ -114,6 +114,7 @@ class Share extends Controller
                 'token' => $token,
 
                 'score_sheet' => $player_score_sheet['content']['value'],
+                'turns' => $this->numberOfTurns($player_score_sheet['content']['value']),
                 'complete' => $game['complete']
             ]
         );
@@ -141,8 +142,7 @@ class Share extends Controller
         $score_sheet['score']['bonus'] = $score_bonus;
         $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
 
-        $action = new Score();
-        $result = $action(
+        return $this->score(
             $api,
             $parameters['resource_type_id'],
             $parameters['resource_id'],
@@ -150,15 +150,6 @@ class Share extends Controller
             $parameters['player_id'],
             $score_sheet
         );
-
-        if ($result === 204) {
-            return response()->json([
-                'message' => 'Score updated',
-                'score' => $score_sheet['score']
-            ]);
-        }
-
-        return response()->json(['message' => 'Failed to update your score sheet'], $result);
     }
 
     public function scoreLower(Request $request, $token)
@@ -178,8 +169,7 @@ class Share extends Controller
         $score_sheet['score']['lower'] = $score_lower;
         $score_sheet['score']['total'] = $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] + $score_lower;
 
-        $action = new Score();
-        $result = $action(
+        return $this->score(
             $api,
             $parameters['resource_type_id'],
             $parameters['resource_id'],
@@ -187,15 +177,6 @@ class Share extends Controller
             $parameters['player_id'],
             $score_sheet
         );
-
-        if ($result === 204) {
-            return response()->json([
-                'message' => 'Score updated',
-                'score' => $score_sheet['score']
-            ]);
-        }
-
-        return response()->json(['message' => 'Failed to update your score sheet'], $result);
     }
 
     #[ArrayShape([

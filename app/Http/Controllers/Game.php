@@ -296,6 +296,7 @@ class Game extends Controller
                 'player_name' => $player_name,
 
                 'score_sheet' => $player_score_sheet['content']['value'],
+                'turns' => $this->numberOfTurns($player_score_sheet['content']['value']),
                 'complete' => $game['complete']
             ]
         );
@@ -332,8 +333,7 @@ class Game extends Controller
         $score_sheet['score']['bonus'] = $score_bonus;
         $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
 
-        $action = new Score();
-        $result = $action(
+        return $this->score(
             $this->api,
             $this->resource_type_id,
             $this->resource_id,
@@ -341,15 +341,6 @@ class Game extends Controller
             $request->input('player_id'),
             $score_sheet
         );
-
-        if ($result === 204) {
-            return response()->json([
-                'message' => 'Score updated',
-                'score' => $score_sheet['score']
-            ]);
-        }
-
-        return response()->json(['message' => 'Failed to update your score sheet'], $result);
     }
 
     public function scoreLower(Request $request)
@@ -378,8 +369,7 @@ class Game extends Controller
         $score_sheet['score']['lower'] = $score_lower;
         $score_sheet['score']['total'] = $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] + $score_lower;
 
-        $action = new Score();
-        $result = $action(
+        return $this->score(
             $this->api,
             $this->resource_type_id,
             $this->resource_id,
@@ -387,14 +377,5 @@ class Game extends Controller
             $request->input('player_id'),
             $score_sheet
         );
-
-        if ($result === 204) {
-            return response()->json([
-                'message' => 'Score updated',
-                'score' => $score_sheet['score']
-            ]);
-        }
-
-        return response()->json(['message' => 'Failed to update your score sheet'], $result);
     }
 }
