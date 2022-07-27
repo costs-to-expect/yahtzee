@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th scope="col">Name</th>
+                <th scope="col">Turns</th>
                 <th scope="col">Upper</th>
                 <th scope="col">Lower</th>
                 <th scope="col">Total</th>
@@ -16,10 +17,11 @@
         </thead>
         <tbody class="table-group-divider">
             @foreach($scores as $__score)
-            <tr>
+            <tr @if ($__score['turns'] === 13) class="table-success" @endif>
                 <th scope="row">{{ $__score['name'] }}</th>
-                <td scope="row">{{ $__score['upper'] }}</td>
-                <td scope="row">{{ $__score['lower'] }}</td>
+                <td>{{ $__score['turns'] }}</td>
+                <td>{{ $__score['upper'] }}</td>
+                <td>{{ $__score['lower'] }}</td>
                 <th scope="row">{{ $__score['total'] }}</th>
             </tr>
             @endforeach

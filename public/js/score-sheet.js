@@ -41,6 +41,8 @@
                            upper.classList.add('disabled');
                            upper.value = 0;
                            upper.disabled = true;
+
+                           disable_yahtzee_bonus(response.data.turns);
                        })
                        .catch(error => {
                            console.log(error);
@@ -95,6 +97,8 @@
                         score_upper_total.innerText = response.data.score.upper + response.data.score.bonus;
                         score_lower_upper.innerText = response.data.score.upper + response.data.score.bonus;
                         total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+
+                        disable_yahtzee_bonus(response.data.turns);
                     })
                     .catch(error => {
                         console.log(error);
@@ -235,6 +239,14 @@
         });
     }
 
+    let disable_yahtzee_bonus = function(turns) {
+        if (turns === 13) {
+            yahtzee_bonus_one.disabled = true;
+            yahtzee_bonus_two.disabled = true;
+            yahtzee_bonus_three.disabled = true;
+        }
+    }
+
     let display_toast = function (show_toast) {
         if (show_toast !== 'none') {
             const toast = new bootstrap.Toast(document.getElementById('toast_' + show_toast))
@@ -279,6 +291,8 @@
                 score_lower.innerText = response.data.score.lower;
                 total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
 
+                disable_yahtzee_bonus(response.data.turns);
+
                 display_toast(show_toast);
             })
             .catch(error => {
@@ -310,6 +324,8 @@
 
                         score_lower.innerText = response.data.score.lower;
                         total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+
+                        disable_yahtzee_bonus(response.data.turns);
 
                         display_toast(show_toast);
                     })
@@ -344,6 +360,8 @@
                 lower.disabled = true;
                 lower.value = 0;
 
+                disable_yahtzee_bonus(response.data.turns);
+
                 display_toast(show_toast);
             })
             .catch(error => {
@@ -374,6 +392,8 @@
                 lower.classList.remove('active');
                 lower.classList.add('disabled');
                 lower.disabled = true;
+
+                disable_yahtzee_bonus(response.data.turns);
             })
             .catch(error => {
                 console.log(error);
