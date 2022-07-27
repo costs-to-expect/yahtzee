@@ -42,21 +42,10 @@ class Share extends Controller
             abort(404, 'Unable to fetch the game scores');
         }
 
-        $scores = [];
-        foreach ($players_response['content'] as $player) {
-            $scores[$player['category']['id']] = [
-                'name' => $player['category']['name'],
-                'upper' => 0,
-                'lower' => 0,
-                'total' => 0
-            ];
-        }
-
-        foreach ($game_score_sheets_response['content'] as $score_sheet) {
-            $scores[$score_sheet['key']]['upper'] = $score_sheet['value']['score']['upper'] + $score_sheet['value']['score']['bonus'];
-            $scores[$score_sheet['key']]['lower'] = $score_sheet['value']['score']['lower'];
-            $scores[$score_sheet['key']]['total'] = $score_sheet['value']['score']['total'];
-        }
+        $scores = $this->fetchPlayerScores(
+            $game_score_sheets_response['content'],
+            $players_response['content']
+        );
 
         return view(
             'player-scores',
