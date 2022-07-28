@@ -21,10 +21,21 @@ class Game extends Controller
     {
         $this->boostrap($request);
 
+        $games_response = $this->api->getGames(
+            $this->resource_type_id,
+            $this->resource_id,
+            ['complete' => 1, 'include-players' => 1]
+        );
+
+        $games = [];
+        if ($games_response['status'] === 200 && count($games_response['content']) > 0) {
+            $games = $games_response['content'];
+        }
+
         return view(
             'games',
             [
-                'games' => $this->getGames($this->resource_type_id, $this->resource_id, ['complete' => 1, 'include-players' => 1]),
+                'games' => $games,
             ]
         );
     }
@@ -72,13 +83,25 @@ class Game extends Controller
     {
         $this->boostrap($request);
 
+        $players_response = $this->api->getPlayers($this->resource_type_id);
+
+        $players = [];
+        if ($players_response['status'] === 200 && count($players_response['content']) > 0) {
+            foreach ($players_response['content'] as $player) {
+                $players[] = [
+                    'id' => $player['id'],
+                    'name' => $player['name']
+                ];
+            }
+        }
+
         return view(
             'new-game',
             [
                 'resource_type_id' => $this->resource_type_id,
                 'resource_id' => $this->resource_id,
 
-                'players' => $this->getPlayers($this->resource_type_id),
+                'players' => $players,
 
                 'errors' => session()->get('validation.errors')
             ]
@@ -114,12 +137,44 @@ class Game extends Controller
     {
         $this->boostrap($request);
 
-        $this->getGame($this->resource_type_id, $this->resource_id, $game_id);
+        $game_response = $this->api->getGame(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id
+        );
+
+        if ($game_response['status'] !== 200) {
+            abort($game_response['status'], $game_response['content']);
+        }
 
         $players = [];
         $game_players = [];
-        $all_players = $this->getPlayers($this->resource_type_id);
-        $assigned_game_players = $this->getGamePlayers($this->resource_type_id, $this->resource_id, $game_id);
+
+
+        $all_players_response = $this->api->getPlayers($this->resource_type_id);
+
+        $all_players = [];
+        if ($all_players_response['status'] === 200 && count($all_players_response['content']) > 0) {
+            foreach ($all_players_response['content'] as $player) {
+                $all_players[] = [
+                    'id' => $player['id'],
+                    'name' => $player['name']
+                ];
+            }
+        }
+
+        $game_players_response = $this->api->getGamePlayers(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id
+        );
+
+        $assigned_game_players = [];
+        if ($game_players_response['status'] === 200 && count($game_players_response['content']) > 0) {
+            foreach ($game_players_response['content'] as $player) {
+                $assigned_game_players[] = $player['category']['id'];
+            }
+        }
 
         foreach ($all_players as $player) {
             if (!in_array($player['id'], $assigned_game_players, true)) {
@@ -233,12 +288,18 @@ class Game extends Controller
     {
         $this->boostrap($request);
 
-        $game = $this->getGame(
+        $game_response = $this->api->getGame(
             $this->resource_type_id,
             $this->resource_id,
             $game_id,
             ['include-players' => 1]
         );
+
+        if ($game_response['status'] !== 200) {
+            abort($game_response['status'], $game_response['content']);
+        }
+
+        $game = $game_response['content'];
 
         $player_name = '';
         foreach ($game['players']['collection'] as $__player) {

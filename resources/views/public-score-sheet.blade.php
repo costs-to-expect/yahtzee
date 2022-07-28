@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Yahtzee Game Score by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
-        <title>Let's play Yahtzee</title>
+        <title>Hey {{ $player_name }}, play Yahtzee with us!</title>
         <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
         <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
@@ -13,6 +13,8 @@
     <body>
         <div class="col-lg-8 mx-auto p-3 py-md-5">
             <x-layout.header />
+
+            <h1>Player: {{ $player_name }}</h1>
 
             <form>
                 <input type="hidden" id="token" name="token" value="{{ $token }}" />
