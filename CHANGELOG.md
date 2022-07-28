@@ -2,6 +2,13 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.11.0] - [2022-07-28]
+### Changed
+- Added the player name to the public share score sheets.
+- Updated all scoring functions to allow toasts.
+- Refacoring of the score sheet javascript to support new functions and new features.
+- Cleaned up the base controller, removed a couple of pointless methods.
+
 ## [0.10.0] - [2022-07-28]
 ### Added
 - Added player turns to the player scores table.
