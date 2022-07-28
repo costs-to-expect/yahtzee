@@ -82,69 +82,6 @@ class Controller extends BaseController
         }
     }
 
-    protected function getGame(
-        string $resource_type_id,
-        string $resource_id,
-        string $game_id,
-        array $parameters = []
-    )
-    {
-        $game_response = $this->api->getGame($resource_type_id, $resource_id, $game_id, $parameters);
-
-        if ($game_response['status'] === 200) {
-            return $game_response['content'];
-        }
-
-        abort($game_response['status'], $game_response['content']);
-    }
-
-    protected function getGamePlayers(string $resource_type_id, string $resource_id, string $game_id)
-    {
-        $game_players_response = $this->api->getGamePlayers($resource_type_id, $resource_id, $game_id);
-
-        $players = [];
-        if ($game_players_response['status'] === 200 && count($game_players_response['content']) > 0) {
-            foreach ($game_players_response['content'] as $player) {
-                $players[] = $player['category']['id'];
-            }
-        }
-
-        return $players;
-    }
-
-    protected function getGames(string $resource_type_id, string $resource_id, array $parameters = []): array
-    {
-        $games_response = $this->api->getGames(
-            $resource_type_id,
-            $resource_id,
-            $parameters
-        );
-
-        $games = [];
-        if ($games_response['status'] === 200 && count($games_response['content']) > 0) {
-            return $games_response['content'];
-        }
-
-        return $games;
-    }
-
-    protected function getPlayers(string $resource_type_id, array $parameters = []): array
-    {
-        $players_response = $this->api->getPlayers($resource_type_id, $parameters);
-
-        $players = [];
-        if ($players_response['status'] === 200 && count($players_response['content']) > 0) {
-            foreach ($players_response['content'] as $player) {
-                $players[] = [
-                    'id' => $player['id'],
-                    'name' => $player['name']
-                ];
-            }
-        }
-
-        return $players;
-    }
-
     protected function score(
         Service $api,
         string $resource_type_id,

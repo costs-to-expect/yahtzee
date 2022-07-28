@@ -17,10 +17,22 @@ class Player extends Controller
     {
         $this->boostrap($request);
 
+        $players_response = $this->api->getPlayers($this->resource_type_id);
+
+        $players = [];
+        if ($players_response['status'] === 200 && count($players_response['content']) > 0) {
+            foreach ($players_response['content'] as $player) {
+                $players[] = [
+                    'id' => $player['id'],
+                    'name' => $player['name']
+                ];
+            }
+        }
+
         return view(
             'players',
             [
-                'players' => $this->getPlayers($this->resource_type_id),
+                'players' => $players,
             ]
         );
     }

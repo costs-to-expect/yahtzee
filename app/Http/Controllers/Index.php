@@ -17,25 +17,39 @@ class Index extends Controller
     {
         $this->boostrap($request);
 
-        $open_games = $this->getGames(
+        $open_games_response = $this->api->getGames(
             $this->resource_type_id,
             $this->resource_id,
-            [
-                'complete' => 0,
-                'include-players' => 1
-            ]
+            ['complete' => 0, 'include-players' => 1]
         );
 
-        $closed_games = $this->getGames(
+        $open_games = [];
+        if ($open_games_response['status'] === 200 && count($open_games_response['content']) > 0) {
+            $open_games = $open_games_response['content'];
+        }
+
+        $closed_games_response = $this->api->getGames(
             $this->resource_type_id,
             $this->resource_id,
-            [
-                'complete' => 1,
-                'limit' => 5,
-                'include-players' => 1
-            ]
+            ['complete' => 1, 'limit' => 5, 'include-players' => 1]
         );
-        $players = $this->getPlayers($this->resource_type_id, ['limit' => 5]);
+
+        $closed_games = [];
+        if ($closed_games_response['status'] === 200 && count($closed_games_response['content']) > 0) {
+            $closed_games = $closed_games_response['content'];
+        }
+
+        $players_response = $this->api->getPlayers($this->resource_type_id, ['limit'=> 5]);
+
+        $players = [];
+        if ($players_response['status'] === 200 && count($players_response['content']) > 0) {
+            foreach ($players_response['content'] as $player) {
+                $players[] = [
+                    'id' => $player['id'],
+                    'name' => $player['name']
+                ];
+            }
+        }
 
         $game_scores = [];
         foreach ($open_games as $game) {
