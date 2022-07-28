@@ -52,6 +52,7 @@ class AddPlayers extends Action
                         'resource_id' => $resource_id,
                         'game_id' => $game_id,
                         'player_id' => $player,
+                        'player_name' => $response['content']['category']['name'],
                         'owner_bearer' => request()->cookie($config['cookie_bearer'])
                     ], JSON_THROW_ON_ERROR);
                     $token->save();

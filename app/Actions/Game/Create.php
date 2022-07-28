@@ -38,7 +38,7 @@ class Create extends Action
             $this->game_id = $create_game_response['content']['id'];
 
             foreach ($input['players'] as $player) {
-                $api->addPlayerToGame(
+                $response = $api->addPlayerToGame(
                     $resource_type_id,
                     $resource_id,
                     $this->game_id,
@@ -55,6 +55,7 @@ class Create extends Action
                         'resource_id' => $resource_id,
                         'game_id' => $this->game_id,
                         'player_id' => $player,
+                        'player_name' => $response['content']['category']['name'],
                         'owner_bearer' => request()->cookie($config['cookie_bearer'])
                     ], JSON_THROW_ON_ERROR);
                     $token->save();

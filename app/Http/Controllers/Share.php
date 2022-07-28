@@ -102,6 +102,7 @@ class Share extends Controller
             [
                 'token' => $token,
 
+                'player_name' => $parameters['player_name'],
                 'score_sheet' => $player_score_sheet['content']['value'],
                 'turns' => $this->numberOfTurns($player_score_sheet['content']['value']),
                 'complete' => $game['complete']
@@ -173,6 +174,7 @@ class Share extends Controller
         'resource_id' => "string",
         'game_id' => "string",
         'player_id' => "string",
+        'player_name' => 'string',
         'owner_bearer' => "string"
     ])]
     private function getParameters($token): array
@@ -186,6 +188,10 @@ class Share extends Controller
             $parameters = json_decode($parameters->parameters, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             abort(500, 'Failed to decode the parameters for the token');
+        }
+
+        if (array_key_exists('player_name', $parameters) === false) {
+            $parameters['player_name'] = 'Yahtzee Player';
         }
 
         return $parameters;
