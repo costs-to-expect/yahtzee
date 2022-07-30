@@ -22,7 +22,7 @@ class Share extends Controller
 
         $api = new Service($parameters['owner_bearer']);
 
-        $players_response = $api->getGamePlayers(
+        $players_response = $api->getAssignedGamePlayers(
             $parameters['resource_type_id'],
             $parameters['resource_id'],
             $parameters['game_id']

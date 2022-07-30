@@ -30,7 +30,7 @@ class Service
         string $player_id
     ): array
     {
-        $uri = Uri::gamePlayers($resource_type_id, $resource_id, $game_id);
+        $uri = Uri::assignedGamePlayers($resource_type_id, $resource_id, $game_id);
 
         return $this->http->post(
             $uri['uri'],
@@ -40,6 +40,9 @@ class Service
         );
     }
 
+    /**
+     * @throws \JsonException
+     */
     #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
     public function addScoreSheetForPlayer(
         string $resource_type_id,
@@ -174,14 +177,14 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
-    public function getGamePlayers(
+    public function getAssignedGamePlayers(
         string $resource_type_id,
         string $resource_id,
         string $game_id,
         array $parameters = []
     ): array
     {
-        $uri = Uri::gamePlayers($resource_type_id, $resource_id, $game_id, $parameters);
+        $uri = Uri::assignedGamePlayers($resource_type_id, $resource_id, $game_id, $parameters);
 
         return $this->http->get($uri['uri']);
     }

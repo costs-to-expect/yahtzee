@@ -2,18 +2,21 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [0.12.0] - [Date]
+## [0.12.0] - [2022-07-30]
 ### Added
 - Added a "Complete & Play Again" button, sets up a new game with the same players.
 ### Changed
 - Increased the size of all scoring checkboxes.
 - Increased the spacing between Yahtzee bonus checkboxes.
+- Tweaked the layout of the Yahtzee bonus section
+### Fixed
+- Allow a player to score zero, reworked the scoring logic to allow for this.
 
 ## [0.11.0] - [2022-07-28]
 ### Changed
 - Added the player name to the public share score sheets.
 - Updated all scoring functions to allow toasts.
-- Refacoring of the score sheet javascript to support new functions and new features.
+- Refactoring of the score sheet javascript to support new functions and new features.
 - Cleaned up the base controller, removed a couple of pointless methods.
 
 ## [0.10.0] - [2022-07-28]
