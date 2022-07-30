@@ -2,6 +2,13 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.12.0] - [Date]
+### Added
+- Added a "Complete & Play Again" button, sets up a new game with the same players.
+### Changed
+- Increased the size of all scoring checkboxes.
+- Increased the spacing between Yahtzee bonus checkboxes.
+
 ## [0.11.0] - [2022-07-28]
 ### Changed
 - Added the player name to the public share score sheets.
