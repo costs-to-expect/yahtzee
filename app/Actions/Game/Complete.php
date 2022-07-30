@@ -14,7 +14,12 @@ use App\Models\ShareToken;
  */
 class Complete extends Action
 {
-    public function __invoke(Service $api, string $resource_type_id, string $resource_id, string $game_id): int
+    public function __invoke(
+        Service $api,
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id
+    ): int
     {
         $game_response = $api->getGame(
             $resource_type_id,
