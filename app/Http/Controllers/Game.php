@@ -250,6 +250,64 @@ class Game extends Controller
         abort(500, 'Unable to complete the game, returned status code: ' . $result['status']);
     }
 
+    public function completeAndPlayAgain(Request $request, string $game_id)
+    {
+        $this->boostrap($request);
+
+        $action = new Complete();
+        try {
+            $result = $action(
+                $this->api,
+                $this->resource_type_id,
+                $this->resource_id,
+                $game_id
+            );
+
+            if ($result === 204) {
+
+                $game_response = $this->api->getGame(
+                    $this->resource_type_id,
+                    $this->resource_id,
+                    $game_id,
+                    ['include-players' => 1]
+                );
+
+                if ($game_response['status'] !== 200) {
+                   abort(404, 'Unable to find the game');
+                }
+
+                $players = [];
+
+                foreach($game_response['content']['players']['collection'] as $player) {
+                    $players[] = $player['id'];
+                }
+
+                $create_action = new Create();
+                $result = $create_action(
+                    $this->api,
+                    $this->resource_type_id,
+                    $this->resource_id,
+                    [
+                        'name' => 'Yahtzee game',
+                        'description' => 'Yahtzee game create via the Yahtzee app',
+                        'players' => $players
+                    ]
+                );
+
+                if ($result === 201) {
+                    return redirect()->route('game.show', ['game_id' => $create_action->getGameId()]);
+                }
+
+                abort($result, $create_action->getMessage());
+
+            }
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+
+        abort(500, 'Unable to complete the game, returned status code: ' . $result['status']);
+    }
+
     public function playerScores(Request $request, string $game_id)
     {
         $this->boostrap($request);
