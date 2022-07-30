@@ -163,7 +163,7 @@ class Game extends Controller
             }
         }
 
-        $game_players_response = $this->api->getGamePlayers(
+        $game_players_response = $this->api->getAssignedGamePlayers(
             $this->resource_type_id,
             $this->resource_id,
             $game_id
@@ -312,7 +312,7 @@ class Game extends Controller
     {
         $this->boostrap($request);
 
-        $players_response = $this->api->getGamePlayers(
+        $players_response = $this->api->getAssignedGamePlayers(
             $this->resource_type_id,
             $this->resource_id,
             $game_id
