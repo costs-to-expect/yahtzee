@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use App\Actions\Game\AddPlayers;
 use App\Actions\Game\Complete;
 use App\Actions\Game\Create;
-use App\Actions\Game\Score;
 use App\Models\ShareToken;
 use Illuminate\Http\Request;
 
@@ -323,6 +322,36 @@ class Game extends Controller
         }
 
         abort(500, 'Unable to complete the game, returned status code: ' . $result['status']);
+    }
+
+    public function playerBonus(Request $request, string $game_id, string $player_id)
+    {
+        $this->boostrap($request);
+
+        $game_response = $this->api->getGame(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id
+        );
+
+        if ($game_response['status'] !== 200) {
+            abort(404, 'Game not found');
+        }
+
+        $player_score_sheet_response = $this->api->getPlayerScoreSheet(
+            $this->resource_type_id,
+            $this->resource_id,
+            $game_id,
+            $player_id
+        );
+
+        if ($player_score_sheet_response['status'] !== 200) {
+            abort(404, 'Player score sheet not found');
+        }
+
+        $upper_section = $player_score_sheet_response['content']['value']['upper-section'];
+
+        return $this->playerBonusMessage($game_id, $player_id, $upper_section);
     }
 
     public function playerScores(Request $request, string $game_id)

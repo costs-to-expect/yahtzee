@@ -157,4 +157,129 @@ class Controller extends BaseController
 
         return $scores;
     }
+
+    protected function playerBonusMessage(string $game_id, string $player_id, array $upper_section)
+    {
+        if (count($upper_section) === 0) {
+            $message = 'Looking good, you haven\'t messed up yet, only because you haven\'t done anything!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        $total = 0;
+        $dice_scored = [];
+        $dice_scratched = [];
+        $dice_to_score = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'];
+        $dice_values = ['ones' => 1, 'twos' => 2, 'threes' => 3, 'fours' => 4, 'fives' => 5, 'sixes' => 6];
+        foreach ($upper_section as $dice => $score) {
+            $total += $score;
+            if ($score !== 0) {
+                unset($dice_to_score[array_search($dice, $dice_to_score, true)]);
+                $dice_scored[] = $dice;
+            } else {
+                unset($dice_to_score[array_search($dice, $dice_to_score, true)]);
+                $dice_scratched[] = $dice;
+            }
+        }
+
+        if ($total === 63 && count($dice_scored) === 6) {
+            $message = 'Damn, that was close, next time, give yourself some breathing room!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total > 75 && count($dice_scored) === 6) {
+            $message = 'WOW, someone is showing off!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total > 63 && count($dice_scored) === 6) {
+            $message = 'Awesome, plenty of breathing room!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total > 75 && count($dice_scratched) > 0) {
+            $message = 'Um! How exactly did you manage to get your bonus!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total > 63 && count($dice_scratched) > 0) {
+            $message = 'WOW, nothing like scoring the bonus whilst scratching!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total === 63 && (count($dice_scored) + count($dice_scratched)) === 6) {
+            $message = 'Damn, that was close, next time, give yourself some breathing room!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total === 62 && (count($dice_scored) + count($dice_scratched)) === 6) {
+            $message = 'You were robbed! You needed one point, anyone got one spare?';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total < 62 && (count($dice_scored) + count($dice_scratched)) === 6) {
+            $message = 'Oh! Time to play the tiny little violin just for you!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if (
+            $total < 63 && (count($dice_scored) + count($dice_scratched)) < 6
+        ) {
+            $threes_total = $total;
+            $fours_total = $total;
+            foreach($dice_to_score as $dice) {
+                $threes_total += ($dice_values[$dice] * 3);
+                $fours_total += ($dice_values[$dice] * 4);
+            }
+
+            if ($threes_total === 63) {
+                $message = 'Looking good, you haven\'t messed up yet, you just need three of everything left!';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+            if ($threes_total > 63) {
+                if ((count($dice_scored) + count($dice_scratched)) === 5) {
+                    $message = 'You can still easily get the bonus, three of the last please!';
+                    return $this->playerBonusView($game_id, $player_id, $message);
+                }
+                $message = 'You can still easily get the bonus';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+            if ($fours_total === 63) {
+                $message = 'Looking good, you haven\'t messed up yet, you can still score the bonus without a Yahtzee!';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+            if ($fours_total > 63) {
+                if ((count($dice_scored) + count($dice_scratched)) === 5) {
+                    $message = 'You can still get the bonus, four of the last please!';
+                    return $this->playerBonusView($game_id, $player_id, $message);
+                }
+
+                $message = 'You can still get the bonus, you need four of something';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+            if ($fours_total < 63) {
+                $message = 'Scoring four of everything won\'t help!';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+
+            if ($threes_total < 63) {
+                $message = 'Scoring three of everything won\'t help!';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+        }
+
+        $message = 'No message for you! I can\'t think of anything to say, do something interesting and things might change!';
+        return $this->playerBonusView($game_id, $player_id, $message);
+    }
+
+    protected function playerBonusView(string $game_id, string $player_id, string $message)
+    {
+        return view(
+            'bonus',
+            [
+                'message' => $message,
+                'game_id' => $game_id,
+                'player_id' => $player_id,
+            ]
+        );
+    }
 }
