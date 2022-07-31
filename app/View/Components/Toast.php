@@ -26,6 +26,14 @@ class Toast extends Component
                 [
                     'heading' => '50 points in the bag!',
                     'message' => 'Are you going to try for a Yahtzee bonus?',
+                ],
+                [
+                    'heading' => '50 points!',
+                    'message' => 'Well done, this should help, now go score a Yahtzee bonus!',
+                ],
+                [
+                    'heading' => 'Fifty points!',
+                    'message' => 'Look at everyone, they can\'t believe it',
                 ]
             ],
             'toast_yahtzee_scratch' => [
@@ -34,7 +42,7 @@ class Toast extends Component
                     'message' => 'I\'m guessing the game isn\'t going too well.',
                 ],
                 [
-                    'heading' => 'Bye-bye 50 points!',
+                    'heading' => 'Oops!',
                     'message' => 'Did you click the wrong button?',
                 ],
                 [
@@ -46,24 +54,48 @@ class Toast extends Component
                 [
                     'heading' => 'Oh dear!',
                     'message' => 'Why are you scratching chance, what is going on?',
+                ],
+                [
+                    'heading' => 'Really!',
+                    'message' => 'What is wrong with you, do you know how to play?',
                 ]
             ],
             'toast_yahtzee_bonus_one' => [
                 [
                     'heading' => 'Yahtzee X 2',
                     'message' => 'Have you considered giving the other players a chance?',
+                ],
+                [
+                    'heading' => 'Yahtzee X 2',
+                    'message' => 'Yes, the other players suck!',
                 ]
             ],
             'toast_yahtzee_bonus_two' => [
                 [
                     'heading' => 'Yahtzee X 3',
                     'message' => 'Do the other players hate you?',
+                ],
+                [
+                    'heading' => 'Bonus X 2',
+                    'message' => 'Was one bonus not enough?',
+                ],
+                [
+                    'heading' => 'Bonus X 2',
+                    'message' => 'OMG!, are you going for three?',
                 ]
             ],
             'toast_yahtzee_bonus_three' => [
                 [
                     'heading' => 'Yahtzee X 4',
                     'message' => 'GAME OVER!',
+                ],
+                [
+                    'heading' => 'Yahtzee X 4',
+                    'message' => 'Score another bonus, I dare you!',
+                ],
+                [
+                    'heading' => 'Bonus X 3',
+                    'message' => 'Please don\'t score another bonus, we will need another checkbox!',
                 ]
             ],
         ];

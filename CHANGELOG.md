@@ -2,6 +2,13 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.13.0] - [2022-07-31]
+### Added
+- Added pagination to the games list, we can now see all games and how many we have played.
+- Added additional toast messages options.
+### Changed
+- Minor change to the layout of open games ready for more buttons.
+
 ## [0.12.0] - [2022-07-30]
 ### Added
 - Added a "Complete & Play Again" button, sets up a new game with the same players.
