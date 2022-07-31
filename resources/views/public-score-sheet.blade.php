@@ -131,6 +131,9 @@
                         <h3 class="text-center score text-black"><strong>Total</strong></h3>
                         <h2 class="text-center mb-0 score total" id="upper-total">{{ $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] }}</h2>
                     </div>
+                    <div class="col-12 bonus-message">
+
+                    </div>
                 </div>
 
                 <div class="row">
@@ -540,5 +543,6 @@
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
         <script src="{{ asset('js/public-score-sheet.js?v0.7.0') }}" defer></script>
         <script src="{{ asset('js/public-player-scores.js?v0.7.0') }}" defer></script>
+        <script src="{{ asset('js/public-bonus-message.js?v0.14.0') }}" defer></script>
     </body>
 </html>

@@ -2,6 +2,10 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.14.0] - [2022-07-31]
+### Added
+- Added a message about your bonus!
+
 ## [0.13.0] - [2022-07-31]
 ### Added
 - Added pagination to the games list, we can now see all games and how many we have played.

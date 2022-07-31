@@ -42,6 +42,11 @@ Route::get(
     [Share::class, 'playerScores']
 )->name('public.player-scores');
 
+Route::get(
+    '/public/game/{token}/bonus',
+    [Share::class, 'playerBonus']
+)->name('public.bonus');
+
 Route::group(
     [
         'middleware' => [
@@ -94,6 +99,11 @@ Route::group(
             '/game/score-upper',
             [Game::class, 'scoreUpper']
         )->name('game.score-upper');
+
+        Route::get(
+            '/game/{game_id}/player/{player_id}/bonus',
+            [Game::class, 'playerBonus']
+        )->name('game.player.bonus');
 
         Route::post(
             '/game/score-lower',

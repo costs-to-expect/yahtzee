@@ -11235,4 +11235,9 @@ a.nav-link.active {
   text-decoration: underline;
 }
 
+div.bonus-message p {
+  margin-top: 1rem;
+  border: 1px solid #892b7c;
+}
+
 /*# sourceMappingURL=theme.css.map */
