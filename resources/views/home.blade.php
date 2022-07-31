@@ -43,7 +43,7 @@
                                 <ul class="list-unstyled mb-2">
 
                                     @foreach ($__open_game['players']['collection'] as $__player)
-                                        <li>
+                                        <li class="pb-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                                                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                                             </svg>
@@ -58,11 +58,12 @@
                                                 (0 pts)
                                             @endif
 
-                                            <a href="{{ route('game.score-sheet', ['game_id' => $__open_game['id'], 'player_id' => $__player['id']]) }}">[Score sheet]</a>
-
-                                            @if (array_key_exists($__open_game['id'], $share_tokens) && array_key_exists($__player['id'], $share_tokens[$__open_game['id']]))
-                                                <a href="{{ route('public.score-sheet', ['token' => $share_tokens[$__open_game['id']][$__player['id']]]) }}">[Share]</a>
-                                            @endif
+                                            <ul class="list-inline ps-4">
+                                                <li class="list-inline-item"><a href="{{ route('game.score-sheet', ['game_id' => $__open_game['id'], 'player_id' => $__player['id']]) }}">[Score sheet]</a></li>
+                                                @if (array_key_exists($__open_game['id'], $share_tokens) && array_key_exists($__player['id'], $share_tokens[$__open_game['id']]))
+                                                    <li class="list-inline-item"><a href="{{ route('public.score-sheet', ['token' => $share_tokens[$__open_game['id']][$__player['id']]]) }}">[Share]</a></li>
+                                                @endif
+                                            </ul>
                                         </li>
                                     @endforeach
                                 </ul>

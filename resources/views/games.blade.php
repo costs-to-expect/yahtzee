@@ -26,7 +26,41 @@
 
                 <p class="lead">Start a new <a href="{{ route('game.create.view') }}">game</a>.</p>
 
+                <hr />
+
                 @if (count($games) > 0)
+
+                    <nav aria-label="Page pagination">
+                        <ul class="pagination pagination-sm justify-content-center">
+                            @if ($pagination['previous'])
+                            <li class="page-item">
+                                <a class="page-link" href="{{ route('games', ['offset' => max($pagination['offset'] - $pagination['limit'], 0), 'limit' => $pagination['limit']]) }}">Previous</a>
+                            </li>
+                            @else
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                            @endif
+                            <li class="page-item">
+                                <span class="page-link">
+                                    {{ $pagination['offset'] + 1 }} -
+                                    {{ min($pagination['offset'] + $pagination['limit'], $pagination['total']) }}
+                                    of
+                                    {{ $pagination['total'] }}
+                                </span>
+                            </li>
+                            @if ($pagination['next'])
+                            <li class="page-item">
+                                <a class="page-link" href="{{ route('games', ['offset' => $pagination['offset'] + $pagination['limit'], 'limit' => $pagination['limit']]) }}">Next</a>
+                            </li>
+                            @else
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                            @endif
+                        </ul>
+                    </nav>
+
                     <ul class="list-unstyled">
                         @foreach ($games as $__game)
                             <li class="mb-3">

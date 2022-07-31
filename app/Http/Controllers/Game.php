@@ -21,11 +21,27 @@ class Game extends Controller
     {
         $this->boostrap($request);
 
+        $offset = (int) $request->query('offset', 0);
+        $limit = (int) $request->query('limit', 10);
+
         $games_response = $this->api->getGames(
             $this->resource_type_id,
             $this->resource_id,
-            ['complete' => 1, 'include-players' => 1]
+            [
+                'complete' => 1,
+                'include-players' => 1,
+                'offset' => $offset,
+                'limit' => $limit
+            ]
         );
+
+        $pagination = [
+            'previous' => ($games_response['headers']['X-Link-Previous'][0] !== ''),
+            'next' => ($games_response['headers']['X-Link-Next'][0] !== ''),
+            'offset' => $games_response['headers']['X-Offset'][0],
+            'limit' => $games_response['headers']['X-Limit'][0],
+            'total' => $games_response['headers']['X-Total-Count'][0],
+        ];
 
         $games = [];
         if ($games_response['status'] === 200 && count($games_response['content']) > 0) {
@@ -35,6 +51,7 @@ class Game extends Controller
         return view(
             'games',
             [
+                'pagination' => $pagination,
                 'games' => $games,
             ]
         );
