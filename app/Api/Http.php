@@ -35,7 +35,8 @@ class Http
         return match ($response->status()) {
             200 => [
                 'status' => $response->status(),
-                'content' => $response->json()
+                'content' => $response->json(),
+                'headers' => $response->headers()
             ],
             404 => [
                 'status' => 404,

@@ -189,7 +189,7 @@ class Service
         return $this->http->get($uri['uri']);
     }
 
-    #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'headers' => "array"])]
     public function getGames(
         string $resource_type_id,
         string $resource_id,
