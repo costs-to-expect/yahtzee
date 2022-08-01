@@ -295,6 +295,10 @@
                 disable_yahtzee_bonus(response.data.turns);
 
                 display_toast(show_toast);
+
+                document.querySelectorAll('p.' + element.id + '_dice svg').forEach(dice =>
+                    dice.classList.add('scored')
+                );
             })
             .catch(error => {
                 console.log(error);
@@ -327,6 +331,10 @@
                         disable_yahtzee_bonus(response.data.turns);
 
                         display_toast(show_toast);
+
+                        document.querySelectorAll('p.' + element.id + '_dice svg').forEach(dice =>
+                            dice.classList.add('scored')
+                        );
                     })
                     .catch(error => {
                         console.log(error);
@@ -360,6 +368,10 @@
                 disable_yahtzee_bonus(response.data.turns);
 
                 display_toast(show_toast);
+
+                document.querySelectorAll('p.' + element.id.toString().replace('scratch_', '') + '_dice svg').forEach(dice =>
+                    dice.classList.add('scored')
+                );
             })
             .catch(error => {
                 console.log(error);
@@ -389,6 +401,10 @@
                     lower.disabled = true;
 
                     disable_yahtzee_bonus(response.data.turns);
+
+                    document.querySelectorAll('p.' + element.id.toString().replace('scratch_', '') + '_dice svg').forEach(dice =>
+                        dice.classList.add('scored')
+                    );
                 })
                 .catch(error => {
                     console.log(error);
