@@ -11326,4 +11326,9 @@ div.bonus-message p {
   border: 1px solid #892b7c;
 }
 
+svg.scored {
+  border-radius: 0.3rem;
+  background-color: rgba(137, 43, 124, 0.4);
+}
+
 /*# sourceMappingURL=theme.css.map */
