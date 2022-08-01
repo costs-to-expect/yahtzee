@@ -1,11 +1,14 @@
-(function (axios, bootstrap, confetti) {
-    'use strict'
+import { display_selected_toast, disable_yahtzee_bonus_if_game_over } from './functions.js';
 
-    let uri_score_upper = '/game/score-upper';
-    let uri_score_lower = '/game/score-lower';
+(function (axios) {
+    'use strict'
 
     let game_id = document.getElementById('game_id');
     let player_id = document.getElementById('player_id');
+    let token = document.getElementById('token');
+
+    let uri_score_upper = (token == null) ? '/game/score-upper' : '/public/score-sheet/' + token.value + '/score-upper';
+    let uri_score_lower = (token == null) ? '/game/score-lower' : '/public/score-sheet/' + token.value + '/score-lower';
 
     let timeout = null;
     let delay = 1000;
@@ -151,34 +154,6 @@
         });
     }
 
-    let disable_yahtzee_bonus_if_game_over = function(turns) {
-        if (turns === 13) {
-            yahtzee_bonus_one.disabled = true;
-            yahtzee_bonus_two.disabled = true;
-            yahtzee_bonus_three.disabled = true;
-
-            display_selected_toast('done');
-        }
-    }
-
-    let display_selected_toast = function (show_toast) {
-        if (show_toast !== 'none') {
-            const toast = new bootstrap.Toast(document.getElementById('toast_' + show_toast))
-            toast.show();
-
-            if (show_toast === 'yahtzee') {
-                confetti({
-                    particleCount: 100,
-                })
-            }
-            if (show_toast.startsWith('yahtzee_bonus')) {
-                confetti({
-                    particleCount: 500,
-                })
-            }
-        }
-    }
-
     let score_lower_combination = function(element, show_toast = 'none') {
 
         let score = parseInt(element.value);
@@ -187,14 +162,22 @@
             clearTimeout(timeout);
 
             timeout = setTimeout(() => {
+
+                let payload = {
+                    combo: element.id,
+                    score: score
+                }
+
+                if (token === null) {
+                    payload.game_id = game_id.value;
+                    payload.player_id = player_id.value;
+                } else {
+                    payload.token = token;
+                }
+
                 axios.post(
                     uri_score_lower,
-                    {
-                        game_id: game_id.value,
-                        player_id: player_id.value,
-                        combo: element.id,
-                        score: score
-                    }
+                    payload
                 )
                 .then(response => {
                     element.classList.remove('active');
@@ -229,14 +212,22 @@
         clearTimeout(timeout);
 
         timeout = setTimeout(() => {
+
+            let payload = {
+                combo: element.id,
+                score: score
+            }
+
+            if (token === null) {
+                payload.game_id = game_id.value;
+                payload.player_id = player_id.value;
+            } else {
+                payload.token = token;
+            }
+
             axios.post(
                 uri_score_lower,
-                {
-                    game_id: game_id.value,
-                    player_id: player_id.value,
-                    combo: element.id,
-                    score: score
-                }
+                payload
             )
             .then(response => {
                 element.classList.remove('active');
@@ -270,14 +261,22 @@
         clearTimeout(timeout);
 
         timeout = setTimeout(() => {
+
+            let payload = {
+                combo: element.id.toString().replace('scratch_', ''),
+                score: 0
+            }
+
+            if (token === null) {
+                payload.game_id = game_id.value;
+                payload.player_id = player_id.value;
+            } else {
+                payload.token = token;
+            }
+
             axios.post(
                 uri_score_lower,
-                {
-                    game_id: game_id.value,
-                    player_id: player_id.value,
-                    combo: element.id.toString().replace('scratch_', ''),
-                    score: 0
-                }
+                payload
             )
             .then(response => {
                 element.classList.remove('active');
@@ -310,14 +309,22 @@
         clearTimeout(timeout);
 
         timeout = setTimeout(() => {
+
+            let payload = {
+                combo: element.id.toString().replace('scratch_', ''),
+                score: 0
+            }
+
+            if (token === null) {
+                payload.game_id = game_id.value;
+                payload.player_id = player_id.value;
+            } else {
+                payload.token = token;
+            }
+
             axios.post(
                 uri_score_lower,
-                {
-                    game_id: game_id.value,
-                    player_id: player_id.value,
-                    combo: element.id.toString().replace('scratch_', ''),
-                    score: 0
-                }
+                payload
             )
             .then(response => {
                 element.classList.remove('active');
@@ -363,14 +370,22 @@
         ) {
             clearTimeout(timeout);
             timeout = setTimeout(() => {
+
+                let payload = {
+                    dice: element.id,
+                    score: score
+                }
+
+                if (token === null) {
+                    payload.game_id = game_id.value;
+                    payload.player_id = player_id.value;
+                } else {
+                    payload.token = token;
+                }
+
                 axios.post(
                     uri_score_upper,
-                    {
-                        game_id: game_id.value,
-                        player_id: player_id.value,
-                        dice: element.id,
-                        score: score
-                    }
+                    payload
                 )
                 .then(response => {
                     element.classList.remove('active');
@@ -410,14 +425,22 @@
             clearTimeout(timeout);
 
             timeout = setTimeout(() => {
+
+                let payload = {
+                    dice: element.value,
+                    score: 0
+                }
+
+                if (token === null) {
+                    payload.game_id = game_id.value;
+                    payload.player_id = player_id.value;
+                } else {
+                    payload.token = token;
+                }
+
                 axios.post(
                     uri_score_upper,
-                    {
-                        game_id: game_id.value,
-                        player_id: player_id.value,
-                        dice: element.value,
-                        score: 0
-                    }
+                    payload
                 )
                 .then(response => {
                     element.classList.remove('active');
@@ -454,14 +477,22 @@
             clearTimeout(timeout);
 
             timeout = setTimeout(() => {
+
+                let payload = {
+                    combo: element.id,
+                    score: 100
+                }
+
+                if (token === null) {
+                    payload.game_id = game_id.value;
+                    payload.player_id = player_id.value;
+                } else {
+                    payload.token = token.value;
+                }
+
                 axios.post(
                     uri_score_lower,
-                    {
-                        game_id: game_id.value,
-                        player_id: player_id.value,
-                        combo: element.id,
-                        score: 100
-                    }
+                    payload
                 )
                 .then(response => {
                     element.classList.remove('active');

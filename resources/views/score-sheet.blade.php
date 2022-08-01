@@ -550,9 +550,9 @@
         <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
         <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
-        <script src="{{ asset('js/score-sheet.js?v0.14.0') }}" defer></script>
-        <script src="{{ asset('js/player-scores.js?v0.14.0') }}" defer></script>
-        <script src="{{ asset('js/bonus-message.js?v0.14.0') }}" defer></script>
+        <script type="module" src="{{ asset('js/score-sheet.js?v0.18.0') }}" defer></script>
+        <script src="{{ asset('js/player-scores.js?v0.18.0') }}" defer></script>
+        <script src="{{ asset('js/bonus-message.js?v0.18.0') }}" defer></script>
         @endif
     </body>
 </html>
