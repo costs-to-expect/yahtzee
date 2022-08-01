@@ -59,10 +59,17 @@ class Delete extends Action
                 }
             }
 
-            // Delete the assigned players
-            // We can't do ot like this, we actually need thre assignment ids,
-            // not the category_id/player_id
-            foreach($game_response['content']['players']['collection'] as $player) {
+            $assigned_players_response = $api->getAssignedGamePlayers(
+                $resource_type_id,
+                $resource_id,
+                $game_id
+            );
+
+            if ($assigned_players_response['status'] !== 200) {
+                throw new \RuntimeException('Unable to fetch the assigned game players');
+            }
+
+            foreach($assigned_players_response['content'] as $player) {
 
                 $response = $api->deleteAssignedGamePlayer(
                     $resource_type_id,
