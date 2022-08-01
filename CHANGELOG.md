@@ -2,6 +2,14 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.15.0] - [2022-08-01]
+### Added
+- Open games can be deleted.
+### Changed
+- Adjusted the layout of open games ready for even more buttons.
+- Updated the Bootstrap theme, added 'danger'.
+- Adjusted a couple of messages relating to the upper bonus.
+
 ## [0.14.0] - [2022-07-31]
 ### Added
 - Added a message about your bonus!

@@ -48,6 +48,24 @@ class Uri
     }
 
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
+    public static function assignedGamePlayer(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        string $player_id
+    ): array
+    {
+        $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .
+            '/resources/' . $resource_id . '/items/' . $game_id . '/categories/' .
+            $player_id;
+
+        return [
+            'uri' => $uri,
+            'name' => 'Game player'
+        ];
+    }
+
+    #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function assignedGamePlayers(string $resource_type_id, string $resource_id, string $game_id, array $parameters = []): array
     {
         $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .
