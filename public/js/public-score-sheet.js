@@ -40,6 +40,10 @@
                        upper.disabled = true;
 
                        disable_yahtzee_bonus(response.data.turns);
+
+                       document.querySelectorAll('label[for="' + this.value + '"] svg').forEach(dice =>
+                           dice.classList.add('scored')
+                       );
                    })
                    .catch(error => {
                        console.log(error);
@@ -94,6 +98,10 @@
                         total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
 
                         disable_yahtzee_bonus(response.data.turns);
+
+                        document.querySelectorAll('label[for="' + this.id + '"] svg').forEach(dice =>
+                            dice.classList.add('scored')
+                        );
                     })
                     .catch(error => {
                         console.log(error);
@@ -287,6 +295,10 @@
                 disable_yahtzee_bonus(response.data.turns);
 
                 display_toast(show_toast);
+
+                document.querySelectorAll('p.' + element.id + '_dice svg').forEach(dice =>
+                    dice.classList.add('scored')
+                );
             })
             .catch(error => {
                 console.log(error);
@@ -319,6 +331,10 @@
                         disable_yahtzee_bonus(response.data.turns);
 
                         display_toast(show_toast);
+
+                        document.querySelectorAll('p.' + element.id + '_dice svg').forEach(dice =>
+                            dice.classList.add('scored')
+                        );
                     })
                     .catch(error => {
                         console.log(error);
@@ -352,6 +368,10 @@
                 disable_yahtzee_bonus(response.data.turns);
 
                 display_toast(show_toast);
+
+                document.querySelectorAll('p.' + element.id.toString().replace('scratch_', '') + '_dice svg').forEach(dice =>
+                    dice.classList.add('scored')
+                );
             })
             .catch(error => {
                 console.log(error);
@@ -381,6 +401,10 @@
                     lower.disabled = true;
 
                     disable_yahtzee_bonus(response.data.turns);
+
+                    document.querySelectorAll('p.' + element.id.toString().replace('scratch_', '') + '_dice svg').forEach(dice =>
+                        dice.classList.add('scored')
+                    );
                 })
                 .catch(error => {
                     console.log(error);

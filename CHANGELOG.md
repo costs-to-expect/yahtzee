@@ -2,6 +2,11 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [0.16.0] - [2022-08-01]
+### Added
+- Added ability to remove a player from an open game, deletes the score sheet, share token and assignment.
+- Upon scoring or scratching the background color for dice is updated to highlight what has been scored.
+
 ## [0.15.0] - [2022-08-01]
 ### Added
 - Open games can be deleted.

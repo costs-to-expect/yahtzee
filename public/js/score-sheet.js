@@ -209,6 +209,10 @@
                     disable_yahtzee_bonus_if_game_over(response.data.turns);
 
                     display_selected_toast(show_toast);
+
+                    document.querySelectorAll('p.' + element.id + '_dice svg').forEach(dice =>
+                        dice.classList.add('scored')
+                    );
                 })
                 .catch(error => {
                     console.log(error);
@@ -246,6 +250,10 @@
                 disable_yahtzee_bonus_if_game_over(response.data.turns);
 
                 display_selected_toast(show_toast);
+
+                document.querySelectorAll('p.' + element.id + '_dice svg').forEach(dice =>
+                    dice.classList.add('scored')
+                );
             })
             .catch(error => {
                 console.log(error);
@@ -280,6 +288,10 @@
                 disable_yahtzee_bonus_if_game_over(response.data.turns);
 
                 display_selected_toast(show_toast);
+
+                document.querySelectorAll('p.' + element.id.toString().replace('scratch_', '') + '_dice svg').forEach(dice =>
+                    dice.classList.add('scored')
+                );
             })
             .catch(error => {
                 console.log(error);
@@ -313,6 +325,10 @@
                 display_selected_toast(show_toast);
 
                 disable_yahtzee_bonus_if_game_over(response.data.turns);
+
+                document.querySelectorAll('p.' + element.id.toString().replace('scratch_', '') + '_dice svg').forEach(dice =>
+                    dice.classList.add('scored')
+                );
             })
             .catch(error => {
                 console.log(error);
@@ -366,6 +382,10 @@
                     display_selected_toast(show_toast);
 
                     disable_yahtzee_bonus_if_game_over(response.data.turns);
+
+                    document.querySelectorAll('label[for="' + element.id + '"] svg').forEach(dice =>
+                        dice.classList.add('scored')
+                    );
                 })
                 .catch(error => {
                     console.log(error);
@@ -403,6 +423,10 @@
                     display_selected_toast(show_toast);
 
                     disable_yahtzee_bonus_if_game_over(response.data.turns);
+
+                    document.querySelectorAll('label[for="' + element.value + '"] svg').forEach(dice =>
+                        dice.classList.add('scored')
+                    );
                 })
                 .catch(error => {
                     console.log(error);

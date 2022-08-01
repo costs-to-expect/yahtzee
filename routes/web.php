@@ -110,6 +110,11 @@ Route::group(
             [Game::class, 'playerBonus']
         )->name('game.player.bonus');
 
+        Route::get(
+            '/game/{game_id}/player/{player_id}/delete',
+            [Game::class, 'deleteGamePlayer']
+        )->name('game.player.delete');
+
         Route::post(
             '/game/score-lower',
             [Game::class, 'scoreLower']

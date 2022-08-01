@@ -7,6 +7,7 @@ use App\Actions\Game\AddPlayers;
 use App\Actions\Game\Complete;
 use App\Actions\Game\Create;
 use App\Actions\Game\Delete;
+use App\Actions\Game\DeletePlayer;
 use App\Models\ShareToken;
 use Illuminate\Http\Request;
 
@@ -346,6 +347,30 @@ class Game extends Controller
         }
 
         abort(500, 'Unable to delete the game, unknown error');
+    }
+
+    public function deleteGamePlayer(Request $request, string $game_id, string $player_id)
+    {
+        $this->boostrap($request);
+
+        $action = new DeletePlayer();
+        try {
+            $result = $action(
+                $this->api,
+                $this->resource_type_id,
+                $this->resource_id,
+                $game_id,
+                $player_id
+            );
+
+            if ($result === 204) {
+                return redirect()->route('home');
+            }
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+
+        abort(500, 'Unable to delete the player from the game, unknown error');
     }
 
     public function playerBonus(Request $request, string $game_id, string $player_id)
