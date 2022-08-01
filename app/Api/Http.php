@@ -28,6 +28,22 @@ class Http
         }
     }
 
+    public function delete(string $uri): array
+    {
+        $response = $this->client->delete($this->baseUri() . $uri);
+
+        return match ($response->status()) {
+            204 => [
+                'status' => 204,
+                'content' => null,
+            ],
+            default => [
+                'status' => $response->status(),
+                'content' => $response->json('message')
+            ],
+        };
+    }
+
     public function get(string $uri): array
     {
         $response = $this->client->get($this->baseUri() . $uri);

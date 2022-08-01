@@ -96,6 +96,11 @@ Route::group(
         )->name('game.complete.play-again');
 
         Route::post(
+            '/game/{game_id}/delete',
+            [Game::class, 'deleteGame']
+        )->name('game.delete');
+
+        Route::post(
             '/game/score-upper',
             [Game::class, 'scoreUpper']
         )->name('game.score-upper');

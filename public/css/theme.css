@@ -30,7 +30,9 @@
   --bs-gray-800: #343a40;
   --bs-gray-900: #212529;
   --bs-primary: #892b7c;
+  --bs-danger: #b62424;
   --bs-primary-rgb: 137, 43, 124;
+  --bs-danger-rgb: 182, 36, 36;
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
@@ -3015,6 +3017,23 @@ textarea.form-control-lg {
   --bs-btn-disabled-border-color: #892b7c;
 }
 
+.btn-danger {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #b62424;
+  --bs-btn-border-color: #b62424;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #9b1f1f;
+  --bs-btn-hover-border-color: #921d1d;
+  --bs-btn-focus-shadow-rgb: 193, 69, 69;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #921d1d;
+  --bs-btn-active-border-color: #891b1b;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #b62424;
+  --bs-btn-disabled-border-color: #b62424;
+}
+
 .btn-outline-primary {
   --bs-btn-color: #892b7c;
   --bs-btn-border-color: #892b7c;
@@ -3029,6 +3048,23 @@ textarea.form-control-lg {
   --bs-btn-disabled-color: #892b7c;
   --bs-btn-disabled-bg: transparent;
   --bs-btn-disabled-border-color: #892b7c;
+  --bs-gradient: none;
+}
+
+.btn-outline-danger {
+  --bs-btn-color: #b62424;
+  --bs-btn-border-color: #b62424;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #b62424;
+  --bs-btn-hover-border-color: #b62424;
+  --bs-btn-focus-shadow-rgb: 182, 36, 36;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #b62424;
+  --bs-btn-active-border-color: #b62424;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #b62424;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #b62424;
   --bs-gradient: none;
 }
 
@@ -4580,6 +4616,15 @@ textarea.form-control-lg {
   color: #42153b;
 }
 
+.alert-danger {
+  --bs-alert-color: #6d1616;
+  --bs-alert-bg: #f0d3d3;
+  --bs-alert-border-color: #e9bdbd;
+}
+.alert-danger .alert-link {
+  color: #571212;
+}
+
 @keyframes progress-bar-stripes {
   0% {
     background-position-x: 1rem;
@@ -4884,6 +4929,20 @@ textarea.form-control-lg {
   color: #fff;
   background-color: #521a4a;
   border-color: #521a4a;
+}
+
+.list-group-item-danger {
+  color: #6d1616;
+  background-color: #f0d3d3;
+}
+.list-group-item-danger.list-group-item-action:hover, .list-group-item-danger.list-group-item-action:focus {
+  color: #6d1616;
+  background-color: #d8bebe;
+}
+.list-group-item-danger.list-group-item-action.active {
+  color: #fff;
+  background-color: #6d1616;
+  border-color: #6d1616;
 }
 
 .btn-close {
@@ -6408,11 +6467,23 @@ textarea.form-control-lg {
   background-color: RGBA(137, 43, 124, var(--bs-bg-opacity, 1)) !important;
 }
 
+.text-bg-danger {
+  color: #fff !important;
+  background-color: RGBA(182, 36, 36, var(--bs-bg-opacity, 1)) !important;
+}
+
 .link-primary {
   color: #892b7c !important;
 }
 .link-primary:hover, .link-primary:focus {
   color: #6e2263 !important;
+}
+
+.link-danger {
+  color: #b62424 !important;
+}
+.link-danger:hover, .link-danger:focus {
+  color: #921d1d !important;
 }
 
 .ratio {
@@ -6844,6 +6915,11 @@ textarea.form-control-lg {
 .border-primary {
   --bs-border-opacity: 1;
   border-color: rgba(var(--bs-primary-rgb), var(--bs-border-opacity)) !important;
+}
+
+.border-danger {
+  --bs-border-opacity: 1;
+  border-color: rgba(var(--bs-danger-rgb), var(--bs-border-opacity)) !important;
 }
 
 .border-white {
@@ -7673,6 +7749,11 @@ textarea.form-control-lg {
   color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
 }
 
+.text-danger {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+}
+
 .text-black {
   --bs-text-opacity: 1;
   color: rgba(var(--bs-black-rgb), var(--bs-text-opacity)) !important;
@@ -7727,6 +7808,11 @@ textarea.form-control-lg {
 .bg-primary {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.bg-danger {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-danger-rgb), var(--bs-bg-opacity)) !important;
 }
 
 .bg-black {

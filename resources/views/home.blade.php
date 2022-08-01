@@ -69,10 +69,17 @@
                                 </ul>
                                 @endif
 
+                                <div class="pb-1">
                                 <a href="{{ route('game.add-players.view', ['game_id' => $__open_game['id']]) }}" class="btn btn-sm btn-primary">Add Players</a>
+                                </div>
                                 @if ($__open_game['complete'] !== 1)
-                                <form action="{{ route('game.complete', ['game_id' => $__open_game['id']]) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-sm btn-primary">Complete</button></form>
-                                <form action="{{ route('game.complete.play-again', ['game_id' => $__open_game['id']]) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-sm btn-primary">Complete & Play Again</button></form>
+                                <div class="pb-1">
+                                    <form action="{{ route('game.complete', ['game_id' => $__open_game['id']]) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-sm btn-primary">Complete</button></form>
+                                    <form action="{{ route('game.complete.play-again', ['game_id' => $__open_game['id']]) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-sm btn-primary">Complete & Play Again</button></form>
+                                </div>
+                                <div>
+                                    <form action="{{ route('game.delete', ['game_id' => $__open_game['id']]) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-sm btn-danger">Delete</button></form>
+                                </div>
                                 @endif
                             </li>
                         @endforeach
