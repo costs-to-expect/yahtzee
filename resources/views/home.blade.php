@@ -63,6 +63,7 @@
                                                 @if (array_key_exists($__open_game['id'], $share_tokens) && array_key_exists($__player['id'], $share_tokens[$__open_game['id']]))
                                                     <li class="list-inline-item"><a href="{{ route('public.score-sheet', ['token' => $share_tokens[$__open_game['id']][$__player['id']]]) }}">[Share]</a></li>
                                                 @endif
+                                                <li class="list-inline-item"><a href="{{ route('game.player.delete', ['game_id' => $__open_game['id'], 'player_id' => $__player['id']]) }}">[Remove]</a></li>
                                             </ul>
                                         </li>
                                     @endforeach
