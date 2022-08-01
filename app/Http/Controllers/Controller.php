@@ -161,7 +161,7 @@ class Controller extends BaseController
     protected function playerBonusMessage(string $game_id, string $player_id, array $upper_section)
     {
         if (count($upper_section) === 0) {
-            $message = 'Looking good, you haven\'t messed up yet, only because you haven\'t done anything!';
+            $message = 'Looking good, you haven\'t messed up yet!';
             return $this->playerBonusView($game_id, $player_id, $message);
         }
 
@@ -232,12 +232,12 @@ class Controller extends BaseController
             }
 
             if ($threes_total === 63) {
-                $message = 'Looking good, you haven\'t messed up yet, you just need three of everything left!';
+                $message = 'Looking good, you haven\'t messed up yet, three of everything left will do!';
                 return $this->playerBonusView($game_id, $player_id, $message);
             }
             if ($threes_total > 63) {
                 if ((count($dice_scored) + count($dice_scratched)) === 5) {
-                    $message = 'You can still easily get the bonus, three of the last please!';
+                    $message = 'You can still easily get the bonus, three of the last dice please!';
                     return $this->playerBonusView($game_id, $player_id, $message);
                 }
                 $message = 'You can still easily get the bonus';
@@ -249,7 +249,7 @@ class Controller extends BaseController
             }
             if ($fours_total > 63) {
                 if ((count($dice_scored) + count($dice_scratched)) === 5) {
-                    $message = 'You can still get the bonus, four of the last please!';
+                    $message = 'You can still get the bonus, four of the last dice please!';
                     return $this->playerBonusView($game_id, $player_id, $message);
                 }
 
@@ -257,12 +257,12 @@ class Controller extends BaseController
                 return $this->playerBonusView($game_id, $player_id, $message);
             }
             if ($fours_total < 63) {
-                $message = 'Scoring four of everything won\'t help!';
+                $message = 'Scoring four of everything won\'t help you!';
                 return $this->playerBonusView($game_id, $player_id, $message);
             }
 
             if ($threes_total < 63) {
-                $message = 'Scoring three of everything won\'t help!';
+                $message = 'Scoring three of everything won\'t help you!';
                 return $this->playerBonusView($game_id, $player_id, $message);
             }
         }
