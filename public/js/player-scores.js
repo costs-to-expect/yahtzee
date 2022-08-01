@@ -18,5 +18,5 @@
             });
     }
 
-    poll(() => new Promise(() => fetchPlayerScores()), 1000 * 30)
+    poll(() => new Promise(() => fetchPlayerScores()), 1000 * 10)
 })(axios);

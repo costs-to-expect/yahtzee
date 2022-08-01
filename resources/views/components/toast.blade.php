@@ -35,4 +35,11 @@
             <p class="mb-0">{{ $toast_yahtzee_bonus_three['message'] }}</p>
         </div>
     </div>
+    <div id="toast_done" class="toast bg-primary" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body text-white">
+            <h2>Done!</h2>
+            <p class="mb-0">You scored <span id="final-score">0</span>, when everyone has finished
+                their final turn we will see how you did</p>
+        </div>
+    </div>
 </div>
