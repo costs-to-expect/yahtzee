@@ -13,6 +13,7 @@
     let score_lower_upper = document.getElementById('lower-upper-total');
     let score_lower = document.getElementById('lower-score');
     let total_score = document.getElementById('total');
+    let player_final_score = document.getElementById('final-score');
 
     document.querySelectorAll('div.upper-section-scratch input[type="checkbox"].active').forEach(upper_scratch => {
        upper_scratch.addEventListener('change', function () {
@@ -38,6 +39,8 @@
                        upper.classList.add('disabled');
                        upper.value = 0;
                        upper.disabled = true;
+
+                       player_final_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
 
                        disable_yahtzee_bonus(response.data.turns);
 
@@ -96,6 +99,7 @@
                         score_upper_total.innerText = response.data.score.upper + response.data.score.bonus;
                         score_lower_upper.innerText = response.data.score.upper + response.data.score.bonus;
                         total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+                        player_final_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
 
                         disable_yahtzee_bonus(response.data.turns);
 
@@ -247,6 +251,8 @@
             yahtzee_bonus_one.disabled = true;
             yahtzee_bonus_two.disabled = true;
             yahtzee_bonus_three.disabled = true;
+
+            display_toast('done');
         }
     }
 
@@ -291,6 +297,7 @@
 
                 score_lower.innerText = response.data.score.lower;
                 total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+                player_final_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
 
                 disable_yahtzee_bonus(response.data.turns);
 
@@ -327,6 +334,7 @@
 
                         score_lower.innerText = response.data.score.lower;
                         total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+                        player_final_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
 
                         disable_yahtzee_bonus(response.data.turns);
 
@@ -365,6 +373,8 @@
                 lower.disabled = true;
                 lower.value = 0;
 
+                player_final_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
+
                 disable_yahtzee_bonus(response.data.turns);
 
                 display_toast(show_toast);
@@ -399,6 +409,8 @@
                     lower.classList.remove('active');
                     lower.classList.add('disabled');
                     lower.disabled = true;
+
+                    player_final_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
 
                     disable_yahtzee_bonus(response.data.turns);
 

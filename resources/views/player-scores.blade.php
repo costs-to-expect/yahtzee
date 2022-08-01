@@ -5,7 +5,7 @@
     <h2 class="text-primary">Player Scores</h2>
 
     <table class="table table-striped table-sm">
-        <caption>Player scores, delayed by thirty seconds.</caption>
+        <caption>Player scores, delayed by ten seconds.</caption>
         <thead>
             <tr>
                 <th scope="col">Name</th>
