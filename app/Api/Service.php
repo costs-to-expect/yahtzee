@@ -297,6 +297,20 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function register(array $payload): array
+    {
+        $uri = Uri::register();
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'name' => $payload['name'],
+                'email' => $payload['email']
+            ]
+        );
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
     public function updateGame(
         string $resource_type_id,
         string $resource_id,

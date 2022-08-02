@@ -36,10 +36,10 @@
                         @endif
 
                         <div class="mt-3 mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" name="name" class="form-control @if($errors !== null && array_key_exists('name', $errors)) is-invalid @endif" id="name" aria-describedby="name-help" required value="{{ old('name') }}" />
-                            <div id="name-help" class="form-text">Please enter a name, <em>any name will do</em>.</div>
-                            @if($errors !== null && array_key_exists('name', $errors))
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control @if($errors !== null && array_key_exists('password', $errors)) is-invalid @endif" id="password" aria-describedby="password-help" required value="{{ old('password') }}" />
+                            <div id="password-help" class="form-text">Please enter a password, <em>your password will be hashed</em>.</div>
+                            @if($errors !== null && array_key_exists('password', $errors))
                                 <div class="invalid-feedback">
                                     @foreach ($errors['name'] as $error)
                                         {{ $error }}
@@ -49,19 +49,20 @@
                         </div>
 
                         <div class="mt-3 mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control @if($errors !== null && array_key_exists('email', $errors)) is-invalid @endif" id="email" aria-describedby="email-help" required value="{{ old('email') }}" />
-                            <div id="email-help" class="form-text">Please enter your email address, <em>we will never share
-                                    your email address</em>.</div>
-                            @if($errors !== null && array_key_exists('email', $errors))
+                            <label for="password_confirmation" class="form-label">Confirm password</label>
+                            <input type="password" name="password_confirmation" class="form-control @if($errors !== null && array_key_exists('password_confirmation', $errors)) is-invalid @endif" id="password_confirmation" aria-describedby="password_confirmation-help" required value="{{ old('password_confirmation') }}" />
+                            <div id="password_confirmation-help" class="form-text">Please enter your password again</div>
+                            @if($errors !== null && array_key_exists('password_confirmation', $errors))
                                 <div class="invalid-feedback">
-                                    @foreach ($errors['email'] as $error)
+                                    @foreach ($errors['password_confirmation'] as $error)
                                         {{ $error }}
                                     @endforeach
                                 </div>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                        <input type="hidden" name="token" value="{{ old('token', ($parameters !== null ? $parameters['token'] : null)) }}" />
+                        <input type="hidden" name="email" value="{{ old('email', ($parameters !== null ? $parameters['email'] : null)) }}" />
+                        <button type="submit" class="btn btn-primary w-100">Set Password</button>
                     </form>
                 </div>
             </div>

@@ -8,6 +8,11 @@ use App\Http\Controllers\Share;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
+    '/create-password',
+    [Authentication::class, 'createPassword']
+)->name('create-password.view');
+
+Route::get(
     '/',
     [Authentication::class, 'signIn']
 )->name('sign-in.view');

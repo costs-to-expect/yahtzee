@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Api\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,14 +15,68 @@ use Illuminate\Support\Facades\Auth;
  */
 class Authentication extends Controller
 {
+    public function createPassword(Request $request)
+    {
+        return view(
+            'create-password',
+            [
+                'parameters' => session()->get('authentication.parameters'),
+            ]
+        );
+    }
+
     public function register()
     {
         return view(
             'register',
             [
-                'errors' => session()->get('authentication.errors')
+                'errors' => session()->get('authentication.errors'),
+                'failed' => session()->get('authentication.failed'),
             ]
         );
+    }
+
+    public function registerProcess(Request $request)
+    {
+        $api = new Service();
+
+        $response = $api->register(
+            $request->only('name','email')
+        );
+
+        if ($response['status'] === 201) {
+            return redirect()->route('create-password.view')
+                ->with('authentication.parameters', $response['content']['uris']['create-password']['parameters']);
+        }
+
+        if ($response['status'] === 422) {
+            return redirect()->route('register.view')
+                ->withInput()
+                ->with('authentication.errors', $response['fields']);
+        }
+
+        return redirect()->route('register.view')
+            ->with('authentication.failed', $response['content']);
+
+        /*$api = new Api();
+        $api->init();
+
+        $response = $api->postRegister(request()->post('name'), request()->post('email'));
+
+        if ($response !== null && $response['status'] === 201) {
+            return redirect()->route('auth.create-password.view')
+                ->with('auth.parameters', $response['content']['uris']['create-password']['parameters']);
+        }
+
+        if ($response !== null && $response['status'] === 422) {
+            return redirect()->route('auth.register.view')
+                ->withInput()
+                ->with('auth.errors', $response['content']['fields']);
+        }
+
+        return redirect()->route('auth.register.view')
+            ->withInput()
+            ->with('auth.failed', 'auth.failed');*/
     }
 
     public function signIn()

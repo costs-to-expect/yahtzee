@@ -144,6 +144,17 @@ class Uri
     }
 
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
+    public static function register(): array
+    {
+        $uri = '/' . self::VERSION . '/auth/register';
+
+        return [
+            'uri' => $uri,
+            'name' => 'Register'
+        ];
+    }
+
+    #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function resources(string $resource_type_id, array $parameters = []): array
     {
         $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id . '/resources';
