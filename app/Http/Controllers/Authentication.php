@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Auth;
  */
 class Authentication extends Controller
 {
+    public function register()
+    {
+        return view(
+            'register',
+            [
+                'errors' => session()->get('authentication.errors')
+            ]
+        );
+    }
+
     public function signIn()
     {
         return view(

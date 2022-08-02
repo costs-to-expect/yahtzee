@@ -18,6 +18,11 @@ Route::post(
 )->name('sign-in.process');
 
 Route::get(
+    '/register',
+    [Authentication::class, 'register']
+)->name('register.view');
+
+Route::get(
     '/sign-out',
     [Authentication::class, 'signOut']
 )->name('sign-out');
