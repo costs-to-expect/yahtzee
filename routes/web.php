@@ -12,6 +12,11 @@ Route::get(
     [Authentication::class, 'createPassword']
 )->name('create-password.view');
 
+Route::post(
+    '/create-password',
+    [Authentication::class, 'createPasswordProcess']
+)->name('create-password.process');
+
 Route::get(
     '/',
     [Authentication::class, 'signIn']
@@ -26,6 +31,16 @@ Route::get(
     '/register',
     [Authentication::class, 'register']
 )->name('register.view');
+
+Route::post(
+    '/register',
+    [Authentication::class, 'registerProcess']
+)->name('register.process');
+
+Route::get(
+    '/registration-complete',
+    [Authentication::class, 'registrationComplete']
+)->name('registration-complete');
 
 Route::get(
     '/sign-out',

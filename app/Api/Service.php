@@ -133,6 +133,20 @@ class Service
         );
     }
 
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function createPassword(array $payload): array
+    {
+        $uri = Uri::createPassword($payload['token'], $payload['email']);
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'password' => $payload['password'],
+                'password_confirmation' => $payload['password_confirmation']
+            ]
+        );
+    }
+
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function createResource(string $resource_type_id): array
     {

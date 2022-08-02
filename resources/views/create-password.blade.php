@@ -23,7 +23,7 @@
                         </a>
                     </div>
 
-                    <form action="" method="POST" class="col-12 col-md-4 col-lg-3 mx-auto p-2">
+                    <form action="{{ route('create-password.process') }}" method="POST" class="col-12 col-md-4 col-lg-3 mx-auto p-2">
 
                         @csrf
 
@@ -38,10 +38,10 @@
                         <div class="mt-3 mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" name="password" class="form-control @if($errors !== null && array_key_exists('password', $errors)) is-invalid @endif" id="password" aria-describedby="password-help" required value="{{ old('password') }}" />
-                            <div id="password-help" class="form-text">Please enter a password, <em>your password will be hashed</em>.</div>
+                            <div id="password-help" class="form-text">Please enter a password, at least 12 characters please, <em>your password will be hashed</em>.</div>
                             @if($errors !== null && array_key_exists('password', $errors))
                                 <div class="invalid-feedback">
-                                    @foreach ($errors['name'] as $error)
+                                    @foreach ($errors['password'] as $error)
                                         {{ $error }}
                                     @endforeach
                                 </div>

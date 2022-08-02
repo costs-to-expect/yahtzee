@@ -33,6 +33,18 @@ class Uri
     }
 
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
+    public static function createPassword(string $token, string $email): array
+    {
+        $uri = '/' . self::VERSION . '/auth/create-password?token=' .
+                urlencode($token) . '&email=' . urlencode($email);
+
+        return [
+            'uri' => $uri,
+            'name' => 'Create Password'
+        ];
+    }
+
+    #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function game(string $resource_type_id, string $resource_id, string $game_id, array $parameters = []): array
     {
         $uri = '/' . self::VERSION . '/resource-types/' . $resource_type_id .
