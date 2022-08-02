@@ -255,7 +255,7 @@ class Service
     {
         $uri = Uri::games($resource_type_id, $resource_id, $parameters);
 
-        return $this->http->get($uri['uri']);
+        return $this->http->get($uri['uri'], (array_key_exists('complete', $parameters) && $parameters['complete'] === 1));
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
@@ -278,7 +278,7 @@ class Service
     {
         $uri = Uri::players($resource_type_id, $parameters);
 
-        return $this->http->get($uri['uri']);
+        return $this->http->get($uri['uri'], true);
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
@@ -299,7 +299,7 @@ class Service
     {
         $uri = Uri::resources($resource_type_id, $parameters);
 
-        return $this->http->get($uri['uri']);
+        return $this->http->get($uri['uri'], true);
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
@@ -307,7 +307,7 @@ class Service
     {
         $uri = Uri::resourceTypes($parameters);
 
-        return $this->http->get($uri['uri']);
+        return $this->http->get($uri['uri'], true);
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]

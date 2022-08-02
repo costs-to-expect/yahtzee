@@ -48,23 +48,25 @@ class Controller extends BaseController
         if ($resource_types['status'] === 200) {
 
             if (count($resource_types['content']) === 1) {
+
                 $resource_type_id = $resource_types['content'][0]['id'];
                 $resources = $this->api->getResources($resource_type_id, ['item-subtype' => $this->item_subtype_id]);
-                if ($resources['status'] === 200) {
-                    if (count($resources['content']) === 1) {
 
+                if ($resources['status'] === 200) {
+
+                    if (count($resources['content']) === 1) {
                         $this->resource_type_id = $resource_type_id;
                         $this->resource_id = $resources['content'][0]['id'];
 
                         return true;
                     }
+
                     $create_resource_response = $this->api->createResource($resource_type_id);
                     if ($create_resource_response['status'] === 201) {
-
                         $this->resource_type_id = $resource_type_id;
                         $this->resource_id = $create_resource_response['content']['id'];
 
-                        return redirect()->route('home');
+                        return true;
                     }
                     abort($create_resource_response['status'], $create_resource_response['content']);
                 } else {
@@ -73,7 +75,15 @@ class Controller extends BaseController
             } else {
                 $create_resource_type_response = $this->api->createResourceType();
                 if ($create_resource_type_response['status'] === 201) {
-                    return redirect()->route('home');
+
+                    $this->resource_type_id = $create_resource_type_response['content']['id'];
+
+                    $create_resource_response = $this->api->createResource($this->resource_type_id);
+                    if ($create_resource_response['status'] === 201) {
+                        $this->resource_id = $create_resource_response['content']['id'];
+
+                        return true;
+                    }
                 }
                 abort($create_resource_type_response['status'], $create_resource_type_response['content']);
             }
