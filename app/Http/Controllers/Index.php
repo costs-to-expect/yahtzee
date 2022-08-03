@@ -82,4 +82,9 @@ class Index extends Controller
             ]
         );
     }
+
+    public function landing()
+    {
+        return view('landing');
+    }
 }

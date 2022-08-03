@@ -122,6 +122,6 @@ class Authentication extends Controller
     {
         Auth::guard()->logout();
 
-        return redirect()->route('sign-in.view');
+        return redirect()->route('landing');
     }
 }

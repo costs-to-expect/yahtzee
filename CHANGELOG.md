@@ -2,7 +2,11 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [1.0.0] - [2022-08-03]
+## [1.01.0] - [2022-08-03]
+### Added
+- Added a landing page to highlight some of the features.
+
+## [1.00.0] - [2022-08-03]
 ### Added
 - Added account registration.
 
