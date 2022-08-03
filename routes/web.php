@@ -19,6 +19,11 @@ Route::post(
 
 Route::get(
     '/',
+    [Index::class, 'landing']
+)->name('landing');
+
+Route::get(
+    '/sign-in',
     [Authentication::class, 'signIn']
 )->name('sign-in.view');
 
