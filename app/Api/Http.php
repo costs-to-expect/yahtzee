@@ -44,9 +44,13 @@ class Http
         };
     }
 
-    public function get(string $uri): array
+    public function get(string $uri, bool $skip_cache = false): array
     {
-        $response = $this->client->get($this->baseUri() . $uri);
+        if ($skip_cache === false) {
+            $response = $this->client->get($this->baseUri() . $uri);
+        } else {
+            $response = $this->client->withHeaders(['X-Skip-Cache' => 'true'])->get($this->baseUri() . $uri);
+        }
 
         return match ($response->status()) {
             200 => [

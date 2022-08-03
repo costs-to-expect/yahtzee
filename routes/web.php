@@ -8,6 +8,16 @@ use App\Http\Controllers\Share;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
+    '/create-password',
+    [Authentication::class, 'createPassword']
+)->name('create-password.view');
+
+Route::post(
+    '/create-password',
+    [Authentication::class, 'createPasswordProcess']
+)->name('create-password.process');
+
+Route::get(
     '/',
     [Authentication::class, 'signIn']
 )->name('sign-in.view');
@@ -16,6 +26,21 @@ Route::post(
     '/sign-in',
     [Authentication::class, 'signInProcess']
 )->name('sign-in.process');
+
+Route::get(
+    '/register',
+    [Authentication::class, 'register']
+)->name('register.view');
+
+Route::post(
+    '/register',
+    [Authentication::class, 'registerProcess']
+)->name('register.process');
+
+Route::get(
+    '/registration-complete',
+    [Authentication::class, 'registrationComplete']
+)->name('registration-complete');
 
 Route::get(
     '/sign-out',

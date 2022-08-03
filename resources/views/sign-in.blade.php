@@ -57,6 +57,13 @@
                             <input type="checkbox" class="form-check-input" id="remember_me">
                             <label class="form-check-label" for="remember_me">Check to stay signed-in for longer</label>
                         </div>
+
+                        <div class="mb-3">
+                            <p>If you don't have an account with Costs to Expect, you can
+                                <a href="{{ route('register.view') }}">register</a> to get
+                                access to this Game Scorer and the entire Costs to Expect service.</p>
+                        </div>
+
                         <button type="submit" class="btn btn-primary w-100">Sign-in</button>
                     </form>
                 </div>

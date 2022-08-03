@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Api\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,83 @@ use Illuminate\Support\Facades\Auth;
  */
 class Authentication extends Controller
 {
+    public function createPassword(Request $request)
+    {
+        return view(
+            'create-password',
+            [
+                'parameters' => session()->get('authentication.parameters'),
+                'errors' => session()->get('authentication.errors'),
+                'failed' => session()->get('authentication.failed'),
+            ]
+        );
+    }
+
+    public function createPasswordProcess(Request $request)
+    {
+        $api = new Service();
+
+        $response = $api->createPassword(
+            $request->only(['token', 'email', 'password', 'password_confirmation'])
+        );
+
+        if ($response['status'] === 204) {
+            return redirect()->route('registration-complete');
+        }
+
+        if ($response['status'] === 422) {
+            return redirect()->route('create-password.view')
+                ->withInput()
+                ->with('authentication.errors', $response['fields']);
+        }
+
+        return redirect()->route('create-password.view')
+            ->with('authentication.failed', $response['content']);
+    }
+
+    public function register()
+    {
+        return view(
+            'register',
+            [
+                'errors' => session()->get('authentication.errors'),
+                'failed' => session()->get('authentication.failed'),
+            ]
+        );
+    }
+
+    public function registerProcess(Request $request)
+    {
+        $api = new Service();
+
+        $response = $api->register(
+            $request->only(['name','email'])
+        );
+
+        if ($response['status'] === 201) {
+            return redirect()->route('create-password.view')
+                ->with('authentication.parameters', $response['content']['uris']['create-password']['parameters']);
+        }
+
+        if ($response['status'] === 422) {
+            return redirect()->route('register.view')
+                ->withInput()
+                ->with('authentication.errors', $response['fields']);
+        }
+
+        return redirect()->route('register.view')
+            ->with('authentication.failed', $response['content']);
+    }
+
+    public function registrationComplete()
+    {
+        return view(
+            'registration-complete',
+            [
+            ]
+        );
+    }
+
     public function signIn()
     {
         return view(

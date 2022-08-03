@@ -133,6 +133,20 @@ class Service
         );
     }
 
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function createPassword(array $payload): array
+    {
+        $uri = Uri::createPassword($payload['token'], $payload['email']);
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'password' => $payload['password'],
+                'password_confirmation' => $payload['password_confirmation']
+            ]
+        );
+    }
+
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function createResource(string $resource_type_id): array
     {
@@ -241,7 +255,7 @@ class Service
     {
         $uri = Uri::games($resource_type_id, $resource_id, $parameters);
 
-        return $this->http->get($uri['uri']);
+        return $this->http->get($uri['uri'], (array_key_exists('complete', $parameters) && $parameters['complete'] === 1));
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
@@ -264,7 +278,7 @@ class Service
     {
         $uri = Uri::players($resource_type_id, $parameters);
 
-        return $this->http->get($uri['uri']);
+        return $this->http->get($uri['uri'], true);
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
@@ -285,7 +299,7 @@ class Service
     {
         $uri = Uri::resources($resource_type_id, $parameters);
 
-        return $this->http->get($uri['uri']);
+        return $this->http->get($uri['uri'], true);
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
@@ -293,7 +307,21 @@ class Service
     {
         $uri = Uri::resourceTypes($parameters);
 
-        return $this->http->get($uri['uri']);
+        return $this->http->get($uri['uri'], true);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function register(array $payload): array
+    {
+        $uri = Uri::register();
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'name' => $payload['name'],
+                'email' => $payload['email']
+            ]
+        );
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
