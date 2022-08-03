@@ -101,7 +101,7 @@ class Game extends Controller
     {
         $this->boostrap($request);
 
-        $players_response = $this->api->getPlayers($this->resource_type_id);
+        $players_response = $this->api->getPlayers($this->resource_type_id, ['collection' => true]);
 
         $players = [];
         if ($players_response['status'] === 200 && count($players_response['content']) > 0) {
@@ -169,7 +169,7 @@ class Game extends Controller
         $game_players = [];
 
 
-        $all_players_response = $this->api->getPlayers($this->resource_type_id);
+        $all_players_response = $this->api->getPlayers($this->resource_type_id, ['collection' => true]);
 
         $all_players = [];
         if ($all_players_response['status'] === 200 && count($all_players_response['content']) > 0) {

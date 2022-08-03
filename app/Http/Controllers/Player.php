@@ -17,7 +17,7 @@ class Player extends Controller
     {
         $this->boostrap($request);
 
-        $players_response = $this->api->getPlayers($this->resource_type_id);
+        $players_response = $this->api->getPlayers($this->resource_type_id, ['collection' => true]);
 
         $players = [];
         if ($players_response['status'] === 200 && count($players_response['content']) > 0) {
