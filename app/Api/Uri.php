@@ -158,7 +158,7 @@ class Uri
     #[ArrayShape(['uri' => "string", 'name' => "string"])]
     public static function register(): array
     {
-        $uri = '/' . self::VERSION . '/auth/register';
+        $uri = '/' . self::VERSION . '/auth/register?send=false';
 
         return [
             'uri' => $uri,
