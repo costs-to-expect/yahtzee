@@ -39,7 +39,7 @@ class Index extends Controller
             $closed_games = $closed_games_response['content'];
         }
 
-        $players_response = $this->api->getPlayers($this->resource_type_id, ['limit'=> 5]);
+        $players_response = $this->api->getPlayers($this->resource_type_id, ['collection'=> true]);
 
         $players = [];
         if ($players_response['status'] === 200 && count($players_response['content']) > 0) {

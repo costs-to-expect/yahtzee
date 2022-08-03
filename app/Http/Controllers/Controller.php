@@ -191,8 +191,18 @@ class Controller extends BaseController
             }
         }
 
+        if ($total > 63 && (count($dice_scored) + count($dice_scratched)) < 6) {
+            $message = 'OK, OK, you have the bonus without even finishing!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
         if ($total === 63 && count($dice_scored) === 6) {
-            $message = 'Damn, that was close, next time, give yourself some breathing room!';
+            $message = 'Damn, that was close, next time, give yourself a little breathing room!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total > 85 && count($dice_scored) === 6) {
+            $message = 'Umm!, I wasn\'t even sure you could score this much!';
             return $this->playerBonusView($game_id, $player_id, $message);
         }
 
@@ -201,8 +211,13 @@ class Controller extends BaseController
             return $this->playerBonusView($game_id, $player_id, $message);
         }
 
-        if ($total > 63 && count($dice_scored) === 6) {
+        if ($total > 68 && count($dice_scored) === 6) {
             $message = 'Awesome, plenty of breathing room!';
+            return $this->playerBonusView($game_id, $player_id, $message);
+        }
+
+        if ($total > 63 && count($dice_scored) === 6) {
+            $message = 'Awesome, made it with a little breathing room!';
             return $this->playerBonusView($game_id, $player_id, $message);
         }
 
@@ -212,7 +227,7 @@ class Controller extends BaseController
         }
 
         if ($total > 63 && count($dice_scratched) > 0) {
-            $message = 'WOW, nothing like scoring the bonus whilst scratching!';
+            $message = 'WOW, nothing like scoring the bonus whilst also scratching!';
             return $this->playerBonusView($game_id, $player_id, $message);
         }
 
@@ -234,11 +249,41 @@ class Controller extends BaseController
         if (
             $total < 63 && (count($dice_scored) + count($dice_scratched)) < 6
         ) {
+            $ones_total = $total;
+            $twos_total = $total;
             $threes_total = $total;
             $fours_total = $total;
             foreach($dice_to_score as $dice) {
+                $ones_total += ($dice_values[$dice] * 1);
+                $twos_total += ($dice_values[$dice] * 2);
                 $threes_total += ($dice_values[$dice] * 3);
                 $fours_total += ($dice_values[$dice] * 4);
+            }
+
+            if ($ones_total === 63) {
+                $message = 'Easy, one of everything left will do!';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+            if ($ones_total >= 63) {
+                if ((count($dice_scored) + count($dice_scratched)) === 5) {
+                    $message = 'Easy, one of the last dice please!';
+                    return $this->playerBonusView($game_id, $player_id, $message);
+                }
+                $message = 'You should be able to get your bonus without even trying!';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+
+            if ($twos_total === 63) {
+                $message = 'Looking good, two of everything left will do!';
+                return $this->playerBonusView($game_id, $player_id, $message);
+            }
+            if ($twos_total >= 63) {
+                if ((count($dice_scored) + count($dice_scratched)) === 5) {
+                    $message = 'You can still easily get the bonus, two of the last dice please!';
+                    return $this->playerBonusView($game_id, $player_id, $message);
+                }
+                $message = 'You can still easily get the bonus';
+                return $this->playerBonusView($game_id, $player_id, $message);
             }
 
             if ($threes_total === 63) {
@@ -247,7 +292,7 @@ class Controller extends BaseController
             }
             if ($threes_total > 63) {
                 if ((count($dice_scored) + count($dice_scratched)) === 5) {
-                    $message = 'You can still easily get the bonus, three of the last dice please!';
+                    $message = 'You can still get the bonus, three of the last dice please!';
                     return $this->playerBonusView($game_id, $player_id, $message);
                 }
                 $message = 'You can still easily get the bonus';

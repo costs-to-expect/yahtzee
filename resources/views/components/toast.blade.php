@@ -11,12 +11,6 @@
             <p class="mb-0">{{ $toast_yahtzee_scratch['message'] }}</p>
         </div>
     </div>
-    <div id="toast_chance_scratch" class="toast bg-primary" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-body text-white">
-            <h2>{{ $toast_chance_scratch['heading'] }}</h2>
-            <p class="mb-0">{{ $toast_chance_scratch['message'] }}</p>
-        </div>
-    </div>
     <div id="toast_yahtzee_bonus_one" class="toast bg-primary" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body text-white">
             <h2>{{ $toast_yahtzee_bonus_one['heading'] }}</h2>

@@ -126,13 +126,6 @@ import { display_selected_toast, disable_yahtzee_bonus_if_game_over } from './fu
         });
     }
 
-    let scratch_chance = document.querySelector('input[type="checkbox"]#scratch_chance.active');
-    if (scratch_chance !== null) {
-        scratch_chance.addEventListener('change', function () {
-            scratch_lower_combination(this, 'chance_scratch');
-        });
-    }
-
     let yahtzee_bonus_one = document.querySelector('input[type="checkbox"]#yahtzee_bonus_one.active');
     if (yahtzee_bonus_one !== null) {
         yahtzee_bonus_one.addEventListener('change', function () {
@@ -185,9 +178,11 @@ import { display_selected_toast, disable_yahtzee_bonus_if_game_over } from './fu
                     element.disabled = true;
 
                     let scratch = document.getElementById('scratch_' + element.id);
-                    scratch.classList.remove('active');
-                    scratch.classList.add('disabled');
-                    scratch.disabled = true;
+                    if (scratch !== null) {
+                        scratch.classList.remove('active');
+                        scratch.classList.add('disabled');
+                        scratch.disabled = true;
+                    }
 
                     player_score_lower.innerText = response.data.score.lower;
                     player_total_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
