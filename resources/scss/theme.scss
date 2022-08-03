@@ -90,7 +90,8 @@ a.nav-link.active {
 
 div.bonus-message p {
     margin-top: 1rem;
-    border: 1px solid rgba(137, 43, 124, 1);
+    border-top: 1px solid rgba(137, 43, 124, 1);
+    border-right: 1px solid rgba(137, 43, 124, 0.40);
 }
 
 svg.scored {

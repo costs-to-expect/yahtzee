@@ -50,16 +50,6 @@ class Toast extends Component
                     'message' => 'Was this tactical, are you Psyching out your opponents.',
                 ]
             ],
-            'toast_chance_scratch' => [
-                [
-                    'heading' => 'Oh dear!',
-                    'message' => 'Why are you scratching chance, what is going on?',
-                ],
-                [
-                    'heading' => 'Really!',
-                    'message' => 'What is wrong with you, do you know how to play?',
-                ]
-            ],
             'toast_yahtzee_bonus_one' => [
                 [
                     'heading' => 'Yahtzee X 2',
@@ -113,7 +103,6 @@ class Toast extends Component
             [
                 'toast_yahtzee' => Arr::random($this->messages['toast_yahtzee']),
                 'toast_yahtzee_scratch' => Arr::random($this->messages['toast_yahtzee_scratch']),
-                'toast_chance_scratch' => Arr::random($this->messages['toast_chance_scratch']),
                 'toast_yahtzee_bonus_one' => Arr::random($this->messages['toast_yahtzee_bonus_one']),
                 'toast_yahtzee_bonus_two' => Arr::random($this->messages['toast_yahtzee_bonus_two']),
                 'toast_yahtzee_bonus_three' => Arr::random($this->messages['toast_yahtzee_bonus_three']),

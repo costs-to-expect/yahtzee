@@ -145,8 +145,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
-                        <hr />
+                    <div class="col-12 pt-3">
                         <h2 class="text-primary">Lower Section</h2>
                     </div>
                 </div>
@@ -437,7 +436,6 @@
                         <h6>Score</h6>
                     </div>
                     <div class="col-3 text-center">
-                        <h6>Scratch</h6>
                     </div>
                     <div class="col-6">
                         <p class="mb-0 chance_dice">
@@ -471,9 +469,6 @@
                         <label for="chance" class="visually-hidden">Chance</label>
                     </div>
                     <div class="col-3">
-                        <div class="text-center">
-                            <input class="accessible form-check-input @if(array_key_exists('chance', $score_sheet['upper-section'])) disabled @else active @endif" type="checkbox" id="scratch_chance" value="chance" aria-label="Scratch chance" @if(array_key_exists('chance', $score_sheet['lower-section'])) disabled="disabled" @endif @if(array_key_exists('chance', $score_sheet['lower-section']) && $score_sheet['lower-section']['chance'] === 0) checked="checked" @endif>
-                        </div>
                     </div>
                 </div>
 
@@ -550,9 +545,9 @@
         <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
         <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
-        <script type="module" src="{{ asset('js/score-sheet.js?v0.18.0') }}" defer></script>
-        <script src="{{ asset('js/player-scores.js?v0.18.0') }}" defer></script>
-        <script src="{{ asset('js/bonus-message.js?v0.18.0') }}" defer></script>
+        <script type="module" src="{{ asset('js/score-sheet.js?v1.02.0') }}" defer></script>
+        <script src="{{ asset('js/player-scores.js?v1.02.0') }}" defer></script>
+        <script src="{{ asset('js/bonus-message.js?v1.02.0') }}" defer></script>
         @endif
     </body>
 </html>
