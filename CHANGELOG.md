@@ -2,6 +2,13 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.02.0] - [2022-08-04]
+### Changed
+- Removed the scratch chance option, not a relevant option.
+- Minor change to the design of the bonus message container.
+- Updated the bonus message text and added messages for additional combinations and scores.
+- Fetch all players from the API rather than the latest ten.
+
 ## [1.01.0] - [2022-08-03]
 ### Added
 - Added a landing page to highlight some of the features.
