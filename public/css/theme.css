@@ -11442,21 +11442,15 @@ body.align-items {
   align-items: center;
 }
 
-div.header a {
-  text-decoration: none;
-  color: #000000;
+a.navbar-brand {
+  font-weight: 300;
 }
-div.header a img {
-  margin-right: -1rem;
-  margin-top: -0.5rem;
+a.navbar-brand img {
+  margin-right: -0.35rem;
 }
 
-div.game-title a {
-  text-decoration: none;
-  color: #000000;
-}
-div.game-title a img {
-  margin-right: -1rem;
+h5.offcanvas-title, .offcanvas-title.h5 {
+  font-weight: 300;
 }
 
 input[type=number] {

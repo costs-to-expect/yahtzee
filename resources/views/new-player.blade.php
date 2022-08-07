@@ -11,15 +11,9 @@
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
     </head>
     <body>
-        <div class="col-lg-8 mx-auto p-3 py-md-5">
-            <x-layout.header />
+        <x-offcanvas active="players" />
 
-            <nav class="nav nav-fill my-4 border-bottom border-top">
-                <a class="nav-link" href="{{ route('home') }}">Home</a>
-                <a class="nav-link" href="{{ route('games') }}">Games</a>
-                <a class="nav-link active" href="{{ route('players') }}">Players</a>
-                <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
-            </nav>
+        <div class="col-lg-8 mx-auto p-3 py-md-5">
 
             <main>
                 <form action="{{ route('player.create.process') }}" method="POST" class="col-12 col-md-4 col-lg-4 mx-auto p-2">
@@ -56,5 +50,6 @@
                 </div>
             </footer>
         </div>
+        <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
     </body>
 </html>

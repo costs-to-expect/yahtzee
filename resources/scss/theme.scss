@@ -28,28 +28,16 @@ body.align-items {
     align-items: center;
 }
 
-div.header {
-    a {
-        text-decoration: none;
-        color: #000000;
+a.navbar-brand {
+    font-weight: 300;
 
-        img {
-            margin-right: -1rem;
-            margin-top: -0.5rem;
-
-        }
+    img {
+        margin-right: -0.35rem;
     }
 }
 
-div.game-title {
-    a {
-        text-decoration: none;
-        color: #000000;
-
-        img {
-            margin-right: -1rem;
-        }
-    }
+h5.offcanvas-title {
+    font-weight: 300;
 }
 
 input[type="number"] {

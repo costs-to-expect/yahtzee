@@ -11,15 +11,9 @@
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
     </head>
     <body>
-        <div class="col-lg-8 mx-auto p-3 py-md-5">
-            <x-layout.header />
+        <x-offcanvas active="games" />
 
-            <nav class="nav nav-fill my-4 border-bottom border-top">
-                <a class="nav-link" href="{{ route('home') }}">Home</a>
-                <a class="nav-link active" href="{{ route('games') }}">Games</a>
-                <a class="nav-link" href="{{ route('players') }}">Players</a>
-                <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
-            </nav>
+        <div class="col-lg-8 mx-auto p-3 py-md-5">
 
             <h1>Player: {{ $player_name }}</h1>
 

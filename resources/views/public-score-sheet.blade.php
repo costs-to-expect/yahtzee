@@ -11,8 +11,15 @@
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
     </head>
     <body>
+    <nav class="navbar navbar-dark bg-dark" aria-label="Offcanvas navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                Yahtzee by <img src="{{ asset('images/logo.png') }}" width="30" height="30" class="d-inline-block align-middle" alt=""><span class="d-none">C</span>osts to Expect.com
+            </a>
+        </div>
+    </nav>
+
         <div class="col-lg-8 mx-auto p-3 py-md-5">
-            <x-layout.header />
 
             <h1>Player: {{ $player_name }}</h1>
 
