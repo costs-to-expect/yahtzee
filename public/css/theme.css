@@ -11442,6 +11442,14 @@ body.align-items {
   align-items: center;
 }
 
+div.game-title a {
+  text-decoration: none;
+  color: #000000;
+}
+div.game-title a img {
+  margin-right: -1rem;
+}
+
 a.navbar-brand {
   font-weight: 300;
 }
