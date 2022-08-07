@@ -1,6 +1,9 @@
 $theme-colors: (
     "primary": rgba(137, 43, 124, 1),
     "danger": rgb(182, 36, 36),
+
+    "light": rgba(239, 242, 245, 1),
+    "dark": rgb(15, 27, 47),
 );
 
 $link-color: rgba(137, 43, 124, 1);
@@ -25,28 +28,16 @@ body.align-items {
     align-items: center;
 }
 
-div.header {
-    a {
-        text-decoration: none;
-        color: #000000;
+a.navbar-brand {
+    font-weight: 300;
 
-        img {
-            margin-right: -1rem;
-            margin-top: -0.5rem;
-
-        }
+    img {
+        margin-right: -0.35rem;
     }
 }
 
-div.game-title {
-    a {
-        text-decoration: none;
-        color: #000000;
-
-        img {
-            margin-right: -1rem;
-        }
-    }
+h5.offcanvas-title {
+    font-weight: 300;
 }
 
 input[type="number"] {

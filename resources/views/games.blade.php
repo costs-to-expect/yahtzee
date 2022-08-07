@@ -11,16 +11,9 @@
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
     </head>
     <body>
+        <x-offcanvas active="games" />
+
         <div class="col-lg-8 mx-auto p-3 py-md-5">
-            <x-layout.header />
-
-            <nav class="nav nav-fill my-4 border-bottom border-top">
-                <a class="nav-link" href="{{ route('home') }}">Home</a>
-                <a class="nav-link active" href="{{ route('games') }}">Games</a>
-                <a class="nav-link" href="{{ route('players') }}">Players</a>
-                <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
-            </nav>
-
             <main>
                 <h2>Complete Games</h2>
 
@@ -103,5 +96,6 @@
                 </div>
             </footer>
         </div>
+        <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
     </body>
 </html>
