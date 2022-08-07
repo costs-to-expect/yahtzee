@@ -19,8 +19,14 @@
                     <li class="nav-item">
                         <a class="nav-link @if($active === 'games') active @endif" @if($active === 'home') aria-current="page" @endif href="{{ route('games') }}">Games</a>
                     </li>
+                    <li class="nav-item ps-3">
+                        <a class="nav-link" href="{{ route('game.create.view') }}">- New Game</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link @if($active === 'players') active @endif" @if($active === 'home') aria-current="page" @endif href="{{ route('players') }}">Players</a>
+                    </li>
+                    <li class="nav-item ps-3">
+                        <a class="nav-link" href="{{ route('player.create.view') }}">- New Player</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://api.costs-to-expect.com">The API</a>
