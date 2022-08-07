@@ -152,6 +152,7 @@
         <div class="col-6 col-md">
             <h5>Game Scorers</h5>
             <ul class="list-unstyled text-small">
+                <li><a class="link-secondary" href="https://yahtzee.game-scorer.com">Yahtzee</a></li>
                 <li><a class="link-secondary" href="#">Yatzy (Coming soon)</a></li>
             </ul>
         </div>

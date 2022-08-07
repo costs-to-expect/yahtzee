@@ -28,6 +28,17 @@ body.align-items {
     align-items: center;
 }
 
+div.game-title {
+    a {
+        text-decoration: none;
+        color: #000000;
+
+        img {
+            margin-right: -1rem;
+        }
+    }
+}
+
 a.navbar-brand {
     font-weight: 300;
 
