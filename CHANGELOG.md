@@ -2,6 +2,11 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.03.0] - []
+### Changed
+- Added 'light' and 'dark' to the colour scheme and landing page.
+- Adjusted the width of the authentication forms.
+
 ## [1.02.0] - [2022-08-04]
 ### Changed
 - Removed the scratch chance option, not a relevant option.
