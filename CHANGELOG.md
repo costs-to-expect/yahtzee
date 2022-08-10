@@ -2,9 +2,14 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [1.04.0] - []
+## [1.04.0] - [2022-08-10]
+### Added
+- Added a registration email, sent after the first step of account creation, allows continuation of account creation (create password).
 ### Changed
 - Added a footer component.
+- Added a link to create player for new registrations.
+### Fixed
+- Fetch the bonus message after a change to the upper section, not every n seconds.
 
 ## [1.03.0] - [2022-08-07]
 ### Added
