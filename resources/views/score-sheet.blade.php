@@ -524,30 +524,7 @@
                 </div>
             </form>
             <div class="player-scores"></div>
-            <footer class="container py-5">
-                <div class="row">
-                    <div class="col-12 col-md">
-                        <small class="d-block mb-3 text-muted">&copy; 2022</small>
-                        <small class="d-block mb-3 text-muted">v{{ $config['version'] }} - Released {{ $config['release_date'] }}</small>
-                    </div>
-                    <div class="col-6 col-md">
-                        <h5>Game Scorers</h5>
-                        <ul class="list-unstyled text-small">
-                            <li><a class="link-secondary" href="https://yahtzee.game-scorer.com">Yahtzee</a></li>
-                            <li><a class="link-secondary" href="#">Yatzy (Coming soon)</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-md">
-                        <h5>Costs to Expect</h5>
-                        <ul class="list-unstyled text-small">
-                            <li><a class="link-secondary" href="https://api.costs-to-expect.com">The API</a></li>
-                            <li><a class="link-secondary" href="https://github.com/costs-to-expect">GitHub</a></li>
-                            <li><a class="link-secondary" href="https://www.costs-to-expect.com">Social Experiment</a></li>
-                            <li><a class="link-secondary" href="https://www.deanblackborough.com">Dean Blackborough</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
+            <x-footer />
         </div>
 
         @if ($complete === 0)
@@ -557,7 +534,6 @@
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
         <script type="module" src="{{ asset('js/score-sheet.js?v1.02.0') }}" defer></script>
         <script src="{{ asset('js/player-scores.js?v1.02.0') }}" defer></script>
-        <script src="{{ asset('js/bonus-message.js?v1.02.0') }}" defer></script>
         @endif
     </body>
 </html>

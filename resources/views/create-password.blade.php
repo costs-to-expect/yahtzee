@@ -60,8 +60,8 @@
                                 </div>
                             @endif
                         </div>
-                        <input type="hidden" name="token" value="{{ old('token', ($parameters !== null ? $parameters['token'] : null)) }}" />
-                        <input type="hidden" name="email" value="{{ old('email', ($parameters !== null ? $parameters['email'] : null)) }}" />
+                        <input type="hidden" name="token" value="{{ old('token', $token) }}" />
+                        <input type="hidden" name="email" value="{{ old('email', $email) }}" />
                         <button type="submit" class="btn btn-primary w-100">Set Password</button>
                     </form>
                 </div>
