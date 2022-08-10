@@ -406,6 +406,16 @@ import { display_selected_toast, disable_yahtzee_bonus_if_game_over } from './fu
                     document.querySelectorAll('label[for="' + element.id + '"] svg').forEach(dice =>
                         dice.classList.add('scored')
                     );
+
+                    let bonus_message = document.querySelector('div.bonus-message');
+                    let bonus_message_uri = (token === null) ? '/game/' + game_id.value + '/player/' + player_id.value + '/bonus' : '/public/game/' + token.value + '/bonus';
+
+                    axios.get(bonus_message_uri)
+                        .then(response => {
+                            if (response.data.length > 0) {
+                                bonus_message.innerHTML = response.data;
+                            }
+                        });
                 })
                 .catch(error => {
                     console.log(error);
@@ -457,6 +467,16 @@ import { display_selected_toast, disable_yahtzee_bonus_if_game_over } from './fu
                     document.querySelectorAll('label[for="' + element.value + '"] svg').forEach(dice =>
                         dice.classList.add('scored')
                     );
+
+                    let bonus_message = document.querySelector('div.bonus-message');
+                    let bonus_message_uri = (token === null) ? '/game/' + game_id.value + '/player/' + player_id.value + '/bonus' : '/public/game/' + token.value + '/bonus';
+
+                    axios.get(bonus_message_uri)
+                        .then(response => {
+                            if (response.data.length > 0) {
+                                bonus_message.innerHTML = response.data;
+                            }
+                        });
                 })
                 .catch(error => {
                     console.log(error);
