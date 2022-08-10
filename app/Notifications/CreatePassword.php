@@ -7,18 +7,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CreatePassword extends Notification
+class CreatePassword extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    private string $email;
+    private string $token;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $email, string $token)
     {
-        //
+        $this->email = $email;
+        $this->token = $token;
     }
 
     /**
@@ -41,9 +45,12 @@ class CreatePassword extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject('Yahtzee Game Scorer: Create Password')
+            ->greeting('Hi Yahtzee Player!')
+            ->line('You account has been created, you now need to create your password.')
+            ->line('Chance are, you have already created your password, this email is just in case, you can pick up where you left off.')
+            ->action('Create Password', url('/create-password') . '?token=' . urlencode($this->token) . '&email=' . urlencode($this->email))
+            ->line('Thank you for using our Game Scorer, we hope you enjoy it!');
     }
 
     /**

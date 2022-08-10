@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Api\Service;
+use App\Notifications\CreatePassword;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * @author Dean Blackborough <dean@g3d-development.com>
@@ -69,8 +71,13 @@ class Authentication extends Controller
         );
 
         if ($response['status'] === 201) {
+            $parameters = $response['content']['uris']['create-password']['parameters'];
+
+            Notification::route('mail', $request->input('email'))
+                ->notify(new CreatePassword($parameters['email'], $parameters['token']));
+
             return redirect()->route('create-password.view')
-                ->with('authentication.parameters', $response['content']['uris']['create-password']['parameters']);
+                ->with('authentication.parameters', $parameters);
         }
 
         if ($response['status'] === 422) {
