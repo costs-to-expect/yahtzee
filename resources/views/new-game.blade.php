@@ -48,7 +48,8 @@
                     <button type="submit" class="btn btn-primary w-100">Start Game</button>
                     @else
                     <span class="text-primary">
-                        You can't start a game without players.
+                        You can't start a game without players, add at least one
+                        <a href="{{ route('player.create.view') }}">player</a> to get started.
                     </span>
                     @endif
                 </form>

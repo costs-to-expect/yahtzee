@@ -48,9 +48,10 @@ class CreatePassword extends Notification implements ShouldQueue
             ->subject('Yahtzee Game Scorer: Create Password')
             ->greeting('Hi Yahtzee Player!')
             ->line('You account has been created, you now need to create your password.')
-            ->line('Chance are, you have already created your password, this email is just in case, you can pick up where you left off.')
+            ->line('Chances are, you have already created your password, this email is just in case, you can pick up where you left off.')
             ->action('Create Password', url('/create-password') . '?token=' . urlencode($this->token) . '&email=' . urlencode($this->email))
             ->line('Thank you for using our Game Scorer, we hope you enjoy it!');
+
     }
 
     /**

@@ -19,10 +19,28 @@ class Authentication extends Controller
 {
     public function createPassword(Request $request)
     {
+        $token = null;
+        $email = null;
+
+        if (session()->get('authentication.parameters') !== null) {
+            $token = session()->get('authentication.parameters')['token'];
+            $email = session()->get('authentication.parameters')['email'];
+        }
+
+        if ($request->input('token') !== null && $request->input('email') !== null) {
+            $token = $request->input('token');
+            $email = $request->input('email');
+        }
+
+        if ($token === null && $email === null) {
+            abort(404, 'Password cannot be created, registration parameters not found');
+        }
+
         return view(
             'create-password',
             [
-                'parameters' => session()->get('authentication.parameters'),
+                'token' => $token,
+                'email' => $email,
                 'errors' => session()->get('authentication.errors'),
                 'failed' => session()->get('authentication.failed'),
             ]
