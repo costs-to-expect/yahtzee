@@ -8,6 +8,7 @@ use App\Actions\Game\Complete;
 use App\Actions\Game\Create;
 use App\Actions\Game\Delete;
 use App\Actions\Game\DeletePlayer;
+use App\Actions\Game\Log;
 use App\Models\ShareToken;
 use Illuminate\Http\Request;
 
@@ -535,6 +536,25 @@ class Game extends Controller
         $score_sheet['score']['upper'] = $score_upper;
         $score_sheet['score']['bonus'] = $score_bonus;
         $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
+
+        $log_action = new Log();
+        $log_action_result = $log_action(
+            $this->api,
+            $this->resource_type_id,
+            $this->resource_id,
+            $request->input('game_id'),
+            'Scored ' . $request->input('score') . ' in their ' . ucfirst($request->input('dice')),
+            [
+                'player' => $request->input('player_id'),
+                'section' => 'upper',
+                'dice' => $request->input('dice'),
+                'score' => $request->input('score'),
+            ]
+        );
+
+        if ($log_action_result !== 201) {
+            // @todo - Log an error
+        }
 
         return $this->score(
             $this->api,

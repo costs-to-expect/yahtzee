@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Game\Log;
 use App\Api\Service;
 use App\Models\ShareToken;
 use Illuminate\Http\Request;
@@ -162,6 +163,25 @@ class Share extends Controller
         $score_sheet['score']['upper'] = $score_upper;
         $score_sheet['score']['bonus'] = $score_bonus;
         $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
+
+        $log_action = new Log();
+        $log_action_result = $log_action(
+            $api,
+            $parameters['resource_type_id'],
+            $parameters['resource_id'],
+            $parameters['game_id'],
+            'Scored ' . $request->input('score') . ' in their ' . ucfirst($request->input('dice')),
+            [
+                'player' => $parameters['player_id'],
+                'section' => 'upper',
+                'dice' => $request->input('dice'),
+                'score' => $request->input('score'),
+            ]
+        );
+
+        if ($log_action_result !== 201) {
+            // @todo - Log an error
+        }
 
         return $this->score(
             $api,

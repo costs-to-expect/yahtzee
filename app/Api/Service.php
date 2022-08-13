@@ -120,6 +120,26 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
+    public function createGameLogMessage(
+        string $resource_type_id,
+        string $resource_id,
+        string $game_id,
+        string $message,
+        array $parameters = []
+    ): array
+    {
+        $uri = Uri::gameLog($resource_type_id, $resource_id, $game_id);
+
+        return $this->http->post(
+            $uri['uri'],
+            [
+                'message' => $message,
+                'parameters' => json_encode($parameters, JSON_THROW_ON_ERROR)
+            ]
+        );
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array", 'fields' => "array"])]
     public function createPlayer(string $resource_type_id, string $name, string $description): array
     {
         $uri = Uri::players($resource_type_id);
