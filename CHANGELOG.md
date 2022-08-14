@@ -8,6 +8,7 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 ### Changed
 - Correct the title in the HTML.
 - Removed the `canonical` header.
+- Added our Twitter handle to the footer.
 ### Fixed
 - Scratching Yahtzee disables the Yahtzee bonus inputs.
 - The minimum score for Three of a kind, Four of a kind and Chance is 5, not 6.
