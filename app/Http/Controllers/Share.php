@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Game\Log;
 use App\Api\Service;
 use App\Models\ShareToken;
 use Illuminate\Http\Request;
@@ -163,6 +164,25 @@ class Share extends Controller
         $score_sheet['score']['bonus'] = $score_bonus;
         $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
 
+        $log_action = new Log();
+        $log_action_result = $log_action(
+            $api,
+            $parameters['resource_type_id'],
+            $parameters['resource_id'],
+            $parameters['game_id'],
+            'Scored ' . $request->input('score') . ' in their ' . ucfirst($request->input('dice')),
+            [
+                'player' => $parameters['player_id'],
+                'section' => 'upper',
+                'dice' => $request->input('dice'),
+                'score' => $request->input('score'),
+            ]
+        );
+
+        if ($log_action_result !== 201) {
+            // @todo - Log an error
+        }
+
         return $this->score(
             $api,
             $parameters['resource_type_id'],
@@ -181,7 +201,10 @@ class Share extends Controller
 
         $score_sheet = $this->getScoreSheet($api, $parameters);
 
-        $score_sheet['lower-section'][$request->input('combo')] = $request->input('score');
+        $combo = $request->input('combo');
+        $score = $request->input('score');
+
+        $score_sheet['lower-section'][$combo] = $score;
         $score_lower = 0;
         foreach ($score_sheet['lower-section'] as $value) {
             $score_lower += $value;
@@ -189,6 +212,32 @@ class Share extends Controller
 
         $score_sheet['score']['lower'] = $score_lower;
         $score_sheet['score']['total'] = $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] + $score_lower;
+
+        $message = match ($combo) {
+            'three_of_a_kind', 'four_of_a_kind', 'chance' => 'Scored ' . $score . ' in ' . ucfirst(
+                    str_replace('_', '', $combo)
+                ),
+            default => 'Scored their ' . ucfirst(str_replace('_', ' ', $combo)) . ', scoring ' . $score,
+        };
+
+        $log_action = new Log();
+        $log_action_result = $log_action(
+            $api,
+            $parameters['resource_type_id'],
+            $parameters['resource_id'],
+            $parameters['game_id'],
+            $message,
+            [
+                'player' => $parameters['player_id'],
+                'section' => 'lower',
+                'combo' => $request->input('combo'),
+                'score' => $request->input('score'),
+            ]
+        );
+
+        if ($log_action_result !== 201) {
+            // @todo - Log an error
+        }
 
         return $this->score(
             $api,

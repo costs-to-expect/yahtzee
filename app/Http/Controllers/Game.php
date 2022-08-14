@@ -8,6 +8,7 @@ use App\Actions\Game\Complete;
 use App\Actions\Game\Create;
 use App\Actions\Game\Delete;
 use App\Actions\Game\DeletePlayer;
+use App\Actions\Game\Log;
 use App\Models\ShareToken;
 use Illuminate\Http\Request;
 
@@ -536,6 +537,25 @@ class Game extends Controller
         $score_sheet['score']['bonus'] = $score_bonus;
         $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
 
+        $log_action = new Log();
+        $log_action_result = $log_action(
+            $this->api,
+            $this->resource_type_id,
+            $this->resource_id,
+            $request->input('game_id'),
+            'Scored ' . $request->input('score') . ' in their ' . ucfirst($request->input('dice')),
+            [
+                'player' => $request->input('player_id'),
+                'section' => 'upper',
+                'dice' => $request->input('dice'),
+                'score' => $request->input('score'),
+            ]
+        );
+
+        if ($log_action_result !== 201) {
+            // @todo - Log an error
+        }
+
         return $this->score(
             $this->api,
             $this->resource_type_id,
@@ -557,13 +577,16 @@ class Game extends Controller
             $request->input('player_id')
         );
 
+        $combo = $request->input('combo');
+        $score = $request->input('score');
+
         if ($score_sheet['status'] !== 200) {
             return response()->json(['message' => 'Unable to fetch your score sheet'], $score_sheet['status']);
         }
 
         $score_sheet = $score_sheet['content']['value'];
 
-        $score_sheet['lower-section'][$request->input('combo')] = $request->input('score');
+        $score_sheet['lower-section'][$combo] = $score;
         $score_lower = 0;
         foreach ($score_sheet['lower-section'] as $value) {
             $score_lower += $value;
@@ -571,6 +594,32 @@ class Game extends Controller
 
         $score_sheet['score']['lower'] = $score_lower;
         $score_sheet['score']['total'] = $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] + $score_lower;
+
+        $message = match ($combo) {
+            'three_of_a_kind', 'four_of_a_kind', 'chance' => 'Scored ' . $score . ' in ' . ucfirst(
+                    str_replace('_', '', $combo)
+                ),
+            default => 'Scored their ' . ucfirst(str_replace('_', ' ', $combo)) . ', scoring ' . $score,
+        };
+
+        $log_action = new Log();
+        $log_action_result = $log_action(
+            $this->api,
+            $this->resource_type_id,
+            $this->resource_id,
+            $request->input('game_id'),
+            $message,
+            [
+                'player' => $request->input('player_id'),
+                'section' => 'lower',
+                'combo' => $request->input('combo'),
+                'score' => $request->input('score'),
+            ]
+        );
+
+        if ($log_action_result !== 201) {
+            // @todo - Log an error
+        }
 
         return $this->score(
             $this->api,

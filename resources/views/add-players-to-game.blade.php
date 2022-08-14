@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Yahtzee Game Score by Costs to Expect">
+        <meta name="description" content="Yahtzee Game Scorer by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
         <title>Yahtzee Game Scorer: Add Players to Game</title>
         <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">

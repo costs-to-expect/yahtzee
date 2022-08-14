@@ -34,3 +34,18 @@ export function disable_yahtzee_bonus_if_game_over(turns) {
         display_selected_toast('done');
     }
 }
+
+export function disable_yahtzee_bonus() {
+    let bonus_one = document.querySelector('input[type="checkbox"]#yahtzee_bonus_one.active');
+    if (bonus_one !== null) {
+        bonus_one.disabled = true;
+    }
+    let bonus_two = document.querySelector('input[type="checkbox"]#yahtzee_bonus_two.active');
+    if (bonus_two !== null) {
+        bonus_two.disabled = true;
+    }
+    let bonus_three = document.querySelector('input[type="checkbox"]#yahtzee_bonus_three.active');
+    if (bonus_three !== null) {
+        bonus_three.disabled = true;
+    }
+}
