@@ -1,4 +1,4 @@
-import { display_selected_toast, disable_yahtzee_bonus_if_game_over } from './functions.js';
+import {display_selected_toast, disable_yahtzee_bonus_if_game_over, disable_yahtzee_bonus} from './functions.js';
 
 (function (axios) {
     'use strict'
@@ -287,6 +287,10 @@ import { display_selected_toast, disable_yahtzee_bonus_if_game_over } from './fu
                 player_final_score.innerText = response.data.score.upper + response.data.score.bonus + response.data.score.lower;
 
                 disable_yahtzee_bonus_if_game_over(response.data.turns);
+
+                if (payload.combo === 'yahtzee') {
+                    disable_yahtzee_bonus();
+                }
 
                 display_selected_toast(show_toast);
 
