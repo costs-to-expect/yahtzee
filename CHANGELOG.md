@@ -2,6 +2,16 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.05.0] - [2020-08-13]
+### Added
+- Added logging, scoring actions are logged in the API, the data will be used later for multiple features.
+### Changed
+- Correct the title in the HTML.
+- Removed the `canonical` header.
+### Fixed
+- Scratching Yahtzee disables the Yahtzee bonus inputs.
+- The minimum score for Three of a kind, Four of a kind and Chance is 5, not 6.
+
 ## [1.04.0] - [2022-08-10]
 ### Added
 - Added a registration email, sent after the first step of account creation, allows continuation of account creation (create password).

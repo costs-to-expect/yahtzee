@@ -150,7 +150,7 @@ import {display_selected_toast, disable_yahtzee_bonus_if_game_over, disable_yaht
     let score_lower_combination = function(element, show_toast = 'none') {
 
         let score = parseInt(element.value);
-        if (score >= 6 && score <= 30) {
+        if (score >= 5 && score <= 30) {
 
             clearTimeout(timeout);
 

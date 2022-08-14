@@ -173,7 +173,7 @@
                         </p>
                     </div>
                     <div class="col-3">
-                        <input type="number" min="6" max="30" step="1" size="2" class="form-control form-control-sm @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section'])) disabled @else active @endif" id="three_of_a_kind" placeholder="" @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section'])) disabled="disabled" value="{{ $score_sheet['lower-section']['three_of_a_kind'] }}" @endif>
+                        <input type="number" min="5" max="30" step="1" size="2" class="form-control form-control-sm @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section'])) disabled @else active @endif" id="three_of_a_kind" placeholder="" @if(array_key_exists('three_of_a_kind', $score_sheet['lower-section'])) disabled="disabled" value="{{ $score_sheet['lower-section']['three_of_a_kind'] }}" @endif>
                         <label for="three_of_a_kind" class="visually-hidden">Three of a kind</label>
                     </div>
                     <div class="col-3">
@@ -217,7 +217,7 @@
                         </p>
                     </div>
                     <div class="col-3">
-                        <input type="number" min="6" max="30" step="1" size="2" class="form-control form-control-sm @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section'])) disabled @else active @endif" id="four_of_a_kind" placeholder="" @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section'])) disabled="disabled" value="{{ $score_sheet['lower-section']['four_of_a_kind'] }}" @endif>
+                        <input type="number" min="5" max="30" step="1" size="2" class="form-control form-control-sm @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section'])) disabled @else active @endif" id="four_of_a_kind" placeholder="" @if(array_key_exists('four_of_a_kind', $score_sheet['lower-section'])) disabled="disabled" value="{{ $score_sheet['lower-section']['four_of_a_kind'] }}" @endif>
                         <label for="four_of_a_kind" class="visually-hidden">Four of a kind</label>
                     </div>
                     <div class="col-3">
@@ -459,7 +459,7 @@
                         </p>
                     </div>
                     <div class="col-3">
-                        <input type="number" min="6" max="30" step="1" size="2" class="form-control form-control-sm @if(array_key_exists('chance', $score_sheet['lower-section'])) disabled @else active @endif" id="chance" placeholder="" @if(array_key_exists('chance', $score_sheet['lower-section'])) disabled="disabled" value="{{ $score_sheet['lower-section']['chance'] }}" @endif>
+                        <input type="number" min="5" max="30" step="1" size="2" class="form-control form-control-sm @if(array_key_exists('chance', $score_sheet['lower-section'])) disabled @else active @endif" id="chance" placeholder="" @if(array_key_exists('chance', $score_sheet['lower-section'])) disabled="disabled" value="{{ $score_sheet['lower-section']['chance'] }}" @endif>
                         <label for="chance" class="visually-hidden">Chance</label>
                     </div>
                     <div class="col-3">
