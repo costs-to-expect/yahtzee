@@ -2,7 +2,17 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [1.05.0] - [2020-08-13]
+## [1.05.1] - [2022-08-25]
+### Changed
+- Minor change to the width of the authentication forms.
+- Corrected a method name in the base controller.
+### Fixed
+- Validation errors on create password removed token from URI stopping the creation of the password.
+- Offcanvas unable to be invoked on closed games.
+- Removed default values in `App\Api\Service class`, should be using the values from the .env file.
+- Corrected a bonus message if you score 63 with fewer than 5 dice.
+
+## [1.05.0] - [2022-08-13]
 ### Added
 - Added logging, scoring actions are logged in the API, the data will be used later for multiple features.
 ### Changed
