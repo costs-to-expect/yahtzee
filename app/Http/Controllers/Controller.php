@@ -191,7 +191,7 @@ class Controller extends BaseController
             }
         }
 
-        if ($total > 63 && (count($dice_scored) + count($dice_scratched)) < 6) {
+        if ($total >= 63 && count($dice_scored) < 6) {
             $message = 'OK, OK, you have the bonus without even finishing!';
             return $this->playerBonusView($game_id, $player_id, $message);
         }
@@ -226,7 +226,7 @@ class Controller extends BaseController
             return $this->playerBonusView($game_id, $player_id, $message);
         }
 
-        if ($total > 63 && count($dice_scratched) > 0) {
+        if ($total >= 63 && count($dice_scratched) > 0) {
             $message = 'WOW, nothing like scoring the bonus whilst also scratching!';
             return $this->playerBonusView($game_id, $player_id, $message);
         }
