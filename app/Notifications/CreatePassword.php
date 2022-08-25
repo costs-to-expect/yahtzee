@@ -1,12 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
+use App\Models\PartialRegistration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+/**
+ * @author Dean Blackborough <dean@g3d-development.com>
+ * @copyright Dean Blackborough (Costs to Expect) 2018-2022
+ * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
+ *
+ * @property string $token
+ * @property string $email
+ */
 class CreatePassword extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -36,6 +47,13 @@ class CreatePassword extends Notification implements ShouldQueue
         return ['mail'];
     }
 
+    public function shouldSend($notifiable, $channel)
+    {
+        return PartialRegistration::query()
+                ->where('email', '=', $this->email)
+                ->first() !== null;
+    }
+
     /**
      * Get the mail representation of the notification.
      *
@@ -63,7 +81,8 @@ class CreatePassword extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            //
+            'token' => $this->token,
+            'email' => $this->email,
         ];
     }
 }

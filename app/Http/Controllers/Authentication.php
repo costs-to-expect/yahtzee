@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Api\Service;
+use App\Models\PartialRegistration;
 use App\Notifications\CreatePassword;
+use App\Notifications\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +58,14 @@ class Authentication extends Controller
         );
 
         if ($response['status'] === 204) {
+
+            PartialRegistration::query()
+                ->where('token', '=', $request->input('token'))
+                ->delete();
+
+            Notification::route('mail', $request->input('email'))
+                ->notify(new Registered());
+
             return redirect()->route('registration-complete');
         }
 
@@ -101,8 +111,15 @@ class Authentication extends Controller
         if ($response['status'] === 201) {
             $parameters = $response['content']['uris']['create-password']['parameters'];
 
+            $model = new PartialRegistration();
+            $model->token = $parameters['token'];
+            $model->email = $parameters['email'];
+            $model->save();
+
             Notification::route('mail', $request->input('email'))
-                ->notify(new CreatePassword($parameters['email'], $parameters['token']));
+                ->notify(
+                    (new CreatePassword($parameters['email'], $parameters['token']))->delay(now()->addMinute())
+                );
 
             return redirect()->route('create-password.view')
                 ->with('authentication.parameters', $parameters);

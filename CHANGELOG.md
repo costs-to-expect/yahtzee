@@ -2,6 +2,12 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.06.0] - []
+### Added
+- Added a `Registered` email, thanks the player for registering etc.
+### Changed
+- The `CreatePassword` email is delayed and only sent when the password has not be created during the sign-in process.
+
 ## [1.05.1] - [2022-08-25]
 ### Changed
 - Minor change to the width of the authentication forms.
