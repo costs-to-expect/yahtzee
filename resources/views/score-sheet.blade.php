@@ -527,10 +527,10 @@
             <x-footer />
         </div>
 
-        @if ($complete === 0)
         <x-toast />
         <script src="{{ asset('node_modules/axios/dist/axios.min.js') }}" defer></script>
         <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}" defer></script>
+        @if ($complete === 0)
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
         <script type="module" src="{{ asset('js/score-sheet.js?v1.02.0') }}" defer></script>
         <script src="{{ asset('js/player-scores.js?v1.02.0') }}" defer></script>
