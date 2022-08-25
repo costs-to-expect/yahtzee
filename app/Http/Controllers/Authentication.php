@@ -60,12 +60,22 @@ class Authentication extends Controller
         }
 
         if ($response['status'] === 422) {
-            return redirect()->route('create-password.view')
+            return redirect()->route(
+                'create-password.view',
+                [
+                    'email' => $request->input('token'),
+                    'token' => $request->input('email')
+                ])
                 ->withInput()
                 ->with('authentication.errors', $response['fields']);
         }
 
-        return redirect()->route('create-password.view')
+        return redirect()->route(
+            'create-password.view',
+            [
+                'email' => $request->input('token'),
+                'token' => $request->input('email')
+            ])
             ->with('authentication.failed', $response['content']);
     }
 
