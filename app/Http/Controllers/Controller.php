@@ -39,7 +39,7 @@ class Controller extends BaseController
         $this->item_subtype_id = $this->config['item_subtype_id'];
     }
 
-    protected function boostrap(Request $request)
+    protected function bootstrap(Request $request)
     {
         $this->api = new Service($request->cookie($this->config['cookie_bearer']));
 

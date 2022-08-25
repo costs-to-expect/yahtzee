@@ -21,7 +21,7 @@ class Game extends Controller
 {
     public function index(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $offset = (int) $request->query('offset', 0);
         $limit = (int) $request->query('limit', 10);
@@ -61,7 +61,7 @@ class Game extends Controller
 
     public function show(Request $request, $game_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $game = $this->api->getGame(
             $this->resource_type_id,
@@ -100,7 +100,7 @@ class Game extends Controller
 
     public function newGame(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $players_response = $this->api->getPlayers($this->resource_type_id, ['collection' => true]);
 
@@ -129,7 +129,7 @@ class Game extends Controller
 
     public function newGameProcess(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $action = new Create();
         $result = $action(
@@ -154,7 +154,7 @@ class Game extends Controller
 
     public function addPlayersToGame(Request $request, string $game_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $game_response = $this->api->getGame(
             $this->resource_type_id,
@@ -220,7 +220,7 @@ class Game extends Controller
 
     public function addPlayersToGameProcess(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $game_id = $request->route('game_id');
 
@@ -248,7 +248,7 @@ class Game extends Controller
 
     public function complete(Request $request, string $game_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $action = new Complete();
         try {
@@ -271,7 +271,7 @@ class Game extends Controller
 
     public function completeAndPlayAgain(Request $request, string $game_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $action = new Complete();
         try {
@@ -329,7 +329,7 @@ class Game extends Controller
 
     public function deleteGame(Request $request, string $game_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $action = new Delete();
         try {
@@ -352,7 +352,7 @@ class Game extends Controller
 
     public function deleteGamePlayer(Request $request, string $game_id, string $player_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $action = new DeletePlayer();
         try {
@@ -376,7 +376,7 @@ class Game extends Controller
 
     public function playerBonus(Request $request, string $game_id, string $player_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $game_response = $this->api->getGame(
             $this->resource_type_id,
@@ -406,7 +406,7 @@ class Game extends Controller
 
     public function playerScores(Request $request, string $game_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $players_response = $this->api->getAssignedGamePlayers(
             $this->resource_type_id,
@@ -440,7 +440,7 @@ class Game extends Controller
 
     public function scoreSheet(Request $request, string $game_id, string $player_id)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $game_response = $this->api->getGame(
             $this->resource_type_id,
@@ -508,7 +508,7 @@ class Game extends Controller
 
     public function scoreUpper(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $score_sheet = $this->api->getPlayerScoreSheet(
             $this->resource_type_id,
@@ -568,7 +568,7 @@ class Game extends Controller
 
     public function scoreLower(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $score_sheet = $this->api->getPlayerScoreSheet(
             $this->resource_type_id,

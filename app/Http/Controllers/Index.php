@@ -15,7 +15,7 @@ class Index extends Controller
 {
     public function home(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $open_games_response = $this->api->getGames(
             $this->resource_type_id,

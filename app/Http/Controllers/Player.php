@@ -15,7 +15,7 @@ class Player extends Controller
 {
     public function index(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $players_response = $this->api->getPlayers($this->resource_type_id, ['collection' => true]);
 
@@ -39,7 +39,7 @@ class Player extends Controller
 
     public function newPlayer(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         return view(
             'new-player',
@@ -54,7 +54,7 @@ class Player extends Controller
 
     public function newPlayerProcess(Request $request)
     {
-        $this->boostrap($request);
+        $this->bootstrap($request);
 
         $action = new Create();
         $result = $action($this->api, $this->resource_type_id, $request->only(['name', 'description']));
