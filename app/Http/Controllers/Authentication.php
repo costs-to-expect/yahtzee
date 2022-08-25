@@ -19,6 +19,24 @@ use Illuminate\Support\Facades\Notification;
  */
 class Authentication extends Controller
 {
+    public function account(Request $request)
+    {
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        return view(
+            'account',
+            [
+                'user' => $user['content']
+            ]
+        );
+    }
+
     public function createPassword(Request $request)
     {
         $token = null;

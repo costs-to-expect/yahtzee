@@ -180,5 +180,10 @@ Route::group(
             '/new-player',
             [Player::class, 'newPlayerProcess']
         )->name('player.create.process');
+
+        Route::get(
+            '/account',
+            [Authentication::class, 'account']
+        )->name('account');
     }
 );

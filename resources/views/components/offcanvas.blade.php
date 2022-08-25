@@ -32,6 +32,9 @@
                         <a class="nav-link" href="https://api.costs-to-expect.com">The API</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link @if($active === 'account') active @endif" @if($active === 'account') aria-current="page" @endif href="{{ route('account') }}">Account</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('sign-out') }}">Sign-out</a>
                     </li>
                 </ul>
