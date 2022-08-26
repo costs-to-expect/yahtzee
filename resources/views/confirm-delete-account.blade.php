@@ -61,8 +61,10 @@
                     </table>
                 </div>
 
-                <a href="#" class="btn btn-sm btn-danger">Confirm Delete (Cannot be undone)</a>
-                <a href="#" class="btn btn-sm btn-primary">Cancel</a>
+                <a href="#" class="btn btn-sm btn-danger disabled">Confirm Delete (Coming Soon*)</a>
+                <a href="{{ route('account') }}" class="btn btn-sm btn-primary">Cancel</a>
+
+                <p>* We need to update the API to support this, expect an update soon.</p>
 
             </main>
             <x-footer />

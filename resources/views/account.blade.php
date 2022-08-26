@@ -28,6 +28,16 @@
                     </li>
                 </ul>
 
+                @if ($job !== null)
+                    @if ($job === 'delete-yahtzee-account')
+                        <div class="alert alert-dark mt-5" role="alert">
+                            <h4 class="alert-heading">Delete started!</h4>
+                            <p>A job has been added to delete your account, we should be done in a minute or two!</p>
+                            <p class="mb-0">You can check the status by refreshing your browser, when the job is complete you will be signed-out.</p>
+                        </div>
+                    @endif
+                @endif
+
                 <h3 class="mt-5">Delete Yahtzee account</h3>
 
                 <p class="lead">This will delete all your Yahtzee games and any data
@@ -142,7 +152,9 @@
                     </table>
                 </div>
 
-                <a href="{{ route('account.confirm-delete-account') }}" class="btn btn-sm btn-danger">Delete Account</a>
+                <a href="{{ route('account.confirm-delete-account') }}" class="btn btn-sm btn-danger">Delete Account (Coming Soon *)</a>
+
+                <p>* We need to update the API to support this, expect an update soon.</p>
 
             </main>
             <x-footer />

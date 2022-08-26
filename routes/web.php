@@ -191,6 +191,11 @@ Route::group(
             [Authentication::class, 'confirmDeleteYahtzeeAccount']
         )->name('account.confirm-delete-yahtzee-account');
 
+        Route::post(
+            '/account/delete-yahtzee-account',
+            [Authentication::class, 'deleteYahtzeeAccount']
+        )->name('account.delete-yahtzee-account');
+
         Route::get(
             '/account/confirm-delete-account',
             [Authentication::class, 'confirmDeleteAccount']

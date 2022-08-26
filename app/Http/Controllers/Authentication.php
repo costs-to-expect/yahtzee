@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Account\DeleteYahtzeeAccount;
 use App\Api\Service;
 use App\Models\PartialRegistration;
 use App\Notifications\CreatePassword;
@@ -32,7 +33,8 @@ class Authentication extends Controller
         return view(
             'account',
             [
-                'user' => $user['content']
+                'user' => $user['content'],
+                'job' => $request->query('job')
             ]
         );
     }
@@ -141,6 +143,26 @@ class Authentication extends Controller
                 'token' => $request->input('email')
             ])
             ->with('authentication.failed', $response['content']);
+    }
+
+    public function deleteYahtzeeAccount(Request $request, DeleteYahtzeeAccount $action)
+    {
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        $action(
+            $request->cookie($this->config['cookie_bearer']),
+            $this->resource_type_id,
+            $this->resource_id,
+            $user['content']['id']
+        );
+
+        return redirect()->route('account', ['job'=>'delete-yahtzee-account']);
     }
 
     public function register()

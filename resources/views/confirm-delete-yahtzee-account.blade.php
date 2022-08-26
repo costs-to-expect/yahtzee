@@ -98,8 +98,11 @@
                     </table>
                 </div>
 
-                <a href="#" class="btn btn-sm btn-danger">Confirm Delete (Cannot be undone)</a>
-                <a href="#" class="btn btn-sm btn-primary">Cancel</a>
+                <form action="{{ route('account.delete-yahtzee-account') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-danger">Confirm Delete (Cannot be undone)</button>
+                    <a href="{{ route('account') }}" class="btn btn-sm btn-primary">Cancel</a>
+                </form>
 
             </main>
             <x-footer />

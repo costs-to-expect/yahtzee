@@ -245,6 +245,17 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function deleteResource(
+        string $resource_type_id,
+        string $resource_id
+    ): array
+    {
+        $uri = Uri::resource($resource_type_id, $resource_id);
+
+        return $this->http->delete($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function getGame(
         string $resource_type_id,
         string $resource_id,
