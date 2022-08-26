@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Account\DeleteYahtzeeAccount;
 use App\Api\Service;
+use App\Models\PartialRegistration;
 use App\Notifications\CreatePassword;
+use App\Notifications\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +20,66 @@ use Illuminate\Support\Facades\Notification;
  */
 class Authentication extends Controller
 {
+    public function account(Request $request)
+    {
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        $job = $request->query('job');
+        if ($job !== null) {
+            Auth::guard()->logout();
+        }
+
+        return view(
+            'account',
+            [
+                'user' => $user['content'],
+                'job' => $job
+            ]
+        );
+    }
+
+    public function confirmDeleteYahtzeeAccount(Request $request)
+    {
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        return view(
+            'confirm-delete-yahtzee-account',
+            [
+                'user' => $user['content']
+            ]
+        );
+    }
+
+    public function confirmDeleteAccount(Request $request)
+    {
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        return view(
+            'confirm-delete-account',
+            [
+                'user' => $user['content']
+            ]
+        );
+    }
+
     public function createPassword(Request $request)
     {
         $token = null;
@@ -56,6 +119,14 @@ class Authentication extends Controller
         );
 
         if ($response['status'] === 204) {
+
+            PartialRegistration::query()
+                ->where('token', '=', $request->input('token'))
+                ->delete();
+
+            Notification::route('mail', $request->input('email'))
+                ->notify(new Registered());
+
             return redirect()->route('registration-complete');
         }
 
@@ -77,6 +148,27 @@ class Authentication extends Controller
                 'token' => $request->input('email')
             ])
             ->with('authentication.failed', $response['content']);
+    }
+
+    public function deleteYahtzeeAccount(Request $request, DeleteYahtzeeAccount $action)
+    {
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        $action(
+            $request->cookie($this->config['cookie_bearer']),
+            $this->resource_type_id,
+            $this->resource_id,
+            $user['content']['id'],
+            $user['content']['email']
+        );
+
+        return redirect()->route('account', ['job'=>'delete-yahtzee-account']);
     }
 
     public function register()
@@ -101,8 +193,15 @@ class Authentication extends Controller
         if ($response['status'] === 201) {
             $parameters = $response['content']['uris']['create-password']['parameters'];
 
+            $model = new PartialRegistration();
+            $model->token = $parameters['token'];
+            $model->email = $parameters['email'];
+            $model->save();
+
             Notification::route('mail', $request->input('email'))
-                ->notify(new CreatePassword($parameters['email'], $parameters['token']));
+                ->notify(
+                    (new CreatePassword($parameters['email'], $parameters['token']))->delay(now()->addMinutes(5))
+                );
 
             return redirect()->route('create-password.view')
                 ->with('authentication.parameters', $parameters);

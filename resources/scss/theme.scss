@@ -6,6 +6,11 @@ $theme-colors: (
     "dark": rgb(15, 27, 47),
 );
 
+$table-variants: (
+    "light":      rgba(239, 242, 245, 1),
+    "dark":       rgb(15, 27, 47),
+);
+
 $link-color: rgba(137, 43, 124, 1);
 $input-focus-border-color: rgba(137, 43, 124, 1);
 $form-check-input-checked-bg-color: rgba(137, 43, 124, 1);

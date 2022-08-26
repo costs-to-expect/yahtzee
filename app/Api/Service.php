@@ -97,7 +97,7 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
-    public function authUser(): array
+    public function getAuthUser(): array
     {
         $uri = Uri::authUser();
 
@@ -245,6 +245,17 @@ class Service
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]
+    public function deleteResource(
+        string $resource_type_id,
+        string $resource_id
+    ): array
+    {
+        $uri = Uri::resource($resource_type_id, $resource_id);
+
+        return $this->http->delete($uri['uri']);
+    }
+
+    #[ArrayShape(['status' => "integer", 'content' => "array"])]
     public function getGame(
         string $resource_type_id,
         string $resource_id,
@@ -274,12 +285,17 @@ class Service
     public function getGames(
         string $resource_type_id,
         string $resource_id,
-        array $parameters = []
+        array $parameters = [],
+        bool $skip_cache = false,
     ): array
     {
+        if ($skip_cache === true || (array_key_exists('complete', $parameters) && $parameters['complete'] === 1)) {
+            $skip_cache = true;
+        }
+
         $uri = Uri::games($resource_type_id, $resource_id, $parameters);
 
-        return $this->http->get($uri['uri'], (array_key_exists('complete', $parameters) && $parameters['complete'] === 1));
+        return $this->http->get($uri['uri'], $skip_cache);
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]

@@ -34,6 +34,8 @@ class Log extends Action
             return 201;
         }
 
+        $this->message = $create_message_response['content'];
+
         return $create_message_response['status'];
     }
 }

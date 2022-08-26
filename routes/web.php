@@ -180,5 +180,25 @@ Route::group(
             '/new-player',
             [Player::class, 'newPlayerProcess']
         )->name('player.create.process');
+
+        Route::get(
+            '/account',
+            [Authentication::class, 'account']
+        )->name('account');
+
+        Route::get(
+            '/account/confirm-delete-yahtzee-account',
+            [Authentication::class, 'confirmDeleteYahtzeeAccount']
+        )->name('account.confirm-delete-yahtzee-account');
+
+        Route::post(
+            '/account/delete-yahtzee-account',
+            [Authentication::class, 'deleteYahtzeeAccount']
+        )->name('account.delete-yahtzee-account');
+
+        Route::get(
+            '/account/confirm-delete-account',
+            [Authentication::class, 'confirmDeleteAccount']
+        )->name('account.confirm-delete-account');
     }
 );
