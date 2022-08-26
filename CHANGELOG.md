@@ -2,7 +2,7 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [1.06.0] - []
+## [1.06.0] - [2022-08-26]
 ### Added
 - Added a `Registered` email, thanks the player for registering etc.
 - Added an account page, shows account details and displays all the details for the two delete account options.
