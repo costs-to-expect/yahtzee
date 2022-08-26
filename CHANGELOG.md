@@ -6,8 +6,10 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 ### Added
 - Added a `Registered` email, thanks the player for registering etc.
 - Added an account page, shows account details and displays all the details for the two delete account options.
+- Added "Delete my account", deletes all Yahtzee data and signs out the user.
+- Added a `Bye` email which gets sent after the account has been deleted.
 ### Changed
-- The `CreatePassword` email is delayed and only sent when the password has not be created during the sign-in process.
+- The `CreatePassword` email is delayed and only sent when the password has not been created during the sign-in process.
 
 ## [1.05.1] - [2022-08-25]
 ### Changed

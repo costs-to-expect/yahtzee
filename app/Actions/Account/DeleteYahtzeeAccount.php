@@ -14,15 +14,17 @@ class DeleteYahtzeeAccount
         string $bearer_token,
         string $resource_type_id,
         string $resource_id,
-        string $user_id
+        string $user_id,
+        string $email
     ): bool
     {
-        \App\Jobs\DeleteYahtzeeAccount::dispatch([
-            'bearer_token' => $bearer_token,
-            'resource_type_id' => $resource_type_id,
-            'resource_id' => $resource_id,
-            'user_id' => $user_id
-        ])->delay(now()->addMinute());
+        \App\Jobs\DeleteYahtzeeAccount::dispatch(
+            $bearer_token,
+            $resource_type_id,
+            $resource_id,
+            $user_id,
+            $email
+        )->delay(now()->addSeconds(5));
 
         return true;
     }

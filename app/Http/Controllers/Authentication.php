@@ -30,11 +30,16 @@ class Authentication extends Controller
             abort(404, 'Unable to fetch your account from the API');
         }
 
+        $job = $request->query('job');
+        if ($job !== null) {
+            Auth::guard()->logout();
+        }
+
         return view(
             'account',
             [
                 'user' => $user['content'],
-                'job' => $request->query('job')
+                'job' => $job
             ]
         );
     }
@@ -159,7 +164,8 @@ class Authentication extends Controller
             $request->cookie($this->config['cookie_bearer']),
             $this->resource_type_id,
             $this->resource_id,
-            $user['content']['id']
+            $user['content']['id'],
+            $user['content']['email']
         );
 
         return redirect()->route('account', ['job'=>'delete-yahtzee-account']);
@@ -194,7 +200,7 @@ class Authentication extends Controller
 
             Notification::route('mail', $request->input('email'))
                 ->notify(
-                    (new CreatePassword($parameters['email'], $parameters['token']))->delay(now()->addMinute())
+                    (new CreatePassword($parameters['email'], $parameters['token']))->delay(now()->addMinutes(5))
                 );
 
             return redirect()->route('create-password.view')

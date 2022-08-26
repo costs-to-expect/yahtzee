@@ -39,10 +39,9 @@ class Registered extends Notification implements ShouldQueue
             ->line('Thank you for creating an account on our Yahtzee game scorer.')
             ->line('When you sign-in you will be able to start scoring your games.')
             ->line('The Yahtzee game scorer is powered by the Costs to Expect API, your account is usable across all of our services')
-            ->line('If you registered in error or want to delete your account, just access the account section of our App.*')
+            ->line('If you registered in error or want to delete your account, just access the account section of our App.')
             ->action('Sign-in', url('/sign-in'))
-            ->line('Again, Thank you for choosing our scorer, we hope you have fun scoring your games.')
-            ->line('*Feature coming soon');
+            ->line('Again, Thank you for choosing our scorer, we hope you have fun scoring your games.');
     }
 
     public function toArray($notifiable)
