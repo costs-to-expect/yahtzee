@@ -123,7 +123,8 @@ class DeleteYahtzeeAccount implements ShouldQueue
             $this->resource_id,
             [
                 'limit' => 25
-            ]
+            ],
+            true
         );
 
         if ($result['status'] === 200 && count($result['content']) > 0) {

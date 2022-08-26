@@ -10,6 +10,7 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 - Added a `Bye` email which gets sent after the account has been deleted.
 ### Changed
 - The `CreatePassword` email is delayed and only sent when the password has not been created during the sign-in process.
+- The logo in the navbar goes to either home or / dependent on authentication status.
 
 ## [1.05.1] - [2022-08-25]
 ### Changed

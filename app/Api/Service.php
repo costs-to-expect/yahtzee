@@ -285,12 +285,17 @@ class Service
     public function getGames(
         string $resource_type_id,
         string $resource_id,
-        array $parameters = []
+        array $parameters = [],
+        bool $skip_cache = false,
     ): array
     {
+        if ($skip_cache === true || (array_key_exists('complete', $parameters) && $parameters['complete'] === 1)) {
+            $skip_cache = true;
+        }
+
         $uri = Uri::games($resource_type_id, $resource_id, $parameters);
 
-        return $this->http->get($uri['uri'], (array_key_exists('complete', $parameters) && $parameters['complete'] === 1));
+        return $this->http->get($uri['uri'], $skip_cache);
     }
 
     #[ArrayShape(['status' => "integer", 'content' => "array"])]

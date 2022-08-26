@@ -1,8 +1,16 @@
 <nav class="navbar navbar-dark bg-dark" aria-label="Offcanvas navbar">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">
+        @auth
+        <a class="navbar-brand" href="{{ route('home') }}">
             Yahtzee by <img src="{{ asset('images/logo.png') }}" width="30" height="30" class="d-inline-block align-middle" alt=""><span class="d-none">C</span>osts to Expect.com
         </a>
+        @endauth
+
+        @guest
+            <a class="navbar-brand" href="/">
+                Yahtzee by <img src="{{ asset('images/logo.png') }}" width="30" height="30" class="d-inline-block align-middle" alt=""><span class="d-none">C</span>osts to Expect.com
+            </a>
+        @endguest
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarDark" aria-controls="offcanvasNavbarDark">
             <span class="navbar-toggler-icon"></span>
         </button>
