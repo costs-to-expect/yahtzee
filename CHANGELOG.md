@@ -5,6 +5,7 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 ## [1.06.0] - []
 ### Added
 - Added a `Registered` email, thanks the player for registering etc.
+- Added an account page, shows account details and displays all the details for the two delete account options.
 ### Changed
 - The `CreatePassword` email is delayed and only sent when the password has not be created during the sign-in process.
 

@@ -185,5 +185,15 @@ Route::group(
             '/account',
             [Authentication::class, 'account']
         )->name('account');
+
+        Route::get(
+            '/account/confirm-delete-yahtzee-account',
+            [Authentication::class, 'confirmDeleteYahtzeeAccount']
+        )->name('account.confirm-delete-yahtzee-account');
+
+        Route::get(
+            '/account/confirm-delete-account',
+            [Authentication::class, 'confirmDeleteAccount']
+        )->name('account.confirm-delete-account');
     }
 );

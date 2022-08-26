@@ -37,6 +37,42 @@ class Authentication extends Controller
         );
     }
 
+    public function confirmDeleteYahtzeeAccount(Request $request)
+    {
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        return view(
+            'confirm-delete-yahtzee-account',
+            [
+                'user' => $user['content']
+            ]
+        );
+    }
+
+    public function confirmDeleteAccount(Request $request)
+    {
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        return view(
+            'confirm-delete-account',
+            [
+                'user' => $user['content']
+            ]
+        );
+    }
+
     public function createPassword(Request $request)
     {
         $token = null;

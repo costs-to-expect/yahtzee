@@ -15,23 +15,14 @@
 
         <div class="col-lg-8 mx-auto p-3 py-md-5">
             <main>
-                <h2>Your account</h2>
+                <h2>Confirm delete Yahtzee account</h2>
 
-                <p class="load">Manage your account details below.</p>
+                <p class="lead">We aren't trying to stop you, we just want to make sure you want to
+                    do this, clicking the button below is final.</p>
 
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <strong>Name</strong>: {{ $user['name'] }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Email</strong>: {{ $user['email'] }}
-                    </li>
-                </ul>
-
-                <h3 class="mt-5">Delete Yahtzee account</h3>
-
-                <p class="lead">This will delete all your Yahtzee games and any data
-                    specific to the Yahtzee App.</p>
+                <p class="lead">We will create a background task to delete your data, the task should
+                    start after a minute, once it completes your data will be gone and your session
+                    will be deleted.</p>
 
                 <p>Please review the tables below to see what will be deleted and what will remain.</p>
 
@@ -107,42 +98,8 @@
                     </table>
                 </div>
 
-                <a href="{{ route('account.confirm-delete-yahtzee-account') }}" class="btn btn-sm btn-danger">Delete Yahtzee Account</a>
-
-                <h3 class="mt-5">Delete Costs to Expect account</h3>
-
-                <p class="lead">This will delete your Costs to Expect account, your Yahtzee account will be
-                    deleted along with all your other Costs to Expect accounts, API, Budget, Expense etc.</p>
-
-                <p>Please review the table below to see what will be deleted, nothing will remain.</p>
-
-                <h4>Data that will be deleted</h4>
-
-                <div class="table-responsive">
-                    <table class="table table-dark">
-                        <thead>
-                        <tr>
-                            <th scope="col">Content</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Location</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Account</td>
-                            <td>Your Costs to Expect account</td>
-                            <td>API</td>
-                        </tr>
-                        <tr>
-                            <td>Data</td>
-                            <td>All the data we have stored will be deleted</td>
-                            <td>API & all our Apps</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <a href="{{ route('account.confirm-delete-account') }}" class="btn btn-sm btn-danger">Delete Account</a>
+                <a href="#" class="btn btn-sm btn-danger">Confirm Delete (Cannot be undone)</a>
+                <a href="#" class="btn btn-sm btn-primary">Cancel</a>
 
             </main>
             <x-footer />
