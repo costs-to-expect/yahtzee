@@ -10,7 +10,10 @@ use App\Actions\Game\Delete;
 use App\Actions\Game\DeletePlayer;
 use App\Actions\Game\Log;
 use App\Models\ShareToken;
+use App\Notifications\ApiError;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * @author Dean Blackborough <dean@g3d-development.com>
@@ -553,7 +556,13 @@ class Game extends Controller
         );
 
         if ($log_action_result !== 201) {
-            // @todo - Log an error
+            $config = Config::get('app.config');
+
+            Notification::route('mail', $config[['error_email']])
+                ->notify(new ApiError(
+                    'Unable to log the score for the upper section',
+                    $log_action->getMessage()
+                ));
         }
 
         return $this->score(
@@ -618,7 +627,13 @@ class Game extends Controller
         );
 
         if ($log_action_result !== 201) {
-            // @todo - Log an error
+            $config = Config::get('app.config');
+
+            Notification::route('mail', $config['error_email'])
+                ->notify(new ApiError(
+                    'Unable to log the score for the lower section',
+                    $log_action->getMessage()
+                ));
         }
 
         return $this->score(

@@ -6,6 +6,7 @@ namespace App\Jobs;
 
 use App\Actions\Game\Delete;
 use App\Api\Service;
+use App\Notifications\ApiError;
 use App\Notifications\Bye;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -108,7 +109,13 @@ class DeleteYahtzeeAccount implements ShouldQueue
 
     public function failed(Throwable $exception)
     {
-        // Send user notification of failure, etc...
+        $config = Config::get('app.config');
+
+        Notification::route('mail', $config['error_email'])
+            ->notify(new ApiError(
+                'Unable to delete the Yahtzee account for user id ' . $this->user_id,
+                $exception->getMessage()
+            ));
     }
 
     private function apiService()

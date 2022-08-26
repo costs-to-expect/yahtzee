@@ -8,6 +8,7 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 - Added an account page, shows account details and displays all the details for the two delete account options.
 - Added "Delete my account", deletes all Yahtzee data and signs out the user.
 - Added a `Bye` email which gets sent after the account has been deleted.
+- Added error notifications when the App fails to negotiate with the API.
 ### Changed
 - The `CreatePassword` email is delayed and only sent when the password has not been created during the sign-in process.
 - The logo in the navbar goes to either home or / dependent on authentication status.
