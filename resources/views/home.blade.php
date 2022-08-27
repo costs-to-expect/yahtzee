@@ -130,7 +130,9 @@
 
                     <div class="col-md-6">
                         <h3>Players</h3>
-                        <p>Select a player for a detailed breakdown of their Yahtzee games.</p>
+                        <p>Select a player for a detailed breakdown* of their Yahtzee games.</p>
+
+                        <p class="text-muted small">* Statistics coming soon(tm)</p>
 
                         @if (count($players) > 0)
                         <ul class="list-unstyled">
