@@ -2,6 +2,13 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.06.1] - [2022-08-27]
+### Changed
+- Updated the footer.
+- Added a note about statistics coming soon.
+### Fixed
+- Corrected the max for ones.
+
 ## [1.06.0] - [2022-08-26]
 ### Added
 - Added a `Registered` email, thanks the player for registering etc.
