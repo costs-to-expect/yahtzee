@@ -17,6 +17,12 @@ class Index extends Controller
     {
         $this->bootstrap($request);
 
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account information from the Costs to Expect API');
+        }
+
         $open_games_response = $this->api->getGames(
             $this->resource_type_id,
             $this->resource_id,
@@ -69,6 +75,8 @@ class Index extends Controller
         return view(
             'home',
             [
+                'user_id' => $user['content']['id'],
+
                 'resource_type_id' => $this->resource_type_id,
                 'resource_id' => $this->resource_id,
 
