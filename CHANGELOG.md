@@ -2,6 +2,12 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.07.1] - [2022-08-30]
+### Fixed
+- Corrected a type.
+- Corrected combination outputs in log, missing space.
+- When a player has finished their row should change in the player scores table.
+
 ## [1.07.0] - [2022-08-29]
 ### Changed
 - Added a "How to score" section to the top of each score sheet.
