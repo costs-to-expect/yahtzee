@@ -129,9 +129,14 @@
                                 </ul>
                            @endforeach
                         @else
-                        <p class="text-primary">You haven't finished any games yet, once you do,
-                            they will show up here.
-                        </p>
+
+                        <div class="alert alert-dark" role="alert">
+                            <h4 class="alert-heading">No games yet!</h4>
+                            <p>As soon as you complete a game, this is where your recent games will show,
+                                you will have quick access to statistics for each game and access to the
+                                game log.</p>
+                        </div>
+
                         @endif
                     </div>
 
@@ -153,10 +158,13 @@
                             @endforeach
                         </ul>
                         @else
-                        <p class="text-primary">You haven't added any players yet, you need to
-                            <a href="{{ route('player.create.view') }}">add</a>
-                            some players before you can start a game.
-                        </p>
+
+                        <div class="alert alert-dark" role="alert">
+                            <h4 class="alert-heading">No Players!</h4>
+                            <p>Add a player using this <a href="{{ route('player.create.view') }}">link</a>, as soon as
+                                you do you can start a game..</p>
+                        </div>
+
                         @endif
                     </div>
                 </div>
