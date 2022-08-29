@@ -224,7 +224,7 @@ class Share extends Controller
 
         $message = match ($combo) {
             'three_of_a_kind', 'four_of_a_kind', 'chance' => 'Scored ' . $score . ' in ' . ucfirst(
-                    str_replace('_', '', $combo)
+                    str_replace('_', ' ', $combo)
                 ),
             default => 'Scored their ' . ucfirst(str_replace('_', ' ', $combo)) . ', scoring ' . $score,
         };
