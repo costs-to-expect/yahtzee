@@ -15,7 +15,7 @@
             <ul class="list-unstyled text-small">
                 <li><a class="link-secondary" href="https://www.costs-to-expect.com">Social Experiment</a></li>
                 <li><a class="link-secondary" href="https://yahtzee.game-scorer.com">Yahtzee Game Scorer</a></li>
-                <li><a class="link-secondary" href="https://yatzu.game-scorer.com">Yatzy Game Scorer</a></li>
+                <li><a class="link-secondary" href="https://yatzy.game-scorer.com">Yatzy Game Scorer</a></li>
             </ul>
         </div>
         <div class="col-6 col-md">
