@@ -29,12 +29,12 @@
 
                         <div class="mt-3 mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control @if($errors !== null && array_key_exists('email', $errors)) is-invalid @endif" id="email" aria-describedby="email-help" required value="{{ old('email') }}" />
+                            <input type="email" name="email" class="form-control @if($errors !== null && array_key_exists('email', $errors)) is-invalid @endif" id="email" required aria-describedby="email-help" value="{{ old('email') }}" />
                             <div id="email-help" class="form-text">Please enter your email address, <em>we will never share
                                     your email address</em>.</div>
                             @if($errors !== null && array_key_exists('email', $errors))
                                 <div class="invalid-feedback">
-                                    @foreach ($errors['email'] as $error)
+                                    @foreach ($errors['email']['errors'] as $error)
                                         {{ $error }}
                                     @endforeach
                                 </div>
@@ -42,12 +42,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control @if($errors !== null && array_key_exists('password', $errors)) is-invalid @endif" id="password" aria-describedby="password-help" required value="" />
+                            <input type="password" name="password" class="form-control @if($errors !== null && array_key_exists('password', $errors)) is-invalid @endif" id="password" required aria-describedby="password-help" value="" />
                             <div id="password-help" class="form-text">Please enter your password, <em>we will check this
                                     against the encrypted value in our database</em>.</div>
                             @if($errors !== null && array_key_exists('password', $errors))
                                 <div class="invalid-feedback">
-                                    @foreach ($errors['password'] as $error)
+                                    @foreach ($errors['password']['errors'] as $error)
                                         {{ $error }}
                                     @endforeach
                                 </div>
