@@ -15,6 +15,7 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 - Updated to Laravel 10
 - Updated to Boostrap 5.3
 - Updated to PHP8.2
+- Updated the README, added additional instructions.
 
 ## [1.09.0] - [2023-07-03]
 ### Changed
