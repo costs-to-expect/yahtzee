@@ -98,7 +98,7 @@
                 <div class="row g-4">
                     <div class="col-md-6">
                         <h3>Recent Games</h3>
-                        <p>View your recent games, open a game to see all the statistics.</p>
+                        <p>Open a recent game to see all the player scoresheets.</p>
 
                         @if (count($closed_games) > 0)
                         <ul class="list-unstyled">
@@ -131,10 +131,9 @@
                         @else
 
                         <div class="alert alert-dark" role="alert">
-                            <h4 class="alert-heading">No games yet!</h4>
-                            <p>As soon as you complete a game, this is where your recent games will show,
-                                you will have quick access to statistics for each game and access to the
-                                game log.</p>
+                            <h4 class="alert-heading">No finished games!</h4>
+                            <p>As soon as you complete a game, we will show your recent games here.
+                                In the future(tm) we will add game statistics and a game replay log.</p>
                         </div>
 
                         @endif
@@ -142,9 +141,7 @@
 
                     <div class="col-md-6">
                         <h3>Players</h3>
-                        <p>Select a player for a detailed breakdown* of their Yahtzee games.</p>
-
-                        <p class="text-muted small">* Statistics coming soon(tm)</p>
+                        <p>In the future(tm) we will add player statistics.</p>
 
                         @if (count($players) > 0)
                         <ul class="list-unstyled">
@@ -161,8 +158,8 @@
 
                         <div class="alert alert-dark" role="alert">
                             <h4 class="alert-heading">No Players!</h4>
-                            <p>Add a player using this <a href="{{ route('player.create.view') }}">link</a>, as soon as
-                                you do you can start a game..</p>
+                            <p>Add a <a href="{{ route('player.create.view') }}">new player</a>, as soon as
+                                you do can be included in new games.</p>
                         </div>
 
                         @endif
