@@ -1,10 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Action;
 
+use App\Actions\Account\DeleteAccount;
 use App\Actions\Account\DeleteYahtzeeAccount;
 use App\Api\Service;
+use App\Http\Controllers\Controller;
 use App\Models\PartialRegistration;
 use App\Notifications\CreatePassword;
 use App\Notifications\Registered;
@@ -20,97 +22,7 @@ use Illuminate\Support\Facades\Notification;
  */
 class Authentication extends Controller
 {
-    public function account(Request $request)
-    {
-        $this->bootstrap($request);
-
-        $user = $this->api->getAuthUser();
-
-        if ($user['status'] !== 200) {
-            abort(404, 'Unable to fetch your account from the API');
-        }
-
-        $job = $request->query('job');
-        if ($job !== null) {
-            Auth::guard()->logout();
-        }
-
-        return view(
-            'account',
-            [
-                'user' => $user['content'],
-                'job' => $job
-            ]
-        );
-    }
-
-    public function confirmDeleteYahtzeeAccount(Request $request)
-    {
-        $this->bootstrap($request);
-
-        $user = $this->api->getAuthUser();
-
-        if ($user['status'] !== 200) {
-            abort(404, 'Unable to fetch your account from the API');
-        }
-
-        return view(
-            'confirm-delete-yahtzee-account',
-            [
-                'user' => $user['content']
-            ]
-        );
-    }
-
-    public function confirmDeleteAccount(Request $request)
-    {
-        $this->bootstrap($request);
-
-        $user = $this->api->getAuthUser();
-
-        if ($user['status'] !== 200) {
-            abort(404, 'Unable to fetch your account from the API');
-        }
-
-        return view(
-            'confirm-delete-account',
-            [
-                'user' => $user['content']
-            ]
-        );
-    }
-
     public function createPassword(Request $request)
-    {
-        $token = null;
-        $email = null;
-
-        if (session()->get('authentication.parameters') !== null) {
-            $token = session()->get('authentication.parameters')['token'];
-            $email = session()->get('authentication.parameters')['email'];
-        }
-
-        if ($request->input('token') !== null && $request->input('email') !== null) {
-            $token = $request->input('token');
-            $email = $request->input('email');
-        }
-
-        if ($token === null && $email === null) {
-            abort(404, 'Password cannot be created, registration parameters not found');
-        }
-
-        return view(
-            'create-password',
-            [
-                'token' => $token,
-                'email' => $email,
-                'errors' => session()->get('authentication.errors'),
-                'failed' => session()->get('authentication.failed'),
-            ]
-        );
-    }
-
-    public function createPasswordProcess(Request $request)
     {
         $api = new Service();
 
@@ -126,6 +38,12 @@ class Authentication extends Controller
 
             Notification::route('mail', $request->input('email'))
                 ->notify(new Registered());
+
+            $credentials = $request->only(['email', 'password']);
+
+            if (Auth::attempt($credentials, $request->input('remember_me') !== null)) {
+                return redirect()->route('home');
+            }
 
             return redirect()->route('registration-complete');
         }
@@ -150,7 +68,7 @@ class Authentication extends Controller
             ->with('authentication.failed', $response['content']);
     }
 
-    public function deleteYahtzeeAccount(Request $request, DeleteYahtzeeAccount $action)
+    public function deleteYahtzeeAccount(Request $request, DeleteYahtzeeAccount $action): RedirectResponse
     {
         $this->bootstrap($request);
 
@@ -171,18 +89,26 @@ class Authentication extends Controller
         return redirect()->route('account', ['job'=>'delete-yahtzee-account']);
     }
 
-    public function register()
+    public function deleteAccount(Request $request, DeleteAccount $action): RedirectResponse
     {
-        return view(
-            'register',
-            [
-                'errors' => session()->get('authentication.errors'),
-                'failed' => session()->get('authentication.failed'),
-            ]
+        $this->bootstrap($request);
+
+        $user = $this->api->getAuthUser();
+
+        if ($user['status'] !== 200) {
+            abort(404, 'Unable to fetch your account from the API');
+        }
+
+        $action(
+            $request->cookie($this->config['cookie_bearer']),
+            $user['content']['id'],
+            $user['content']['email']
         );
+
+        return redirect()->route('account', ['job'=>'delete-account']);
     }
 
-    public function registerProcess(Request $request)
+    public function register(Request $request)
     {
         $api = new Service();
 
@@ -217,26 +143,7 @@ class Authentication extends Controller
             ->with('authentication.failed', $response['content']);
     }
 
-    public function registrationComplete()
-    {
-        return view(
-            'registration-complete',
-            [
-            ]
-        );
-    }
-
-    public function signIn()
-    {
-        return view(
-            'sign-in',
-            [
-                'errors' => session()->get('authentication.errors')
-            ]
-        );
-    }
-
-    public function signInProcess(Request $request)
+    public function signIn(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
 
@@ -250,12 +157,5 @@ class Authentication extends Controller
                 'authentication.errors',
                 Auth::errors()
             );
-    }
-
-    public function signOut(): RedirectResponse
-    {
-        Auth::guard()->logout();
-
-        return redirect()->route('landing');
     }
 }
