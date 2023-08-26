@@ -1,6 +1,6 @@
 [![Minimum PHP Version](https://img.shields.io/badge/php-^8.2-8892BF.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE)
-[![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2F26be7169-4aa6-4944-81a4-cde7f96777e2%3Fdate%3D1&style=flat-square)](https://forge.laravel.com/servers/581137/sites/2073678)
+[![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2Fbf7e7ccf-6a96-4e8d-91ab-07c44754f4d0%3Fdate%3D1&style=plastic)](https://forge.laravel.com/servers/581137/sites/2028557)
 
 # Yahtzee Game Scoring
 
