@@ -367,7 +367,8 @@ class Service
             $uri['uri'],
             [
                 'name' => $payload['name'],
-                'email' => $payload['email']
+                'email' => $payload['email'],
+                'registered_via' => 'yahtzee',
             ]
         );
     }
