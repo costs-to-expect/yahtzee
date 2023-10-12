@@ -2,6 +2,10 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.11.0] - [2023-10-12]
+### Changed
+- Added `registered_via` so the API can see where an account began.
+
 ## [1.10.0] - [2023-08-26]
 ### Added
 - Added full account deletion.
