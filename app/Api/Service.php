@@ -369,7 +369,8 @@ class Service
                 'name' => $payload['name'],
                 'email' => $payload['email'],
                 'registered_via' => 'yahtzee',
-            ]
+            ],
+            internal: true
         );
     }
 

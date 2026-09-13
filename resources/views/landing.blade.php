@@ -3,9 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Yahtzee Game Scorer by Costs to Expect">
+    <meta name="description" content="Score Yahtzee online with friends and family. Shareable live score sheets, no designated scorer, no app to install — powered by the Costs to Expect API.">
     <meta name="author" content="Dean Blackborough">
-    <title>Yahtzee: Game Scorer</title>
+    <title>Yahtzee Game Scorer — Online Score Sheets for Game Night</title>
+    <link rel="canonical" href="{{ url('/') }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Yahtzee Game Scorer">
+    <meta property="og:title" content="Yahtzee Game Scorer — Online Score Sheets for Game Night">
+    <meta property="og:description" content="Score Yahtzee online with friends and family. Shareable live score sheets, no designated scorer, no app to install.">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:image" content="{{ asset('images/card.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Yahtzee Game Scorer — Online Score Sheets for Game Night">
+    <meta name="twitter:description" content="Score Yahtzee online with friends and family. Shareable live score sheets, no designated scorer, no app to install.">
+    <meta name="twitter:image" content="{{ asset('images/card.png') }}">
 
     <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
