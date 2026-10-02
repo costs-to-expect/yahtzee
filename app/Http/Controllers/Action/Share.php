@@ -12,7 +12,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * @author Dean Blackborough <dean@g3d-development.com>
@@ -23,7 +22,7 @@ class Share extends Controller
 {
     public function scoreUpper(Request $request, $token)
     {
-        $parameters = $this->getParameters($token);
+        $parameters = ShareToken::parametersFor($token);
 
         $api = new Service($parameters['owner_bearer']);
 
@@ -83,7 +82,7 @@ class Share extends Controller
 
     public function scoreLower(Request $request, $token)
     {
-        $parameters = $this->getParameters($token);
+        $parameters = ShareToken::parametersFor($token);
 
         $api = new Service($parameters['owner_bearer']);
 
@@ -144,34 +143,6 @@ class Share extends Controller
             $parameters['player_id'],
             $score_sheet
         );
-    }
-
-    #[ArrayShape([
-        'resource_type_id' => "string",
-        'resource_id' => "string",
-        'game_id' => "string",
-        'player_id' => "string",
-        'player_name' => 'string',
-        'owner_bearer' => "string"
-    ])]
-    private function getParameters($token): array
-    {
-        $parameters = ShareToken::query()->where('token', $token)->first();
-        if ($parameters === null) {
-            abort(404, 'The game page for the token does not exist');
-        }
-
-        try {
-            $parameters = json_decode($parameters->parameters, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
-            abort(500, 'Failed to decode the parameters for the token');
-        }
-
-        if (array_key_exists('player_name', $parameters) === false) {
-            $parameters['player_name'] = 'Yahtzee Player';
-        }
-
-        return $parameters;
     }
 
     private function getScoreSheet(Service $api, array $parameters): array|JsonResponse

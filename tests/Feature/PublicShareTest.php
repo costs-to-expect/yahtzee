@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\ShareToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Tests\Feature\Concerns\FakesTheApi;
 use Tests\TestCase;
@@ -21,20 +22,20 @@ class PublicShareTest extends TestCase
     use FakesTheApi;
     use RefreshDatabase;
 
-    private function shareToken(array $parameters = [], string $token = 'public-token', ?string $raw = null): void
+    private function shareToken(array $parameters = [], string $token = 'public-token'): void
     {
         $share = new ShareToken();
         $share->token = $token;
         $share->game_id = 'g-1';
         $share->player_id = 'p-1';
-        $share->parameters = $raw ?? json_encode($parameters + [
+        $share->parameters = $parameters + [
             'resource_type_id' => 'rt-1',
             'resource_id' => 'r-1',
             'game_id' => 'g-1',
             'player_id' => 'p-1',
             'player_name' => 'Ada',
             'owner_bearer' => 'owner-bearer',
-        ]);
+        ];
         $share->save();
     }
 
@@ -86,13 +87,18 @@ class PublicShareTest extends TestCase
 
     public function test_a_link_without_a_player_name_calls_the_player_a_yahtzee_player(): void
     {
-        $this->shareToken(raw: json_encode([
+        $share = new ShareToken();
+        $share->token = 'public-token';
+        $share->game_id = 'g-1';
+        $share->player_id = 'p-1';
+        $share->parameters = [
             'resource_type_id' => 'rt-1',
             'resource_id' => 'r-1',
             'game_id' => 'g-1',
             'player_id' => 'p-1',
             'owner_bearer' => 'owner-bearer',
-        ]));
+        ];
+        $share->save();
         $this->fakeSharedGame($this->scoreSheet());
 
         $this->get('/public/score-sheet/public-token')
@@ -150,7 +156,12 @@ class PublicShareTest extends TestCase
 
     public function test_a_link_with_corrupt_parameters_is_a_server_error(): void
     {
-        $this->shareToken(raw: '{not json');
+        DB::table('share_token')->insert([
+            'token' => 'public-token',
+            'game_id' => 'g-1',
+            'player_id' => 'p-1',
+            'parameters' => '{not json',
+        ]);
 
         $this->get('/public/score-sheet/public-token')->assertStatus(500);
     }

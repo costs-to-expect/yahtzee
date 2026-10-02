@@ -40,7 +40,7 @@ class GameFlowTest extends TestCase
     {
         $token = ShareToken::query()->where('game_id', $game_id)->where('player_id', $player_id)->firstOrFail();
 
-        return json_decode($token->parameters, true, 512, JSON_THROW_ON_ERROR);
+        return $token->parameters;
     }
 
     // New game

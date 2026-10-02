@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Api\Service;
+use App\Jobs\Concerns\RevokesBearerToken;
 use App\Notifications\ApiError;
 use App\Notifications\ByeBye;
 use Illuminate\Bus\Queueable;
@@ -26,6 +27,7 @@ use Throwable;
 class DeleteAccount implements ShouldQueue, ShouldBeEncrypted
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use RevokesBearerToken;
 
     public $timeout = 180;
 
@@ -59,6 +61,7 @@ class DeleteAccount implements ShouldQueue, ShouldBeEncrypted
                     json_encode($response['content'])
                 ))
             );
+            $this->revokeBearerToken();
 
             return;
         }
@@ -66,6 +69,8 @@ class DeleteAccount implements ShouldQueue, ShouldBeEncrypted
         DB::table('sessions')
             ->where('user_id', '=', $this->user_id)
             ->delete();
+
+        $this->revokeBearerToken();
 
         Notification::route('mail', $this->email)
             ->notify(new ByeBye());

@@ -43,7 +43,10 @@ class DeleteAccountJobsTest extends TestCase
         $this->createSession('s-1', 'user-1');
         $this->createSession('s-2', 'user-1');
         $this->createSession('s-3', 'someone-else');
-        Http::fake(['api.test/v3/auth/user/request-delete' => Http::response(['message' => 'Request received'], 201)]);
+        Http::fake([
+            'api.test/v3/auth/user/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
 
         DeleteAccount::dispatch('the-bearer', 'user-1', 'ada@example.test');
 
@@ -61,7 +64,10 @@ class DeleteAccountJobsTest extends TestCase
     {
         Notification::fake();
         $this->createSession('s-1', 'user-1');
-        Http::fake(['api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'Request received'], 201)]);
+        Http::fake([
+            'api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
 
         DeleteYahtzeeAccount::dispatch('the-bearer', 'rt-1', 'r-1', 'user-1', 'ada@example.test');
 
@@ -76,7 +82,10 @@ class DeleteAccountJobsTest extends TestCase
     {
         Notification::fake();
         $this->createSession('s-1', 'user-1');
-        Http::fake(['api.test/v3/auth/user/request-delete' => Http::response(['message' => 'The API is down'], 503)]);
+        Http::fake([
+            'api.test/v3/auth/user/request-delete' => Http::response(['message' => 'The API is down'], 503),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
 
         DeleteAccount::dispatch('the-bearer', 'user-1', 'ada@example.test');
 
@@ -92,7 +101,10 @@ class DeleteAccountJobsTest extends TestCase
     {
         Notification::fake();
         $this->createSession('s-1', 'user-1');
-        Http::fake(['api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'The API is down'], 503)]);
+        Http::fake([
+            'api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'The API is down'], 503),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
 
         DeleteYahtzeeAccount::dispatch('the-bearer', 'rt-1', 'r-1', 'user-1', 'ada@example.test');
 
@@ -124,7 +136,10 @@ class DeleteAccountJobsTest extends TestCase
     public function test_an_encrypted_job_still_runs_from_the_queue(): void
     {
         Notification::fake();
-        Http::fake(['api.test/v3/auth/user/request-delete' => Http::response(['message' => 'Request received'], 201)]);
+        Http::fake([
+            'api.test/v3/auth/user/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
 
         config(['queue.default' => 'database']);
         DeleteAccount::dispatch('secret-bearer-one', 'user-1', 'ada@example.test');
@@ -134,5 +149,96 @@ class DeleteAccountJobsTest extends TestCase
         Http::assertSent(fn (Request $request) => $request->header('Authorization') === ['Bearer secret-bearer-one']);
         Notification::assertSentOnDemand(ByeBye::class);
         $this->assertDatabaseCount('jobs', 0);
+    }
+
+    /**
+     * @return list<string> the method and URL of each request sent to the API, in order
+     */
+    private function sentRequests(): array
+    {
+        return array_map(
+            static fn (array $pair): string => $pair[0]->method().' '.$pair[0]->url(),
+            Http::recorded()->all()
+        );
+    }
+
+    public function test_the_token_is_revoked_once_the_account_deletion_has_been_requested(): void
+    {
+        Notification::fake();
+        Http::fake([
+            'api.test/v3/auth/user/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
+
+        DeleteAccount::dispatch('the-bearer', 'user-1', 'ada@example.test');
+
+        // The delete request needs the token, so it is revoked after the request, never before
+        self::assertSame(
+            ['POST http://api.test/v3/auth/user/request-delete', 'GET http://api.test/v3/auth/logout'],
+            $this->sentRequests()
+        );
+        Http::assertSent(fn (Request $request) => $request->url() === 'http://api.test/v3/auth/logout'
+            && $request->header('Authorization') === ['Bearer the-bearer']);
+    }
+
+    public function test_the_token_is_revoked_once_the_yahtzee_account_deletion_has_been_requested(): void
+    {
+        Notification::fake();
+        Http::fake([
+            'api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
+
+        DeleteYahtzeeAccount::dispatch('the-bearer', 'rt-1', 'r-1', 'user-1', 'ada@example.test');
+
+        self::assertSame(
+            [
+                'POST http://api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete',
+                'GET http://api.test/v3/auth/logout',
+            ],
+            $this->sentRequests()
+        );
+        Http::assertSent(fn (Request $request) => $request->url() === 'http://api.test/v3/auth/logout'
+            && $request->header('Authorization') === ['Bearer the-bearer']);
+    }
+
+    public function test_the_token_is_revoked_even_when_the_deletion_request_fails(): void
+    {
+        // The player has already been signed out, nothing should be left holding a valid token
+        Notification::fake();
+        Http::fake([
+            'api.test/v3/auth/user/request-delete' => Http::response(['message' => 'The API is down'], 503),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
+
+        DeleteAccount::dispatch('the-bearer', 'user-1', 'ada@example.test');
+
+        Http::assertSent(fn (Request $request) => $request->url() === 'http://api.test/v3/auth/logout');
+    }
+
+    public function test_a_token_that_cannot_be_revoked_does_not_stop_the_player_being_told(): void
+    {
+        Notification::fake();
+        Http::fake([
+            'api.test/v3/auth/user/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'The API is down'], 503),
+        ]);
+
+        DeleteAccount::dispatch('the-bearer', 'user-1', 'ada@example.test');
+
+        Notification::assertSentOnDemand(ByeBye::class);
+    }
+
+    public function test_a_token_revoke_that_throws_does_not_stop_the_player_being_told(): void
+    {
+        Notification::fake();
+        Http::fake([
+            'api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => static fn () => throw new \Illuminate\Http\Client\ConnectionException('Timed out'),
+        ]);
+
+        DeleteYahtzeeAccount::dispatch('the-bearer', 'rt-1', 'r-1', 'user-1', 'ada@example.test');
+
+        Notification::assertSentOnDemand(Bye::class);
     }
 }

@@ -57,14 +57,14 @@ class ScoringTest extends TestCase
             $share->token = 'public-token';
             $share->game_id = 'g-1';
             $share->player_id = 'p-1';
-            $share->parameters = json_encode([
+            $share->parameters = [
                 'resource_type_id' => 'rt-1',
                 'resource_id' => 'r-1',
                 'game_id' => 'g-1',
                 'player_id' => 'p-1',
                 'player_name' => 'Ada',
                 'owner_bearer' => 'owner-bearer',
-            ]);
+            ];
             $share->save();
 
             return $this->postJson("/public/score-sheet/public-token/score-{$section}", $payload);

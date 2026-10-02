@@ -7,7 +7,6 @@ use App\Actions\Action;
 use App\Api\Service;
 use App\Models\ShareToken;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Str;
 
 /**
  * @author Dean Blackborough <dean@g3d-development.com>
@@ -69,19 +68,14 @@ class Start extends Action
                 );
 
                 try {
-                    $token = new ShareToken();
-                    $token->token = Str::uuid();
-                    $token->game_id = $this->game_id;
-                    $token->player_id = $player_id;
-                    $token->parameters = json_encode([
-                        'resource_type_id' => $resource_type_id,
-                        'resource_id' => $resource_id,
-                        'game_id' => $this->game_id,
-                        'player_id' => $player_id,
-                        'player_name' => $response['content']['category']['name'],
-                        'owner_bearer' => request()->cookie($config['cookie_bearer'])
-                    ], JSON_THROW_ON_ERROR);
-                    $token->save();
+                    ShareToken::issue(
+                        $resource_type_id,
+                        $resource_id,
+                        $this->game_id,
+                        $player_id,
+                        $response['content']['category']['name'],
+                        request()->cookie($config['cookie_bearer'])
+                    );
                 } catch (\Exception) {
                     abort(500, 'Failed to create share token for player, create token manually');
                 }
