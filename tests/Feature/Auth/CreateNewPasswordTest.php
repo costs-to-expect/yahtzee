@@ -26,7 +26,7 @@ class CreateNewPasswordTest extends TestCase
     {
         $this->get('/create-new-password?encrypted_token=encrypted-token&email=ada@example.test')
             ->assertOk()
-            ->assertSee('Create a New Password')
+            ->assertSee('Create a new password')
             ->assertSee('action="'.route('create-new-password.action').'"', false)
             ->assertSee('name="encrypted_token" value="encrypted-token"', false)
             ->assertSee('name="email" value="ada@example.test"', false)

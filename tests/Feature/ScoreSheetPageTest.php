@@ -6,7 +6,6 @@ namespace Tests\Feature;
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\Concerns\FakesTheApi;
 use Tests\TestCase;
 
@@ -22,37 +21,64 @@ class ScoreSheetPageTest extends TestCase
         ]);
     }
 
+    /**
+     * The settings the score sheet script reads, written into the page as JSON
+     *
+     * @return array<string, mixed>
+     */
+    private function sheetConfig(string $html): array
+    {
+        self::assertSame(1, preg_match('#<script type="application/json" id="sheet-config">(.*?)</script>#s', $html, $matches), 'the page carries its settings');
+
+        return json_decode($matches[1], true, 512, JSON_THROW_ON_ERROR);
+    }
+
     public function test_the_score_sheet_belongs_to_the_player_and_game(): void
     {
         $this->fakeSheet($this->scoreSheet());
 
-        $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')
+        $response = $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')
             ->assertOk()
             ->assertSee('Player: Ada')
-            ->assertSee('id="game_id" name="game_id" value="g-1"', false)
-            ->assertSee('id="player_id" name="player_id" value="p-1"', false);
+            ->assertSee('<title>Yahtzee Game Scorer: Ada</title>', false);
+
+        $config = $this->sheetConfig($response->getContent());
+
+        self::assertSame(['id' => 'p-1', 'name' => 'Ada'], $config['player']);
+        // Sent with every score, the server uses these, never the share link's
+        self::assertSame(['game_id' => 'g-1', 'player_id' => 'p-1'], $config['ids']);
+        self::assertSame(
+            [
+                'upper' => route('game.score-upper.action'),
+                'lower' => route('game.score-lower.action'),
+                'clear' => route('game.score-clear.action'),
+                'players' => route('game.player-scores', ['game_id' => 'g-1']),
+                'back' => route('home'),
+                'complete' => route('game.complete.action', ['game_id' => 'g-1']),
+            ],
+            $config['urls']
+        );
+        self::assertSame(13, $config['turns']);
     }
 
-    public function test_scored_combinations_are_locked_with_their_score_and_the_rest_are_open(): void
+    public function test_the_page_carries_the_stored_score_sheet_for_the_script_to_draw(): void
     {
-        $this->fakeSheet($this->scoreSheet(['ones' => 3, 'twos' => 0], ['three_of_a_kind' => 22, 'yahtzee' => 50]));
+        $sheet = $this->scoreSheet(['ones' => 3, 'twos' => 0], ['three_of_a_kind' => 22, 'yahtzee' => 50]);
+        $this->fakeSheet($sheet);
 
-        $html = $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')->assertOk()->getContent();
+        $config = $this->sheetConfig($this->signedIn()->get('/game/g-1/player/p-1/score-sheet')->assertOk()->getContent());
 
-        // Scored ones: the score is shown in a disabled input, twos was scratched.
-        self::assertMatchesRegularExpression('/<input type="number"[^>]*name="ones"[^>]*disabled="disabled" value="3"/', $html);
-        self::assertMatchesRegularExpression('/<input type="number"[^>]*name="twos"[^>]*disabled="disabled" value="0"/', $html);
-        self::assertMatchesRegularExpression('/id="scratch_twos"[^>]*checked="checked"/', $html);
-        self::assertDoesNotMatchRegularExpression('/id="scratch_ones"[^>]*checked="checked"/', $html);
+        self::assertSame($sheet, $config['sheet']);
+        self::assertFalse($config['complete']);
+    }
 
-        // Nothing has been scored for threes, it is open.
-        self::assertMatchesRegularExpression('/<input type="number"[^>]*class="[^"]*\bactive\b[^"]*"[^>]*name="threes"/', $html);
-        self::assertDoesNotMatchRegularExpression('/<input type="number"[^>]*name="threes"[^>]*disabled/', $html);
+    public function test_every_player_has_the_colour_of_their_place_in_the_players_list(): void
+    {
+        $this->fakeSheet($this->scoreSheet());
 
-        // Lower section, a typed score and a ticked fixed score.
-        self::assertMatchesRegularExpression('/id="three_of_a_kind"[^>]*disabled="disabled" value="22"/', $html);
-        self::assertMatchesRegularExpression('/id="yahtzee" value="50"[^>]*disabled="disabled"[^>]*checked="checked"/', $html);
-        self::assertDoesNotMatchRegularExpression('/id="large_straight"[^>]*disabled/', $html);
+        $config = $this->sheetConfig($this->signedIn()->get('/game/g-1/player/p-1/score-sheet')->assertOk()->getContent());
+
+        self::assertSame(['p-1' => 0, 'p-2' => 1], $config['tones']);
     }
 
     public function test_the_totals_are_those_of_the_stored_score_sheet(): void
@@ -64,61 +90,53 @@ class ScoreSheetPageTest extends TestCase
 
         $this->fakeSheet($sheet);
 
-        $response = $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')->assertOk();
-
-        $response->assertSee('id="upper-score">63<', false)
-            ->assertSee('id="upper-bonus">35<', false)
-            ->assertSee('id="upper-total">98<', false)
-            ->assertSee('id="lower-score">25<', false)
-            ->assertSee('id="total">123<', false);
-    }
-
-    /**
-     * @return array<string, array{array, bool}> the sheet and whether the yahtzee bonus is locked
-     */
-    public static function yahtzeeBonusStates(): array
-    {
-        $finished_upper = ['ones' => 3, 'twos' => 6, 'threes' => 9, 'fours' => 12, 'fives' => 15, 'sixes' => 18];
-        $lower_without_yahtzee = ['three_of_a_kind' => 20, 'four_of_a_kind' => 0, 'full_house' => 25, 'small_straight' => 30, 'large_straight' => 40, 'chance' => 22];
-
-        return [
-            'yahtzee not scored yet' => [['upper' => [], 'lower' => []], false],
-            'yahtzee scored' => [['upper' => [], 'lower' => ['yahtzee' => 50]], false],
-            'yahtzee scratched, nothing to bonus' => [['upper' => [], 'lower' => ['yahtzee' => 0]], true],
-            'every turn taken' => [['upper' => $finished_upper, 'lower' => $lower_without_yahtzee + ['yahtzee' => 50]], true],
-        ];
-    }
-
-    #[DataProvider('yahtzeeBonusStates')]
-    public function test_the_yahtzee_bonus_is_locked_when_the_yahtzee_was_scratched_or_every_turn_is_taken(array $sheet, bool $locked): void
-    {
-        $this->fakeSheet($this->scoreSheet($sheet['upper'], $sheet['lower']));
-
         $html = $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')->assertOk()->getContent();
 
-        $pattern = '/id="yahtzee_bonus_one"[^>]*disabled="disabled"/';
-
-        $locked
-            ? self::assertMatchesRegularExpression($pattern, $html)
-            : self::assertDoesNotMatchRegularExpression($pattern, $html);
+        self::assertMatchesRegularExpression('/id="upper"[^>]*>63</', $html);
+        self::assertMatchesRegularExpression('/id="bonus"[^>]*>35</', $html);
+        self::assertMatchesRegularExpression('/id="lower"[^>]*>25</', $html);
+        self::assertMatchesRegularExpression('/id="total"[^>]*>123</', $html);
+        self::assertStringContainsString('&middot; 7 of 13 turns', $html);
     }
 
-    public function test_the_scoring_scripts_are_only_loaded_for_an_open_game(): void
+    public function test_corrections_are_only_offered_when_they_are_switched_on(): void
+    {
+        $this->fakeSheet($this->scoreSheet());
+
+        config(['app.config.score_corrections' => false]);
+        $off = $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')->assertOk();
+        self::assertFalse($this->sheetConfig($off->getContent())['corrections']);
+        $off->assertDontSee('Undo');
+
+        config(['app.config.score_corrections' => true]);
+        $on = $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')->assertOk();
+        self::assertTrue($this->sheetConfig($on->getContent())['corrections']);
+        $on->assertSee('Undo');
+    }
+
+    public function test_the_scoring_scripts_are_loaded_for_an_open_game(): void
     {
         $this->fakeSheet($this->scoreSheet(), complete: false);
+
         $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')
+            ->assertSee('js/ui.js', false)
             ->assertSee('js/score-sheet.js', false)
-            ->assertSee('js/player-scores.js', false);
+            ->assertSee('id="complete"', false)
+            ->assertSee(route('game.complete.action', ['game_id' => 'g-1']), false)
+            ->assertDontSee('This game is finished');
     }
 
     public function test_a_complete_game_is_a_read_only_score_sheet(): void
     {
         $this->fakeSheet($this->scoreSheet(['ones' => 3]), complete: true);
 
-        $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')
+        $response = $this->signedIn()->get('/game/g-1/player/p-1/score-sheet')
             ->assertOk()
-            ->assertDontSee('js/score-sheet.js', false)
-            ->assertDontSee('js/player-scores.js', false);
+            ->assertSee('This game is finished');
+
+        // The script still draws the sheet, it does not let anyone score on it
+        self::assertTrue($this->sheetConfig($response->getContent())['complete']);
+        $response->assertSee('js/score-sheet.js', false);
     }
 
     public function test_a_player_without_a_score_sheet_is_given_an_empty_one(): void

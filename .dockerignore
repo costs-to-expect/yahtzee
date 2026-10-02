@@ -3,5 +3,4 @@ vendor
 .idea
 .env
 .docker/mysql/data
-public/node_modules
 storage/logs/*.log

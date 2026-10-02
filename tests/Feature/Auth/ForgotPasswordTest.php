@@ -39,7 +39,7 @@ class ForgotPasswordTest extends TestCase
     {
         $this->get('/forgot-password')
             ->assertOk()
-            ->assertSee('Forgot your Password?')
+            ->assertSee('Forgot your password?')
             ->assertSee('action="'.route('forgot-password.action').'"', false)
             ->assertSee('name="email"', false)
             ->assertSee('<meta name="robots" content="noindex, nofollow">', false);

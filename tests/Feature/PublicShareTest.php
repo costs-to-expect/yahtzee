@@ -52,12 +52,30 @@ class PublicShareTest extends TestCase
         $this->shareToken();
         $this->fakeSharedGame($this->scoreSheet(['ones' => 3], ['full_house' => 25]));
 
-        $this->get('/public/score-sheet/public-token')
+        $response = $this->get('/public/score-sheet/public-token')
             ->assertOk()
             ->assertSee('Hey Ada, play Yahtzee with us!')
-            ->assertSee('Player: Ada')
-            ->assertSee('id="token" name="token" value="public-token"', false)
-            ->assertSee('id="total">28<', false);
+            ->assertSee('Player: Ada');
+
+        self::assertMatchesRegularExpression('/id="total"[^>]*>28</', $response->getContent());
+
+        // The player is never told who the owner is: the page holds the link's addresses, not the owner's ids or bearer
+        preg_match('#<script type="application/json" id="sheet-config">(.*?)</script>#s', $response->getContent(), $matches);
+        $config = json_decode($matches[1], true, 512, JSON_THROW_ON_ERROR);
+
+        self::assertSame(['id' => 'p-1', 'name' => 'Ada'], $config['player']);
+        self::assertSame([], $config['ids']);
+        self::assertSame(
+            [
+                'upper' => route('public.score-upper.action', ['token' => 'public-token']),
+                'lower' => route('public.score-lower.action', ['token' => 'public-token']),
+                'clear' => route('public.score-clear.action', ['token' => 'public-token']),
+                'players' => route('public.player-scores', ['token' => 'public-token']),
+            ],
+            $config['urls']
+        );
+        self::assertStringNotContainsString('owner-bearer', $response->getContent());
+        self::assertStringNotContainsString('rt-1', $response->getContent());
     }
 
     public function test_the_public_score_sheet_is_kept_out_of_search_engines_and_has_no_account_navigation(): void
@@ -70,7 +88,10 @@ class PublicShareTest extends TestCase
             ->assertSee('<meta name="robots" content="noindex, nofollow">', false)
             ->assertDontSee(route('home'), false)
             ->assertDontSee(route('sign-out'), false)
-            ->assertDontSee('offcanvasNavbarDark', false);
+            ->assertDontSee(route('account'), false)
+            ->assertDontSee('data-tab-bar', false)
+            // The player can't finish the game, that is for the owner
+            ->assertDontSee('id="complete"', false);
     }
 
     public function test_the_public_score_sheet_reads_the_game_as_its_owner(): void
@@ -113,8 +134,8 @@ class PublicShareTest extends TestCase
 
         $this->get('/public/score-sheet/public-token')
             ->assertOk()
-            ->assertSee('js/score-sheet.js', false)
-            ->assertSee('js/player-scores.js', false);
+            ->assertSee('js/ui.js', false)
+            ->assertSee('js/score-sheet.js', false);
     }
 
     public function test_a_player_without_a_score_sheet_is_given_an_empty_one(): void
@@ -166,7 +187,7 @@ class PublicShareTest extends TestCase
         $this->get('/public/score-sheet/public-token')->assertStatus(500);
     }
 
-    public function test_the_public_player_scores_table_shows_every_player_in_the_game(): void
+    public function test_the_public_player_scores_are_read_as_json_as_the_owner(): void
     {
         $this->shareToken();
         $this->fakeApi([
@@ -178,8 +199,10 @@ class PublicShareTest extends TestCase
 
         $this->get('/public/game/public-token/player-scores')
             ->assertOk()
-            ->assertSeeInOrder(['Ada', '2', '3', '20', '23'])
-            ->assertSee('Ben');
+            ->assertExactJson(['players' => [
+                ['id' => 'p-1', 'name' => 'Ada', 'upper' => 3, 'bonus' => 0, 'lower' => 20, 'total' => 23, 'turns' => 2],
+                ['id' => 'p-2', 'name' => 'Ben', 'upper' => 0, 'bonus' => 0, 'lower' => 0, 'total' => 0, 'turns' => 0],
+            ]]);
 
         Http::assertSent(fn (Request $request) => $request->header('Authorization') === ['Bearer owner-bearer']);
     }

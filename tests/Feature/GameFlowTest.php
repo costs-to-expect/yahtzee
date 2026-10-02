@@ -206,7 +206,7 @@ class GameFlowTest extends TestCase
 
         $this->signedIn()->get('/add-players-to-game/g-1')
             ->assertOk()
-            ->assertSee('Current Players')
+            ->assertSee('Playing now')
             ->assertSee('value="p-2"', false)
             ->assertDontSee('value="p-1"', false);
     }
@@ -280,7 +280,7 @@ class GameFlowTest extends TestCase
         ]);
 
         $this->signedIn()
-            ->get('/game/g-1/player/p-1/delete')
+            ->post('/game/g-1/player/p-1/delete')
             ->assertRedirect(route('home'));
 
         self::assertCount(1, $this->sent('DELETE', '/items/g-1/data/p-1'));
@@ -299,7 +299,7 @@ class GameFlowTest extends TestCase
             $this->items('/g-1/categories/ga-p-2') => Http::response(null, 204),
         ]);
 
-        $this->signedIn()->get('/game/g-1/player/p-2/delete')->assertRedirect(route('home'));
+        $this->signedIn()->post('/game/g-1/player/p-2/delete')->assertRedirect(route('home'));
 
         self::assertCount(0, $this->sent('DELETE', '/data/'));
         self::assertCount(1, $this->sent('DELETE', '/items/g-1/categories/ga-p-2'));
@@ -313,7 +313,7 @@ class GameFlowTest extends TestCase
             $this->items('/g-1/categories/ga-p-1') => Http::response(['message' => 'Locked'], 403),
         ]);
 
-        $this->signedIn()->get('/game/g-1/player/p-1/delete')->assertStatus(500);
+        $this->signedIn()->post('/game/g-1/player/p-1/delete')->assertStatus(500);
     }
 
     // Deleting a game

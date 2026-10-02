@@ -90,7 +90,7 @@ class CreatePasswordTest extends TestCase
             ->assertRedirect(route('registration-complete'))
             ->assertCookieMissing('yahtzee_bearer');
 
-        $this->get('/registration-complete')->assertOk()->assertSee('All Done!');
+        $this->get('/registration-complete')->assertOk()->assertSee('All done!');
     }
 
     /**

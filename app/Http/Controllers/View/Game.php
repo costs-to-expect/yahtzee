@@ -6,6 +6,8 @@ namespace App\Http\Controllers\View;
 use App\Actions\Game\DeletePlayer;
 use App\Http\Controllers\Controller;
 use App\Models\ShareToken;
+use App\Support\GameBoard;
+use App\Support\ScoreRules;
 use Illuminate\Http\Request;
 
 /**
@@ -75,6 +77,8 @@ class Game extends Controller
         }
 
         $game_scores = [];
+        $totals = [];
+        $turns = [];
         $game_score_sheets_response = $this->api->getGameScoreSheets(
             $this->resource_type_id,
             $this->resource_id,
@@ -84,15 +88,38 @@ class Game extends Controller
         if ($game_score_sheets_response['status'] === 200) {
             foreach ($game_score_sheets_response['content'] as $score_sheet) {
                 $game_scores[$game['content']['id']][$score_sheet['key']] = $score_sheet['value']['score']['total'];
+                $totals[$score_sheet['key']] = $score_sheet['value']['score']['total'];
+                $turns[$score_sheet['key']] = ScoreRules::turns($score_sheet['value']);
             }
         }
+
+        // The colour of each player comes from their place in the players list, as it does everywhere else
+        $players_response = $this->api->getPlayers($this->resource_type_id, ['collection' => true]);
+        $players = [];
+        if ($players_response['status'] === 200) {
+            foreach ($players_response['content'] as $player) {
+                $players[] = ['id' => $player['id'], 'name' => $player['name']];
+            }
+        }
+        $tones = GameBoard::tones($players);
+
+        $standings = GameBoard::standings(
+            $game['content']['players']['collection'] ?? [],
+            $totals,
+            $turns,
+            $tones,
+            (int) config('app.game.turns')
+        );
 
         return view(
             'game',
             [
                 'game' => $game['content'],
                 'game_scores' => $game_scores,
-                'share_tokens' => (new ShareToken())->getShareTokens(),
+                'share_tokens' => (new ShareToken())->getShareTokens([$game['content']['id']]),
+                'tones' => $tones,
+                'standings' => $standings,
+                'started' => GameBoard::startedAt($game['content']),
             ]
         );
 
@@ -121,6 +148,7 @@ class Game extends Controller
                 'resource_id' => $this->resource_id,
 
                 'players' => $players,
+                'tones' => GameBoard::tones($players),
 
                 'errors' => session()->get('validation.errors')
             ]
@@ -187,6 +215,7 @@ class Game extends Controller
 
                 'players' => $players,
                 'game_players' => $game_players,
+                'tones' => GameBoard::tones($all_players),
 
                 'errors' => session()->get('validation.errors')
             ]

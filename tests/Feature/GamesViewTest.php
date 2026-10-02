@@ -46,14 +46,16 @@ class GamesViewTest extends TestCase
 
         $this->signedIn()->get('/games')
             ->assertOk()
-            ->assertSee('Complete Games')
-            ->assertSee('(211 pts)')
-            ->assertSee('(160 pts)')
+            ->assertSee('Every game you have finished')
+            ->assertSeeInOrder(['Ada', 'won with', '211'])
+            ->assertSeeInOrder(['Ben', 'won with', '160'])
             ->assertSee(route('game.show', ['game_id' => 'g-2']), false)
             ->assertSee(route('game.score-sheet', ['game_id' => 'g-1', 'player_id' => 'p-2']), false)
             ->assertSee('1 -')
             ->assertSee('of')
-            ->assertDontSee('<a class="page-link" href', false);
+            // Nowhere to page to: both buttons are there, neither is a link
+            ->assertDontSee(route('games', ['offset' => 10, 'limit' => 10]), false)
+            ->assertDontSee(route('games', ['offset' => 0, 'limit' => 10]), false);
     }
 
     public function test_the_games_page_links_to_the_previous_and_next_pages_of_games(): void
@@ -98,7 +100,7 @@ class GamesViewTest extends TestCase
             ),
         ]);
 
-        $this->signedIn()->get('/games')->assertOk()->assertSee("You haven't played any games.", false);
+        $this->signedIn()->get('/games')->assertOk()->assertSee('You haven&rsquo;t played any games.', false)->assertSee(route('game.create.view'), false);
     }
 
     public function test_an_api_failure_listing_games_is_passed_on(): void
@@ -112,12 +114,8 @@ class GamesViewTest extends TestCase
 
     public function test_the_overview_of_an_open_game_shows_scores_links_and_the_ways_to_manage_it(): void
     {
-        $token = new ShareToken();
-        $token->token = 'token-for-ada';
-        $token->game_id = 'g-1';
-        $token->player_id = 'p-1';
-        $token->parameters = '{}';
-        $token->save();
+        ShareToken::issue('rt-1', 'r-1', 'g-1', 'p-1', 'Ada', 'owner-bearer');
+        $token = (string) ShareToken::query()->value('token');
 
         $this->fakeApi([
             $this->items('/g-1?include-players=1') => Http::response($this->game('g-1', ['p-1' => 'Ada', 'p-2' => 'Ben']), 200),
@@ -127,14 +125,28 @@ class GamesViewTest extends TestCase
         $this->signedIn()->get('/games/g-1')
             ->assertOk()
             ->assertSee('Game overview')
-            ->assertSee('Ada')
-            ->assertSee('(23 pts)')
-            ->assertSee('(0 pts)')
-            ->assertSee(route('public.score-sheet', ['token' => 'token-for-ada']), false)
+            ->assertSeeInOrder(['Ada', '23', 'Ben', '0'])
+            ->assertSee('2 of 13 turns')
+            ->assertSee(route('game.score-sheet', ['game_id' => 'g-1', 'player_id' => 'p-2']), false)
+            ->assertSee('data-copy="'.route('public.score-sheet', ['token' => $token]).'"', false)
             ->assertSee(route('game.player.delete', ['game_id' => 'g-1', 'player_id' => 'p-2']), false)
             ->assertSee(route('game.add-players.view', ['game_id' => 'g-1']), false)
             ->assertSee(route('game.complete.action', ['game_id' => 'g-1']), false)
+            ->assertSee(route('game.complete.play-again.action', ['game_id' => 'g-1']), false)
             ->assertSee(route('game.delete.action', ['game_id' => 'g-1']), false);
+    }
+
+    public function test_the_overview_only_offers_the_share_links_of_its_own_game(): void
+    {
+        ShareToken::issue('rt-1', 'r-1', 'g-other', 'p-1', 'Ada', 'owner-bearer');
+        $other = (string) ShareToken::query()->value('token');
+
+        $this->fakeApi([
+            $this->items('/g-1?include-players=1') => Http::response($this->game('g-1', ['p-1' => 'Ada']), 200),
+            $this->items('/g-1/data') => Http::response($this->scoreSheets([]), 200),
+        ]);
+
+        $this->signedIn()->get('/games/g-1')->assertOk()->assertDontSee($other, false);
     }
 
     public function test_the_overview_of_a_complete_game_does_not_offer_to_change_it(): void
@@ -149,8 +161,10 @@ class GamesViewTest extends TestCase
 
         $this->signedIn()->get('/games/g-9')
             ->assertOk()
-            ->assertSee('(211 pts)')
-            ->assertSee('(187 pts)')
+            ->assertSee('Ada')
+            ->assertSee('won with 211')
+            ->assertSeeInOrder(['Ada', '211', 'Ben', '187'])
+            ->assertSee('Winner')
             ->assertSee(route('game.score-sheet', ['game_id' => 'g-9', 'player_id' => 'p-1']), false)
             ->assertDontSee(route('game.player.delete', ['game_id' => 'g-9', 'player_id' => 'p-1']), false)
             ->assertDontSee(route('game.complete.action', ['game_id' => 'g-9']), false)
@@ -164,7 +178,7 @@ class GamesViewTest extends TestCase
         $this->signedIn()->get('/games/g-404')->assertNotFound();
     }
 
-    public function test_the_player_scores_table_shows_the_progress_of_every_player(): void
+    public function test_the_player_scores_are_read_as_json_with_the_progress_of_every_player(): void
     {
         $finished = $this->scoreSheet(
             ['ones' => 3, 'twos' => 6, 'threes' => 9, 'fours' => 12, 'fives' => 15, 'sixes' => 18],
@@ -172,20 +186,23 @@ class GamesViewTest extends TestCase
         );
 
         $this->fakeApi([
-            $this->items('/g-1/categories') => Http::response($this->assignedPlayers(['p-1' => 'Ada', 'p-2' => 'Ben']), 200),
+            $this->items('/g-1/categories') => Http::response($this->assignedPlayers(['p-1' => 'Ada', 'p-2' => 'Ben', 'p-3' => 'Cleo']), 200),
             $this->items('/g-1/data') => Http::response($this->scoreSheets([
                 'p-1' => $finished,
                 'p-2' => $this->scoreSheet(['ones' => 2]),
+                // Removed from the game since, no longer in the list
+                'p-9' => $this->scoreSheet(['ones' => 5]),
             ]), 200),
         ]);
 
-        $response = $this->signedIn()->get('/game/g-1/player-scores')->assertOk();
-
-        $response->assertSeeInOrder(['Ada', '13', '98', '187', '285'])
-            ->assertSeeInOrder(['Ben', '1', '2', '0', '2'])
-            ->assertSee('class="table-success"', false);
-
-        self::assertSame(1, substr_count($response->getContent(), 'class="table-success"'));
+        $this->signedIn()->get('/game/g-1/player-scores')
+            ->assertOk()
+            ->assertExactJson(['players' => [
+                ['id' => 'p-1', 'name' => 'Ada', 'upper' => 63, 'bonus' => 35, 'lower' => 187, 'total' => 285, 'turns' => 13],
+                ['id' => 'p-2', 'name' => 'Ben', 'upper' => 2, 'bonus' => 0, 'lower' => 0, 'total' => 2, 'turns' => 1],
+                // Nothing scored yet, no score sheet at all
+                ['id' => 'p-3', 'name' => 'Cleo', 'upper' => 0, 'bonus' => 0, 'lower' => 0, 'total' => 0, 'turns' => 0],
+            ]]);
     }
 
     public function test_the_player_scores_table_is_a_404_when_the_game_cannot_be_found(): void
