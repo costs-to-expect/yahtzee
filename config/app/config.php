@@ -12,6 +12,4 @@ return [
     'internal_key' => env('COSTS_TO_EXPECT_INTERNAL_API_KEY'),
     'cookie_user' => env('SESSION_NAME_USER'),
     'cookie_bearer' => env('SESSION_NAME_BEARER'),
-    'version' => '1.12.0',
-    'release_date' => '13th September 2026'
 ];
