@@ -6,7 +6,7 @@
         <meta name="description" content="Yahtzee Game Scorer by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
         <meta name="robots" content="noindex, nofollow">
-        <title>Yahtzee Game Scorer: Sign-in</title>
+        <title>Yahtzee Game Scorer: Forgot Password</title>
         <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
         <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
@@ -24,15 +24,23 @@
                         </a>
                     </div>
 
-                    <form action="{{ route('sign-in.action') }}" method="POST" class="col-12 col-md-4 col-lg-3 mx-auto p-2">
+                    <form action="{{ route('forgot-password.action') }}" method="POST" class="col-12 col-md-4 col-lg-3 mx-auto p-2">
 
                         @csrf
+
+                        <h4 class="text-center">Forgot your Password?</h4>
+
+                        @if ($failed !== null)
+                            <p class="alert alert-danger">We were unable to start your password reset, the API returned the
+                                following error "{{ $failed }}". Please check our <a href="https://status.costs-to-expect.com">status</a>
+                                page and try again later.</p>
+                        @endif
 
                         <div class="mt-3 mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" name="email" class="form-control @if($errors !== null && array_key_exists('email', $errors)) is-invalid @endif" id="email" required aria-describedby="email-help" value="{{ old('email') }}" />
-                            <div id="email-help" class="form-text">Please enter your email address, <em>we will never share
-                                    your email address</em>.</div>
+                            <div id="email-help" class="form-text">Please enter the email address for your account, we will
+                                email you a link to create a new password.</div>
                             @if($errors !== null && array_key_exists('email', $errors))
                                 <div class="invalid-feedback">
                                     @foreach ($errors['email']['errors'] as $error)
@@ -41,32 +49,10 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control @if($errors !== null && array_key_exists('password', $errors)) is-invalid @endif" id="password" required aria-describedby="password-help" value="" />
-                            <div id="password-help" class="form-text">Please enter your password, <em>we will check this
-                                    against the encrypted value in our database</em>.</div>
-                            @if($errors !== null && array_key_exists('password', $errors))
-                                <div class="invalid-feedback">
-                                    @foreach ($errors['password']['errors'] as $error)
-                                        {{ $error }}
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
-                            <label class="form-check-label" for="remember_me">Check to stay signed-in for longer</label>
-                        </div>
 
-                        <div class="mb-3">
-                            <p>Forgotten your password? You can <a href="{{ route('forgot-password.view') }}">create a new one</a>.</p>
-                            <p>If you don't have an account with Costs to Expect, you can
-                                <a href="{{ route('register.view') }}">register</a> to get
-                                access to this Game Scorer and the entire Costs to Expect service.</p>
-                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Reset Password</button>
 
-                        <button type="submit" class="btn btn-primary w-100">Sign-in</button>
+                        <p class="mt-3 text-center"><a href="{{ route('sign-in.view') }}">Back to sign-in</a></p>
                     </form>
                 </div>
             </div>

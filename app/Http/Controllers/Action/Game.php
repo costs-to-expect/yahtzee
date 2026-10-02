@@ -14,6 +14,7 @@ use App\Notifications\ApiError;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
  * @author Dean Blackborough <dean@g3d-development.com>
@@ -116,11 +117,13 @@ class Game extends Controller
             if ($result === 204) {
                 return redirect()->route('home');
             }
+        } catch (HttpExceptionInterface $e) {
+            throw $e;
         } catch (\Exception $e) {
             abort(500, $e->getMessage());
         }
 
-        abort(500, 'Unable to complete the game, returned status code: ' . $result['status']);
+        abort(500, 'Unable to complete the game, returned status code: ' . $result);
     }
 
     public function completeAndPlayAgain(Request $request, string $game_id)
@@ -174,11 +177,13 @@ class Game extends Controller
                 abort($result, $create_action->getMessage());
 
             }
+        } catch (HttpExceptionInterface $e) {
+            throw $e;
         } catch (\Exception $e) {
             abort(500, $e->getMessage());
         }
 
-        abort(500, 'Unable to complete the game, returned status code: ' . $result['status']);
+        abort(500, 'Unable to complete the game, returned status code: ' . $result);
     }
 
     public function deleteGame(Request $request, string $game_id)
@@ -197,6 +202,8 @@ class Game extends Controller
             if ($result === 204) {
                 return redirect()->route('home');
             }
+        } catch (HttpExceptionInterface $e) {
+            throw $e;
         } catch (\Exception $e) {
             abort(500, $e->getMessage());
         }

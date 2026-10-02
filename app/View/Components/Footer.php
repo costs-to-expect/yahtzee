@@ -14,13 +14,13 @@ class Footer extends Component
 
     public function render()
     {
-        $config = Config::get('app.config');
+        $version = Config::get('app.version');
 
         return view(
             'components.footer',
             [
-                'version' => $config['version'],
-                'release_date' => $config['release_date'],
+                'version' => $version['app'],
+                'release_date' => $version['date'],
             ]
         );
     }

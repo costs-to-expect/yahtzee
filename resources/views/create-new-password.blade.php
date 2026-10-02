@@ -6,7 +6,7 @@
         <meta name="description" content="Yahtzee Game Scorer by Costs to Expect">
         <meta name="author" content="Dean Blackborough">
         <meta name="robots" content="noindex, nofollow">
-        <title>Yahtzee Game Scorer: Register</title>
+        <title>Yahtzee Game Scorer: Create New Password</title>
         <link rel="icon" sizes="48x48" href="{{ asset('images/favicon.ico') }}">
         <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon.png') }}">
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet" />
@@ -24,16 +24,21 @@
                         </a>
                     </div>
 
-                    <form action="{{ route('create-password.process.action') }}" method="POST" class="col-12 col-md-4 col-lg-3 mx-auto p-2">
+                    <form action="{{ route('create-new-password.action') }}" method="POST" class="col-12 col-md-4 col-lg-3 mx-auto p-2">
 
                         @csrf
 
-                        <h4 class="text-center">Create an Account</h4>
+                        <h4 class="text-center">Create a New Password</h4>
 
                         @if ($failed !== null)
-                            <p class="alert alert-danger">We were unable to create your account, the API returned the
-                                following error "{{ $failed }}". Please check our <a href="https://status.costs-to-expect.com">status</a>
-                                page and try again later.</p>
+                            <p class="alert alert-danger">We were unable to set your new password, the API returned the
+                                following error "{{ $failed }}". You can <a href="{{ route('forgot-password.view') }}">request
+                                a new link</a> or check our <a href="https://status.costs-to-expect.com">status</a> page.</p>
+                        @endif
+
+                        @if($errors !== null && (array_key_exists('encrypted_token', $errors) || array_key_exists('email', $errors)))
+                            <p class="alert alert-danger">The link you followed is not valid, you can
+                                <a href="{{ route('forgot-password.view') }}">request a new link</a>.</p>
                         @endif
 
                         <div class="mt-3 mb-3">
@@ -61,8 +66,8 @@
                                 </div>
                             @endif
                         </div>
-                        <input type="hidden" name="token" value="{{ old('token', $token) }}" />
-                        <input type="hidden" name="email" value="{{ old('email', $email) }}" />
+                        <input type="hidden" name="encrypted_token" value="{{ $encrypted_token }}" />
+                        <input type="hidden" name="email" value="{{ $email }}" />
                         <button type="submit" class="btn btn-primary w-100">Set Password</button>
                     </form>
                 </div>

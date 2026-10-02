@@ -26,7 +26,11 @@ class Start extends Action
             return 422;
         }
 
-        $players = explode(PHP_EOL, $input['players']);
+        // Browsers submit the new lines of a textarea as CRLF, and people leave blank lines
+        $players = array_values(array_filter(
+            array_map('trim', preg_split('/\R/', $input['players'])),
+            static fn (string $player): bool => $player !== ''
+        ));
 
         if ($players === []) {
             $this->message = 'Missing players';

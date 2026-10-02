@@ -33,6 +33,10 @@ class Game extends Controller
             ]
         );
 
+        if ($games_response['status'] !== 200) {
+            abort($games_response['status'], $games_response['content']);
+        }
+
         $pagination = [
             'previous' => ($games_response['headers']['X-Link-Previous'][0] !== ''),
             'next' => ($games_response['headers']['X-Link-Next'][0] !== ''),
@@ -42,7 +46,7 @@ class Game extends Controller
         ];
 
         $games = [];
-        if ($games_response['status'] === 200 && count($games_response['content']) > 0) {
+        if (count($games_response['content']) > 0) {
             $games = $games_response['content'];
         }
 

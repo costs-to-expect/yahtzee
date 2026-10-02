@@ -8,6 +8,7 @@ use App\Api\Service;
 use App\Http\Controllers\Controller;
 use App\Models\ShareToken;
 use App\Notifications\ApiError;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
@@ -27,6 +28,9 @@ class Share extends Controller
         $api = new Service($parameters['owner_bearer']);
 
         $score_sheet = $this->getScoreSheet($api, $parameters);
+        if ($score_sheet instanceof JsonResponse) {
+            return $score_sheet;
+        }
 
         $score_sheet['upper-section'][$request->input('dice')] = $request->input('score');
         $score_upper = 0;
@@ -84,6 +88,9 @@ class Share extends Controller
         $api = new Service($parameters['owner_bearer']);
 
         $score_sheet = $this->getScoreSheet($api, $parameters);
+        if ($score_sheet instanceof JsonResponse) {
+            return $score_sheet;
+        }
 
         $combo = $request->input('combo');
         $score = $request->input('score');
@@ -167,7 +174,7 @@ class Share extends Controller
         return $parameters;
     }
 
-    private function getScoreSheet(Service $api, array $parameters)
+    private function getScoreSheet(Service $api, array $parameters): array|JsonResponse
     {
         $score_sheet = $api->getPlayerScoreSheet(
             $parameters['resource_type_id'],

@@ -8,6 +8,7 @@ use App\Api\Service;
 use App\Notifications\ApiError;
 use App\Notifications\Bye;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,7 +23,7 @@ use Throwable;
  * @copyright Dean Blackborough (Costs to Expect) 2018-2022
  * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
  */
-class DeleteYahtzeeAccount implements ShouldQueue
+class DeleteYahtzeeAccount implements ShouldQueue, ShouldBeEncrypted
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -67,6 +68,8 @@ class DeleteYahtzeeAccount implements ShouldQueue
                     json_encode($response['content'])
                 ))
             );
+
+            return;
         }
 
         DB::table('sessions')

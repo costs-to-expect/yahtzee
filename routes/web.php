@@ -43,6 +43,36 @@ Route::post(
 )->name('register.action');
 
 Route::get(
+    '/forgot-password',
+    [Authentication::class, 'forgotPassword']
+)->name('forgot-password.view');
+
+Route::post(
+    '/forgot-password',
+    [\App\Http\Controllers\Action\Authentication::class, 'forgotPassword']
+)->name('forgot-password.action');
+
+Route::get(
+    '/forgot-password-confirmation',
+    [Authentication::class, 'forgotPasswordConfirmation']
+)->name('forgot-password.confirmation');
+
+Route::get(
+    '/create-new-password',
+    [Authentication::class, 'createNewPassword']
+)->name('create-new-password.view');
+
+Route::post(
+    '/create-new-password',
+    [\App\Http\Controllers\Action\Authentication::class, 'createNewPassword']
+)->name('create-new-password.action');
+
+Route::get(
+    '/create-new-password-confirmation',
+    [Authentication::class, 'createNewPasswordConfirmation']
+)->name('create-new-password.confirmation');
+
+Route::get(
     '/registration-complete',
     [Authentication::class, 'registrationComplete']
 )->name('registration-complete');
