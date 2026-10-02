@@ -271,15 +271,12 @@ class Game extends Controller
             abort(404, 'Unable to fetch the game scores');
         }
 
-        $scores = $this->fetchPlayerScores(
-            $game_score_sheets_response['content'],
-            $players_response['content']
-        );
-
-        return view(
-            'player-scores',
-            ['scores' => $scores]
-        );
+        return response()->json([
+            'players' => $this->fetchPlayerScores(
+                $game_score_sheets_response['content'],
+                $players_response['content']
+            ),
+        ]);
     }
 
     public function scoreSheet(Request $request, string $game_id, string $player_id)
@@ -333,6 +330,9 @@ class Game extends Controller
             abort($player_score_sheet['status'], $player_score_sheet['content']);
         }
 
+        $score_sheet = $player_score_sheet['content']['value'];
+        $complete = $game['complete'] === 1;
+
         return view(
             'score-sheet',
             [
@@ -343,9 +343,27 @@ class Game extends Controller
 
                 'player_name' => $player_name,
 
-                'score_sheet' => $player_score_sheet['content']['value'],
-                'turns' => $this->numberOfTurns($player_score_sheet['content']['value']),
-                'complete' => $game['complete']
+                'score_sheet' => $score_sheet,
+                'turns' => $this->numberOfTurns($score_sheet),
+                'complete' => $game['complete'],
+
+                'config' => $this->sheetConfig(
+                    $this->api,
+                    $this->resource_type_id,
+                    $score_sheet,
+                    $player_id,
+                    $player_name,
+                    $complete,
+                    [
+                        'upper' => route('game.score-upper.action'),
+                        'lower' => route('game.score-lower.action'),
+                        'clear' => route('game.score-clear.action'),
+                        'players' => route('game.player-scores', ['game_id' => $game_id]),
+                        'back' => route('home'),
+                        'complete' => route('game.complete.action', ['game_id' => $game_id]),
+                    ],
+                    ['game_id' => $game_id, 'player_id' => $player_id]
+                ),
             ]
         );
     }

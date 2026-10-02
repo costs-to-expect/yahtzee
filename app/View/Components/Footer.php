@@ -7,21 +7,15 @@ use Illuminate\View\Component;
 
 class Footer extends Component
 {
+    public string $version;
+
     public function __construct()
     {
-        //
+        $this->version = (string) Config::get('app.version')['app'];
     }
 
     public function render()
     {
-        $version = Config::get('app.version');
-
-        return view(
-            'components.footer',
-            [
-                'version' => $version['app'],
-                'release_date' => $version['date'],
-            ]
-        );
+        return view('components.footer');
     }
 }

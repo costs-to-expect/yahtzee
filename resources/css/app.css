@@ -94,15 +94,117 @@
 }
 
 /*
- * The one look for every form input, select and textarea - custom CSS (not a
- * Blade component) so anything our JS builds can share it too.
+ * The shared look. These are plain CSS classes (not Blade components) so the JavaScript can build the same
+ * controls, and every page, form and dialog uses the same buttons, fields and cards.
  */
+@layer base {
+    /* Anchors and buttons that sit under the sticky totals or the tab bar scroll clear of them */
+    html {
+        scroll-padding-top: 8rem;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* A native <dialog> is the sheet: it is a bottom sheet on a phone and a centred dialog from sm up */
+    dialog.sheet {
+        @apply m-0 mt-auto max-h-[92dvh] w-full max-w-none overflow-y-auto rounded-t-3xl bg-white p-0 text-stone-900 shadow-2xl motion-safe:open:animate-sheet-in sm:m-auto sm:max-w-md sm:rounded-3xl;
+    }
+
+    dialog.sheet::backdrop {
+        @apply bg-stone-900/40;
+    }
+}
+
 @layer components {
     .form-control {
-        @apply block w-full rounded-xl border-0 bg-white px-3.5 py-2.5 text-sm text-stone-900 shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-600;
+        @apply block w-full rounded-xl border-0 bg-white px-3.5 py-3 text-base text-stone-900 shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-600;
     }
 
     .form-control-error {
         @apply ring-red-500 focus:ring-red-500;
+    }
+
+    .form-label {
+        @apply mb-1.5 block text-sm font-bold text-stone-800;
+    }
+
+    .form-help {
+        @apply mt-1.5 text-sm text-stone-600;
+    }
+
+    .form-error {
+        @apply mt-1.5 flex items-start gap-1.5 text-sm font-semibold text-red-700;
+    }
+
+    .card {
+        @apply rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70 sm:p-7;
+    }
+
+    .card-list {
+        @apply divide-y divide-stone-100 overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-stone-200/70;
+    }
+
+    .btn {
+        @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed motion-reduce:transition-none;
+    }
+
+    .btn-primary {
+        @apply bg-brand-700 text-white shadow-sm hover:bg-brand-800 focus-visible:outline-brand-600 disabled:bg-stone-100 disabled:text-stone-500 disabled:shadow-none;
+    }
+
+    .btn-secondary {
+        @apply bg-white text-stone-800 ring-1 ring-inset ring-stone-300 hover:bg-stone-50 focus-visible:outline-brand-600;
+    }
+
+    .btn-quiet {
+        @apply bg-stone-100 text-stone-800 hover:bg-stone-200 focus-visible:outline-brand-600;
+    }
+
+    .btn-soft {
+        @apply bg-brand-50 text-brand-800 hover:bg-brand-100 focus-visible:outline-brand-600;
+    }
+
+    .btn-danger {
+        @apply bg-red-600 text-white shadow-sm hover:bg-red-700 focus-visible:outline-red-600;
+    }
+
+    .btn-danger-soft {
+        @apply bg-red-50 text-red-800 hover:bg-red-100 focus-visible:outline-red-600;
+    }
+
+    .btn-block {
+        @apply w-full;
+    }
+
+    .btn-link {
+        @apply -mx-3 inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-bold text-brand-700 hover:bg-brand-50 hover:text-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600;
+    }
+
+    .text-link {
+        @apply font-bold text-brand-700 underline decoration-brand-300 underline-offset-2 hover:text-brand-900 hover:decoration-brand-700;
+    }
+
+    /* A player to pick for the next game: a checkbox you can see and tap, never colour alone */
+    .chip {
+        @apply inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full bg-white py-2 pl-2 pr-4 text-sm font-bold text-stone-800 ring-1 ring-inset ring-stone-300 transition hover:bg-stone-50 motion-reduce:transition-none;
+    }
+
+    .alert {
+        @apply flex items-start gap-3 rounded-2xl px-4 py-3.5 text-sm;
+    }
+
+    .alert-error {
+        @apply bg-red-50 text-red-900 ring-1 ring-inset ring-red-200;
+    }
+
+    .alert-warning {
+        @apply bg-amber-50 text-amber-900 ring-1 ring-inset ring-amber-200;
+    }
+
+    .alert-success {
+        @apply bg-emerald-50 text-emerald-900 ring-1 ring-inset ring-emerald-200;
+    }
+
+    .alert-info {
+        @apply bg-brand-50 text-stone-800 ring-1 ring-inset ring-brand-100;
     }
 }

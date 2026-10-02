@@ -97,6 +97,11 @@ Route::post(
     [\App\Http\Controllers\Action\Share::class, 'scoreLower']
 )->name('public.score-lower.action');
 
+Route::post(
+    '/public/score-sheet/{token}/score-clear',
+    [\App\Http\Controllers\Action\Share::class, 'scoreClear']
+)->name('public.score-clear.action');
+
 Route::get(
     '/public/game/{token}/player-scores',
     [Share::class, 'playerScores']
@@ -175,7 +180,8 @@ Route::group(
             [Game::class, 'playerBonus']
         )->name('game.player.bonus');
 
-        Route::get(
+        // A POST, removing a player deletes their score sheet, a link or a prefetch must never do that
+        Route::post(
             '/game/{game_id}/player/{player_id}/delete',
             [Game::class, 'deleteGamePlayer']
         )->name('game.player.delete');
@@ -184,6 +190,11 @@ Route::group(
             '/game/score-lower',
             [\App\Http\Controllers\Action\Game::class, 'scoreLower']
         )->name('game.score-lower.action');
+
+        Route::post(
+            '/game/score-clear',
+            [\App\Http\Controllers\Action\Game::class, 'scoreClear']
+        )->name('game.score-clear.action');
 
         Route::get(
             '/game/{game_id}/player-scores',

@@ -3,17 +3,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Action;
 
-use App\Actions\Game\Log;
 use App\Api\Service;
 use App\Http\Controllers\Controller;
 use App\Models\ShareToken;
-use App\Notifications\ApiError;
-use Illuminate\Http\JsonResponse;
+use App\Support\ScoreRules;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Notification;
 
 /**
+ * Scoring through the public link of a player, the link is a token the app maps back to the game, the player and the
+ * owner's bearer token. It can only ever score for the player it was made for.
+ *
  * @author Dean Blackborough <dean@g3d-development.com>
  * @copyright Dean Blackborough (Costs to Expect) 2018-2022
  * https://github.com/costs-to-expect/yahtzee/blob/main/LICENSE
@@ -22,142 +21,35 @@ class Share extends Controller
 {
     public function scoreUpper(Request $request, $token)
     {
-        $parameters = ShareToken::parametersFor($token);
-
-        $api = new Service($parameters['owner_bearer']);
-
-        $score_sheet = $this->getScoreSheet($api, $parameters);
-        if ($score_sheet instanceof JsonResponse) {
-            return $score_sheet;
-        }
-
-        $score_sheet['upper-section'][$request->input('dice')] = $request->input('score');
-        $score_upper = 0;
-        $score_bonus = 0;
-        foreach ($score_sheet['upper-section'] as $value) {
-            $score_upper += $value;
-        }
-        if ($score_upper >= 63) {
-            $score_bonus = 35;
-        }
-
-        $score_sheet['score']['upper'] = $score_upper;
-        $score_sheet['score']['bonus'] = $score_bonus;
-        $score_sheet['score']['total'] = $score_sheet['score']['lower'] + $score_upper + $score_bonus;
-
-        $log_action = new Log();
-        $log_action_result = $log_action(
-            $api,
-            $parameters['resource_type_id'],
-            $parameters['resource_id'],
-            $parameters['game_id'],
-            'Scored ' . $request->input('score') . ' in their ' . ucfirst($request->input('dice')),
-            [
-                'player' => $parameters['player_id'],
-                'section' => 'upper',
-                'dice' => $request->input('dice'),
-                'score' => $request->input('score'),
-            ]
-        );
-
-        if ($log_action_result !== 201) {
-            $config = Config::get('app.config');
-
-            Notification::route('mail', $config['error_email'])
-                ->notify(new ApiError(
-                    'Unable to log the score for the upper section',
-                    $log_action->getMessage()
-                ));
-        }
-
-        return $this->score(
-            $api,
-            $parameters['resource_type_id'],
-            $parameters['resource_id'],
-            $parameters['game_id'],
-            $parameters['player_id'],
-            $score_sheet
-        );
+        return $this->scoreFor($token, ScoreRules::UPPER_SECTION, $request->input('dice'), $request);
     }
 
     public function scoreLower(Request $request, $token)
     {
+        return $this->scoreFor($token, ScoreRules::LOWER_SECTION, $request->input('combo'), $request);
+    }
+
+    public function scoreClear(Request $request, $token)
+    {
+        return $this->scoreFor($token, (string) $request->input('section'), $request->input('combo'), $request, true);
+    }
+
+    private function scoreFor(string $token, string $section, mixed $combination, Request $request, bool $clear = false)
+    {
         $parameters = ShareToken::parametersFor($token);
 
-        $api = new Service($parameters['owner_bearer']);
-
-        $score_sheet = $this->getScoreSheet($api, $parameters);
-        if ($score_sheet instanceof JsonResponse) {
-            return $score_sheet;
-        }
-
-        $combo = $request->input('combo');
-        $score = $request->input('score');
-
-        $score_sheet['lower-section'][$combo] = $score;
-        $score_lower = 0;
-        foreach ($score_sheet['lower-section'] as $value) {
-            $score_lower += $value;
-        }
-
-        $score_sheet['score']['lower'] = $score_lower;
-        $score_sheet['score']['total'] = $score_sheet['score']['upper'] + $score_sheet['score']['bonus'] + $score_lower;
-
-        $message = match ($combo) {
-            'three_of_a_kind', 'four_of_a_kind', 'chance' => 'Scored ' . $score . ' in ' . ucfirst(
-                    str_replace('_', ' ', $combo)
-                ),
-            default => 'Scored their ' . ucfirst(str_replace('_', ' ', $combo)) . ', scoring ' . $score,
-        };
-
-        $log_action = new Log();
-        $log_action_result = $log_action(
-            $api,
-            $parameters['resource_type_id'],
-            $parameters['resource_id'],
-            $parameters['game_id'],
-            $message,
-            [
-                'player' => $parameters['player_id'],
-                'section' => 'lower',
-                'combo' => $request->input('combo'),
-                'score' => $request->input('score'),
-            ]
-        );
-
-        if ($log_action_result !== 201) {
-            $config = Config::get('app.config');
-
-            Notification::route('mail', $config['error_email'])
-                ->notify(new ApiError(
-                    'Unable to log the score for the lower section',
-                    $log_action->getMessage()
-                ));
-        }
-
-        return $this->score(
-            $api,
+        // The game and the player are the link's, never whatever the browser sent
+        return $this->changeScore(
+            new Service($parameters['owner_bearer']),
             $parameters['resource_type_id'],
             $parameters['resource_id'],
             $parameters['game_id'],
             $parameters['player_id'],
-            $score_sheet
+            $section,
+            $combination,
+            $clear ? null : $request->input('score'),
+            $request->boolean('replace'),
+            $clear
         );
-    }
-
-    private function getScoreSheet(Service $api, array $parameters): array|JsonResponse
-    {
-        $score_sheet = $api->getPlayerScoreSheet(
-            $parameters['resource_type_id'],
-            $parameters['resource_id'],
-            $parameters['game_id'],
-            $parameters['player_id']
-        );
-
-        if ($score_sheet['status'] !== 200) {
-            return response()->json(['message' => 'Unable to fetch your score sheet'], $score_sheet['status']);
-        }
-
-        return $score_sheet['content']['value'];
     }
 }

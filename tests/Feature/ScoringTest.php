@@ -96,6 +96,12 @@ class ScoringTest extends TestCase
                 'message' => 'Score updated',
                 'score' => ['upper' => 12, 'bonus' => 0, 'lower' => 20, 'total' => 32],
                 'turns' => 3,
+                // The sheet as it is now, the browser carries on from it
+                'sheet' => [
+                    'upper-section' => ['ones' => 3, 'threes' => 9],
+                    'lower-section' => ['chance' => 20],
+                    'score' => ['upper' => 12, 'bonus' => 0, 'lower' => 20, 'total' => 32],
+                ],
             ]);
 
         self::assertSame(
@@ -150,11 +156,12 @@ class ScoringTest extends TestCase
 
         $this->score('lower', ['combo' => 'full_house', 'score' => 25], $public)
             ->assertOk()
-            ->assertExactJson([
+            ->assertJson([
                 'message' => 'Score updated',
                 'score' => ['upper' => 63, 'bonus' => 35, 'lower' => 35, 'total' => 133],
                 'turns' => 8,
-            ]);
+            ])
+            ->assertJsonPath('sheet.lower-section', ['chance' => 10, 'full_house' => 25]);
 
         self::assertSame(['chance' => 10, 'full_house' => 25], $this->savedSheet()['lower-section']);
     }
