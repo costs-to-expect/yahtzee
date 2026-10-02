@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Game Scorer design</title>
+    <link rel="stylesheet" href="assets/mockups.css">
+</head>
+<body class="min-h-screen bg-paper font-sans text-stone-900 antialiased">
+
+<header class="border-b border-stone-200 bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-10 sm:py-14">
+        <div class="flex items-center gap-2.5" aria-hidden="true">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-700 text-white shadow-sm"><i data-game-mark="yahtzee" class="h-6 w-6"></i></span>
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-700 text-white shadow-sm"><i data-game-mark="scrabble" class="h-6 w-6"></i></span>
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-700 text-white shadow-sm"><i data-game-mark="carcassonne" class="h-6 w-6"></i></span>
+        </div>
+        <p class="mt-6 text-sm font-bold uppercase tracking-wider text-brand-700">Costs to Expect game scorers</p>
+        <h1 class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">One friendly look for every game</h1>
+        <p class="mt-4 max-w-2xl text-lg text-stone-600">Yahtzee first, then Scrabble and Carcassonne. These are working mockups, open them on a phone as well as a laptop, a scorer is used at the table. The thinking behind them is in <code class="rounded-md bg-stone-100 px-1.5 py-0.5 text-base">design/README.md</code>.</p>
+    </div>
+</header>
+
+<main class="mx-auto max-w-5xl space-y-14 px-4 py-10">
+
+    <section aria-labelledby="designs-heading">
+        <h2 id="designs-heading" class="sr-only">The two designs</h2>
+        <div class="grid gap-5 sm:grid-cols-2">
+            <a href="home.html" class="group flex flex-col rounded-3xl bg-white p-6 shadow-card ring-1 ring-stone-200/70 transition hover:shadow-lift hover:ring-brand-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 motion-reduce:transition-none">
+                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-700 text-white"><i data-icon="home" class="h-6 w-6"></i></span>
+                <h3 class="mt-4 text-xl font-extrabold tracking-tight">Home: the Launchpad</h3>
+                <p class="mt-1.5 flex-1 text-stone-600">One question, <em class="not-italic font-semibold text-stone-800">who&rsquo;s scoring?</em> A big tile for every player, one tap to their sheet, and the next game two taps away. Use the mockup controls to see the same page as Scrabble and Carcassonne, and its empty states.</p>
+                <p class="mt-5 text-sm font-bold text-brand-700 group-hover:text-brand-900">Open the home page &rarr;</p>
+            </a>
+            <a href="score-sheet.html" class="group flex flex-col rounded-3xl bg-white p-6 shadow-card ring-1 ring-stone-200/70 transition hover:shadow-lift hover:ring-brand-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 motion-reduce:transition-none">
+                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-700 text-white"><i data-solid-icon="check-circle" class="h-6 w-6"></i></span>
+                <h3 class="mt-4 text-xl font-extrabold tracking-tight">Score sheet: a working prototype</h3>
+                <p class="mt-1.5 flex-1 text-stone-600">Totals that stay in view, a bonus tracker, one tap per row, a number pad, undo, change or clear a score, and a failed save you can see and retry. Try scoring the sixes, then tick <em class="not-italic font-semibold text-stone-800">Simulate a failed save</em>.</p>
+                <p class="mt-5 text-sm font-bold text-brand-700 group-hover:text-brand-900">Open the score sheet &rarr;</p>
+            </a>
+        </div>
+    </section>
+
+    <section aria-labelledby="colour-heading">
+        <h2 id="colour-heading" class="text-2xl font-extrabold tracking-tight">Colour</h2>
+        <p class="mt-1.5 max-w-3xl text-stone-600">A deep teal for every scorer. A game is told apart by its mark and its name, not its colour, so adding Scrabble or Carcassonne never means a new palette. Costs to Expect purple is kept for the places the app speaks as Costs to Expect.</p>
+
+        <div class="mt-6 rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70 sm:p-6">
+            <h3 class="font-extrabold">Teal, the game scorer colour</h3>
+            <div id="brand-swatches" class="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-11">
+                <div><div class="h-14 rounded-xl bg-brand-50 ring-1 ring-inset ring-black/5"></div><p class="mt-1.5 text-center text-xs font-bold">50</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-100 ring-1 ring-inset ring-black/5"></div><p class="mt-1.5 text-center text-xs font-bold">100</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-200"></div><p class="mt-1.5 text-center text-xs font-bold">200</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-300"></div><p class="mt-1.5 text-center text-xs font-bold">300</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-400"></div><p class="mt-1.5 text-center text-xs font-bold">400</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-500"></div><p class="mt-1.5 text-center text-xs font-bold">500</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-600"></div><p class="mt-1.5 text-center text-xs font-bold">600</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-700 ring-2 ring-brand-900 ring-offset-2"></div><p class="mt-1.5 text-center text-xs font-bold">700</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-800"></div><p class="mt-1.5 text-center text-xs font-bold">800</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-900"></div><p class="mt-1.5 text-center text-xs font-bold">900</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+                <div><div class="h-14 rounded-xl bg-brand-950"></div><p class="mt-1.5 text-center text-xs font-bold">950</p><p class="text-center text-[10px] text-stone-600" data-hex></p></div>
+            </div>
+            <ul class="mt-5 grid gap-x-8 gap-y-1.5 text-sm text-stone-700 sm:grid-cols-2">
+                <li><strong>700</strong> is the working colour: buttons, links and text on white or paper (5.8:1).</li>
+                <li><strong>800</strong> is the hover for 700 and text on the pale tints, never lighter on hover.</li>
+                <li><strong>50 and 100</strong> are tints for soft buttons, selected rows and the leader&rsquo;s tile.</li>
+                <li><strong>600 and lighter</strong> are for rings, bars and fills only, white text on 600 is 4:1.</li>
+            </ul>
+        </div>
+
+        <div class="mt-5 grid gap-5 lg:grid-cols-3">
+            <div class="rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70">
+                <h3 class="font-extrabold">Costs to Expect purple</h3>
+                <div class="mt-3 flex items-center gap-4">
+                    <img src="assets/logo.png" alt="" class="h-14 w-14">
+                    <div class="flex gap-2"><span class="h-10 w-10 rounded-xl bg-cte-50 ring-1 ring-inset ring-black/5"></span><span class="h-10 w-10 rounded-xl bg-cte-500"></span><span class="h-10 w-10 rounded-xl bg-cte-700"></span></div>
+                </div>
+                <p class="mt-3 text-sm text-stone-600">The footer on every page and the account pages, nowhere else. It sits 120&deg; from teal and from gold on the colour wheel, so the three belong together.</p>
+            </div>
+
+            <div class="rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70">
+                <h3 class="font-extrabold">Gold, for winning</h3>
+                <div class="mt-3 flex items-center gap-4">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-amber-400 text-amber-950"><i data-solid-icon="crown" class="h-5 w-5"></i></span>
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700"><i data-icon="trophy" class="h-5 w-5"></i></span>
+                </div>
+                <p class="mt-3 text-sm text-stone-600">A crown for who is leading now, a trophy for who won a finished game. Never used for warnings, those are amber with an alert icon and words.</p>
+            </div>
+
+            <div class="rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70">
+                <h3 class="font-extrabold">Status</h3>
+                <div class="mt-3 flex flex-wrap gap-2 text-xs font-bold">
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-emerald-800"><i data-solid-icon="check-circle" class="h-4 w-4"></i>Saved</span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-amber-900"><i data-icon="alert" class="h-4 w-4"></i>Not saved</span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1.5 text-red-800"><i data-icon="trash" class="h-4 w-4"></i>Delete</span>
+                </div>
+                <p class="mt-3 text-sm text-stone-600">Green, amber and red are only ever status, teal is never one of them. Colour is always backed by an icon and words.</p>
+            </div>
+        </div>
+
+        <div class="mt-5 rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70 sm:p-6">
+            <h3 class="font-extrabold">Players</h3>
+            <div class="mt-3 flex flex-wrap items-center gap-3" id="player-colours"></div>
+            <p class="mt-3 max-w-3xl text-sm text-stone-600">Six soft colours, none of them teal or gold. A player gets theirs from their place in the players list, so they keep it in every game and there is nothing to store.</p>
+        </div>
+    </section>
+
+    <section aria-labelledby="type-heading">
+        <h2 id="type-heading" class="text-2xl font-extrabold tracking-tight">Type</h2>
+        <p class="mt-1.5 max-w-3xl text-stone-600">Figtree, self-hosted. Friendly without being childish, and it has real tabular figures, so a column of scores lines up and a total never jiggles as it changes.</p>
+        <div class="mt-6 grid gap-5 rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70 sm:p-6 md:grid-cols-2">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-stone-600">Headline, 800</p>
+                <p class="mt-1 text-4xl font-extrabold tracking-tight">Who&rsquo;s scoring?</p>
+                <p class="mt-5 text-xs font-bold uppercase tracking-wider text-stone-600">Scores, 800, tabular</p>
+                <p class="mt-1 flex items-baseline gap-5 font-extrabold tabular-nums"><span class="text-6xl">142</span><span class="text-4xl text-stone-600">1,284</span></p>
+            </div>
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-stone-600">Names and buttons, 700</p>
+                <p class="mt-1 text-lg font-bold">Ada &middot; Open score sheet &middot; Finish game</p>
+                <p class="mt-5 text-xs font-bold uppercase tracking-wider text-stone-600">Body, 400 and 600</p>
+                <p class="mt-1 text-base text-stone-700">Tap a player to carry on scoring. <span class="font-semibold">Ada is ahead by 11.</span> Everything else on the page is quieter than the score.</p>
+                <p class="mt-5 text-xs font-bold uppercase tracking-wider text-stone-600">Small print, 12 and up</p>
+                <p class="mt-1 text-xs text-stone-600">8 of 13 turns &middot; Last: QUIZ +52 &middot; Saturday &middot; Ben 198</p>
+            </div>
+        </div>
+    </section>
+
+    <section aria-labelledby="games-heading">
+        <h2 id="games-heading" class="text-2xl font-extrabold tracking-tight">How the next games plug in</h2>
+        <p class="mt-1.5 max-w-3xl text-stone-600">The home page and the score sheet are built from the same pieces for every game. Only the Yahtzee column is designed, the others are my sketch of where the same pieces go. Try them on the home page with <em class="not-italic font-semibold text-stone-800">Game</em> in the mockup controls.</p>
+
+        <div class="mt-6 overflow-x-auto rounded-3xl bg-white shadow-card ring-1 ring-stone-200/70">
+            <table class="w-full min-w-[40rem] text-left text-sm">
+                <thead>
+                    <tr class="border-b border-stone-200 text-xs font-bold uppercase tracking-wider text-stone-600">
+                        <th scope="col" class="px-5 py-3.5 font-bold">Piece</th>
+                        <th scope="col" class="px-5 py-3.5 font-bold"><span class="inline-flex items-center gap-2"><i data-game-mark="yahtzee" class="h-5 w-5 text-brand-700"></i>Yahtzee</span></th>
+                        <th scope="col" class="px-5 py-3.5 font-bold"><span class="inline-flex items-center gap-2"><i data-game-mark="scrabble" class="h-5 w-5 text-brand-700"></i>Scrabble</span></th>
+                        <th scope="col" class="px-5 py-3.5 font-bold"><span class="inline-flex items-center gap-2"><i data-game-mark="carcassonne" class="h-5 w-5 text-brand-700"></i>Carcassonne</span></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-100 align-top">
+                    <tr><th scope="row" class="px-5 py-3.5 font-bold">Player tile</th><td class="px-5 py-3.5">Ring for turns, &ldquo;8 of 13 turns&rdquo;</td><td class="px-5 py-3.5">No ring, &ldquo;Last: QUIZ +52&rdquo;</td><td class="px-5 py-3.5">No ring, &ldquo;Last: city +12&rdquo;</td></tr>
+                    <tr><th scope="row" class="px-5 py-3.5 font-bold">Tile button</th><td class="px-5 py-3.5">Open score sheet</td><td class="px-5 py-3.5">Add a turn</td><td class="px-5 py-3.5">Add points</td></tr>
+                    <tr><th scope="row" class="px-5 py-3.5 font-bold">Players</th><td class="px-5 py-3.5">Any number</td><td class="px-5 py-3.5">2 to 4</td><td class="px-5 py-3.5">2 to 5</td></tr>
+                    <tr><th scope="row" class="px-5 py-3.5 font-bold">The sheet</th><td class="px-5 py-3.5">Thirteen combinations to fill, each scored once</td><td class="px-5 py-3.5">A running list of turns, newest first</td><td class="px-5 py-3.5">A running list of scoring events, by feature</td></tr>
+                    <tr><th scope="row" class="px-5 py-3.5 font-bold">Entry sheet</th><td class="px-5 py-3.5">Count chips, Score or Scratch, number pad</td><td class="px-5 py-3.5">Number pad, with an optional word and a +50 bingo toggle</td><td class="px-5 py-3.5">Quick chips for the usual points, number pad for the rest</td></tr>
+                    <tr><th scope="row" class="px-5 py-3.5 font-bold">Total bar, undo, saved state, Everyone, share, finish, the tile grid</th><td class="px-5 py-3.5" colspan="3">The same for every game. Two or four players sit in two columns, any other number in three.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="mx-auto max-w-5xl px-4 pb-10 pt-2">
+    <div class="flex flex-col items-center gap-2 border-t border-stone-200 pt-5 text-sm text-stone-600 sm:flex-row sm:justify-between">
+        <span class="inline-flex items-center gap-2.5 font-bold text-stone-700"><img src="assets/logo.png" alt="" class="h-7 w-7">A Costs to Expect app</span>
+        <p>Generated from <code class="rounded-md bg-stone-100 px-1.5 py-0.5">design/src</code> by <code class="rounded-md bg-stone-100 px-1.5 py-0.5">design/build</code>, edit the source and rebuild.</p>
+    </div>
+</footer>
+
+<script src="assets/shared.js"></script>
+<script>
+    (function () {
+        'use strict';
+
+        var M = window.Mock;
+
+        // Read the swatch values from the theme itself, so this page can never disagree with it
+        function hex(color) {
+            var canvas = document.createElement('canvas').getContext('2d');
+            canvas.fillStyle = color;
+            return canvas.fillStyle.toUpperCase();
+        }
+
+        document.querySelectorAll('#brand-swatches > div').forEach(function (cell) {
+            cell.querySelector('[data-hex]').textContent = hex(getComputedStyle(cell.firstElementChild).backgroundColor).replace('#', '');
+        });
+
+        document.getElementById('player-colours').innerHTML = ['Ada', 'Ben', 'Cleo', 'Dev', 'Eve', 'Finn'].map(function (name, index) {
+            return '<span class="inline-flex items-center gap-2 rounded-full bg-stone-50 py-1 pl-1 pr-3.5 text-sm font-bold ring-1 ring-stone-200">' + M.avatar(name, index, 'h-8 w-8 text-sm') + name + '</span>';
+        }).join('');
+    })();
+</script>
+</body>
+</html>

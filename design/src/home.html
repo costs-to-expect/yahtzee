@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Home design: Launchpad</title>
+    <link rel="stylesheet" href="assets/mockups.css">
+</head>
+<body class="min-h-screen bg-paper pb-24 font-sans text-stone-900 antialiased sm:pb-0">
+
+<header class="border-b border-stone-200 bg-white">
+    <div class="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4">
+        <a href="home.html" class="flex items-center gap-3 rounded-xl py-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600">
+            <span id="brand-icon" class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-700 text-white shadow-sm"></span>
+            <span class="text-lg font-extrabold tracking-tight"><span id="brand-name">Yahtzee</span><span class="ml-2 hidden text-sm font-semibold text-stone-500 sm:inline">Game Scorer</span></span>
+        </a>
+
+        <nav class="hidden items-center gap-1 sm:flex" aria-label="Main">
+            <a href="home.html" aria-current="page" class="rounded-full bg-brand-50 px-4 py-2 text-sm font-bold text-brand-800">Home</a>
+            <a href="#" class="rounded-full px-4 py-2 text-sm font-semibold text-stone-600 hover:bg-stone-100 hover:text-stone-900">Games</a>
+            <a href="#" class="rounded-full px-4 py-2 text-sm font-semibold text-stone-600 hover:bg-stone-100 hover:text-stone-900">Players</a>
+        </nav>
+
+        <a href="#" class="hidden h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-sm font-bold text-stone-700 ring-1 ring-stone-200 hover:bg-stone-200 sm:inline-flex" aria-label="Your account" title="Your Costs to Expect account">D</a>
+    </div>
+</header>
+
+<main class="mx-auto max-w-5xl px-4 py-6 sm:py-8">
+
+    <!-- Mockup controls, not part of the design -->
+    <div class="mb-6 rounded-2xl border border-dashed border-stone-300 bg-white/60 px-3.5 py-3 text-xs text-stone-700">
+        <button type="button" id="controls-toggle" aria-expanded="false" aria-controls="controls-body" class="flex w-full items-center justify-between font-bold uppercase tracking-wide text-stone-600 sm:hidden">Mockup controls<i data-icon="chevron-down" class="h-4 w-4"></i></button>
+        <div id="controls-body" class="mt-2.5 hidden flex-col gap-2.5 sm:mt-0 sm:flex sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
+            <span class="hidden font-bold uppercase tracking-wide text-stone-600 sm:inline">Mockup controls</span>
+            <div class="flex flex-wrap items-center gap-1.5" role="group" aria-label="Game">
+                <span class="mr-1 font-semibold">Game</span>
+                <button type="button" data-game="yahtzee" aria-pressed="true" class="rounded-full bg-white px-3 py-1 font-semibold text-stone-700 ring-1 ring-stone-300 aria-pressed:bg-stone-900 aria-pressed:text-white aria-pressed:ring-stone-900">Yahtzee</button>
+                <button type="button" data-game="scrabble" aria-pressed="false" class="rounded-full bg-white px-3 py-1 font-semibold text-stone-700 ring-1 ring-stone-300 aria-pressed:bg-stone-900 aria-pressed:text-white aria-pressed:ring-stone-900">Scrabble</button>
+                <button type="button" data-game="carcassonne" aria-pressed="false" class="rounded-full bg-white px-3 py-1 font-semibold text-stone-700 ring-1 ring-stone-300 aria-pressed:bg-stone-900 aria-pressed:text-white aria-pressed:ring-stone-900">Carcassonne</button>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5" role="group" aria-label="State">
+                <span class="mr-1 font-semibold">State</span>
+                <button type="button" data-state="busy" aria-pressed="true" class="rounded-full bg-white px-3 py-1 font-semibold text-stone-700 ring-1 ring-stone-300 aria-pressed:bg-stone-900 aria-pressed:text-white aria-pressed:ring-stone-900">Game night</button>
+                <button type="button" data-state="idle" aria-pressed="false" class="rounded-full bg-white px-3 py-1 font-semibold text-stone-700 ring-1 ring-stone-300 aria-pressed:bg-stone-900 aria-pressed:text-white aria-pressed:ring-stone-900">No game running</button>
+                <button type="button" data-state="first" aria-pressed="false" class="rounded-full bg-white px-3 py-1 font-semibold text-stone-700 ring-1 ring-stone-300 aria-pressed:bg-stone-900 aria-pressed:text-white aria-pressed:ring-stone-900">First visit</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page" data-view="busy" class="group/page grid gap-6 lg:grid-cols-5">
+
+        <div class="lg:col-span-3 lg:group-data-[view=first]/page:col-span-5">
+
+            <!-- ============ Game night ============ -->
+            <section id="main-busy" aria-labelledby="busy-heading">
+                <div class="rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70 sm:p-7">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <p class="inline-flex items-center gap-2.5 text-sm font-semibold text-emerald-700">
+                            <span class="relative flex h-2.5 w-2.5" aria-hidden="true"><span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span></span>
+                            <span id="live-label">Game in progress &middot; 40 min</span>
+                        </p>
+                        <div id="open-games" class="flex gap-1 rounded-full bg-stone-100 p-1 text-sm font-bold" role="group" aria-label="Open games"></div>
+                    </div>
+
+                    <h1 id="busy-heading" class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Who&rsquo;s scoring?</h1>
+                    <p id="busy-sub" class="mt-1.5 text-stone-600"></p>
+
+                    <div id="tiles" class="mt-6 grid gap-3"></div>
+
+                    <div class="mt-6 flex flex-wrap items-center gap-x-1 gap-y-3 border-t border-stone-100 pt-4 text-sm">
+                        <button type="button" id="share-btn" class="-ml-3 inline-flex min-h-11 items-center gap-2 rounded-xl px-3 font-bold text-brand-700 hover:bg-brand-50 hover:text-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"><i data-icon="share" class="h-5 w-5"></i>Share links</button>
+                        <a href="#" id="add-player" class="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 font-bold text-brand-700 hover:bg-brand-50 hover:text-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"><i data-icon="plus" class="h-5 w-5"></i>Add player</a>
+                        <div class="flex w-full items-center gap-2 sm:ml-auto sm:w-auto">
+                            <button type="button" id="finish-btn" class="min-h-11 flex-1 rounded-xl bg-white px-4 font-bold text-stone-800 ring-1 ring-inset ring-stone-300 hover:bg-stone-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 sm:flex-none">Finish game</button>
+                            <details class="relative">
+                                <summary class="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-xl text-stone-500 hover:bg-stone-100 hover:text-stone-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 [&::-webkit-details-marker]:hidden" aria-label="More game options"><i data-icon="more" class="h-6 w-6"></i></summary>
+                                <div class="absolute bottom-full right-0 z-10 mb-2 w-52 rounded-2xl bg-white p-1.5 shadow-lift ring-1 ring-stone-200">
+                                    <button type="button" id="delete-btn" class="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 text-left font-semibold text-red-700 hover:bg-red-50"><i data-icon="trash" class="h-5 w-5"></i>Delete game&hellip;</button>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ No game running ============ -->
+            <section id="main-idle" hidden aria-labelledby="idle-heading">
+                <div class="rounded-3xl bg-white p-6 text-center shadow-card ring-1 ring-stone-200/70 sm:p-10">
+                    <div id="idle-art" class="flex justify-center"></div>
+                    <h1 id="idle-heading" class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Ready for another game?</h1>
+                    <p id="idle-sub" class="mt-1.5 text-stone-600"></p>
+                    <button type="button" id="play-again" class="mt-6 w-full rounded-2xl bg-brand-700 px-6 py-4 text-base font-bold text-white shadow-sm hover:bg-brand-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 sm:w-auto sm:min-w-80"></button>
+                    <p class="mt-3 text-sm text-stone-600">Same players, fresh score sheets.</p>
+                </div>
+            </section>
+
+            <!-- ============ First visit ============ -->
+            <section id="main-first" hidden aria-labelledby="first-heading">
+                <div class="mx-auto max-w-xl rounded-3xl bg-white p-6 shadow-card ring-1 ring-stone-200/70 sm:p-10">
+                    <div id="first-art" class="flex justify-center"></div>
+                    <h1 id="first-heading" class="mt-4 text-center text-3xl font-extrabold tracking-tight sm:text-4xl">Who&rsquo;s playing?</h1>
+                    <p class="mt-1.5 text-center text-stone-600">Add everyone&rsquo;s name, one on each line. You can add more players whenever you like.</p>
+                    <label for="names" class="sr-only">Player names</label>
+                    <textarea id="names" rows="4" class="form-control mt-6 text-base" placeholder="Ada&#10;Ben&#10;Cleo"></textarea>
+                    <button type="button" id="first-start" class="mt-4 w-full rounded-2xl bg-brand-700 py-4 text-base font-bold text-white shadow-sm hover:bg-brand-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">Start the first game</button>
+                </div>
+            </section>
+        </div>
+
+        <aside id="aside" class="space-y-6 lg:col-span-2 group-data-[view=first]/page:hidden">
+            <section class="rounded-3xl bg-white p-5 shadow-card ring-1 ring-stone-200/70" aria-labelledby="next-heading">
+                <h2 id="next-heading" class="text-lg font-extrabold tracking-tight">Next game</h2>
+                <p class="mt-0.5 text-sm text-stone-600">Pick who&rsquo;s playing.</p>
+                <div id="chips" class="mt-4 flex flex-wrap gap-2"></div>
+                <button type="button" id="start-btn" class="mt-5 w-full rounded-2xl bg-brand-700 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-brand-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:bg-stone-100 disabled:text-stone-500 disabled:shadow-none"></button>
+            </section>
+
+            <section aria-labelledby="history-heading">
+                <div class="flex items-baseline justify-between">
+                    <h2 id="history-heading" class="text-lg font-extrabold tracking-tight">Last games</h2>
+                    <a href="#" class="-mr-2 inline-flex min-h-11 items-center rounded-xl px-2 text-sm font-bold text-brand-700 hover:text-brand-900">All games</a>
+                </div>
+                <ul id="history" class="mt-3 divide-y divide-stone-100 overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-stone-200/70"></ul>
+            </section>
+        </aside>
+    </div>
+</main>
+
+<footer class="mx-auto max-w-5xl px-4 pb-10 pt-2">
+    <div class="flex flex-col items-center gap-2 border-t border-stone-200 pt-5 text-sm text-stone-600 sm:flex-row sm:justify-between">
+        <a href="#" class="inline-flex items-center gap-2.5 rounded-lg py-1.5 font-bold text-stone-700 hover:text-cte-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cte-500"><img src="assets/logo.png" alt="" class="h-7 w-7">A Costs to Expect app</a>
+        <p>v1.12.0 &middot; <a href="mailto:support@costs-to-expect.com" class="inline-block py-1.5 underline underline-offset-2 hover:text-stone-900">support@costs-to-expect.com</a></p>
+    </div>
+</footer>
+
+<!-- Phone navigation: where a thumb reaches -->
+<nav class="fixed inset-x-0 bottom-0 z-30 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden" aria-label="Main">
+    <ul class="mx-auto grid max-w-md grid-cols-4">
+        <li><a href="home.html" aria-current="page" class="group flex flex-col items-center gap-1 pb-2 pt-2.5 text-[11px] font-bold text-brand-800"><span class="rounded-full bg-brand-100 px-5 py-1"><i data-icon="home" class="h-6 w-6"></i></span>Home</a></li>
+        <li><a href="#" class="group flex flex-col items-center gap-1 pb-2 pt-2.5 text-[11px] font-semibold text-stone-600"><span class="rounded-full px-5 py-1"><i data-icon="games" class="h-6 w-6"></i></span>Games</a></li>
+        <li><a href="#" class="group flex flex-col items-center gap-1 pb-2 pt-2.5 text-[11px] font-semibold text-stone-600"><span class="rounded-full px-5 py-1"><i data-icon="players" class="h-6 w-6"></i></span>Players</a></li>
+        <li><a href="#" class="group flex flex-col items-center gap-1 pb-2 pt-2.5 text-[11px] font-semibold text-stone-600"><span class="rounded-full px-5 py-1"><i data-icon="account" class="h-6 w-6"></i></span>Account</a></li>
+    </ul>
+</nav>
+
+<script src="assets/shared.js"></script>
+<script>
+    (function () {
+        'use strict';
+
+        var M = window.Mock;
+
+        // Everyone in the account. A player's place in this list sets their avatar colour, so it never changes.
+        var PLAYERS = ['Ada', 'Ben', 'Cleo', 'Dev'];
+
+        // What each game puts on the page. The layout is the same, the words, the mark and the meta line are the game's.
+        // `progress` (0 to 1) draws the ring, only a game with a fixed number of turns has one.
+        var GAMES = {
+            yahtzee: {
+                name: 'Yahtzee', min: 1, action: 'Open score sheet', href: 'score-sheet.html',
+                sub: function (lead, gap) { return 'Tap a player to carry on scoring. ' + lead + ' is ahead by ' + gap + '.'; },
+                open: [
+                    { label: 'Tonight', since: '40 min', players: [
+                        { n: 'Ada', score: 142, meta: '8 of 13 turns', progress: 8 / 13 }, { n: 'Ben', score: 131, meta: '8 of 13 turns', progress: 8 / 13 }, { n: 'Cleo', score: 96, meta: '7 of 13 turns', progress: 7 / 13 }
+                    ] },
+                    { label: 'Yesterday', since: 'yesterday, 9pm', players: [
+                        { n: 'Dev', score: 88, meta: '5 of 13 turns', progress: 5 / 13 }, { n: 'Ada', score: 71, meta: '4 of 13 turns', progress: 4 / 13 }
+                    ] }
+                ],
+                last: ['Ada', 'Ben', 'Cleo'], lastWhen: 'Saturday',
+                history: [
+                    { winner: 'Ada', score: 241, when: 'Saturday', others: 'Ben 198 · Cleo 176' },
+                    { winner: 'Ben', score: 223, when: 'Saturday', others: 'Ada 210' },
+                    { winner: 'Cleo', score: 205, when: 'Friday', others: 'Dev 187 · Ada 160' }
+                ]
+            },
+            scrabble: {
+                name: 'Scrabble', min: 2, action: 'Add a turn', href: '#',
+                sub: function (lead, gap) { return 'Tap a player to add their next word. ' + lead + ' leads by ' + gap + '.'; },
+                open: [
+                    { label: 'Tonight', since: '55 min', players: [
+                        { n: 'Ada', score: 187, meta: 'Last: QUIZ +52' }, { n: 'Ben', score: 164, meta: 'Last: FJORD +31' }
+                    ] },
+                    { label: 'Yesterday', since: 'yesterday, 8pm', players: [
+                        { n: 'Cleo', score: 203, meta: 'Last: HEX +33' }, { n: 'Ben', score: 198, meta: 'Last: JOKE +26' }
+                    ] }
+                ],
+                last: ['Ada', 'Ben'], lastWhen: 'Sunday',
+                history: [
+                    { winner: 'Ben', score: 312, when: 'Sunday', others: 'Ada 287' },
+                    { winner: 'Ada', score: 296, when: 'Last Friday', others: 'Cleo 281' },
+                    { winner: 'Cleo', score: 274, when: 'Two weeks ago', others: 'Ada 268' }
+                ]
+            },
+            carcassonne: {
+                name: 'Carcassonne', min: 2, action: 'Add points', href: '#',
+                sub: function (lead, gap) { return 'Tap a player to add their points. ' + lead + ' leads by ' + gap + '.'; },
+                open: [
+                    { label: 'Tonight', since: '1 hr 10 min', players: [
+                        { n: 'Cleo', score: 74, meta: 'Last: city +12' }, { n: 'Dev', score: 68, meta: 'Last: road +6' },
+                        { n: 'Ada', score: 61, meta: 'Last: monastery +9' }, { n: 'Ben', score: 53, meta: 'Last: field +9' }
+                    ] },
+                    { label: 'Yesterday', since: 'yesterday, 7pm', players: [
+                        { n: 'Ada', score: 98, meta: 'Last: city +16' }, { n: 'Dev', score: 91, meta: 'Last: road +4' }
+                    ] }
+                ],
+                last: ['Ada', 'Ben', 'Cleo', 'Dev'], lastWhen: 'Saturday',
+                history: [
+                    { winner: 'Cleo', score: 96, when: 'Saturday', others: 'Ada 90 · Ben 84 · Dev 71' },
+                    { winner: 'Dev', score: 88, when: 'Last Friday', others: 'Cleo 85 · Ada 79' },
+                    { winner: 'Ada', score: 102, when: 'Two weeks ago', others: 'Ben 97' }
+                ]
+            }
+        };
+
+        var game = 'yahtzee', state = 'busy', openIndex = 0, picked = [];
+
+        function $(id) { return document.getElementById(id); }
+        function current() { return GAMES[game]; }
+        function toneOf(name) { return PLAYERS.indexOf(name); }
+
+        function standings(list) {
+            return list.slice().sort(function (a, b) { return b.score - a.score; });
+        }
+
+        // Ada, Ben and Cleo
+        function names(list) {
+            if (list.length === 1) { return list[0]; }
+            return list.slice(0, -1).join(', ') + ' and ' + list[list.length - 1];
+        }
+
+        // Ada, Ben & Cleo, for the button
+        function ampersands(list) {
+            if (list.length === 1) { return list[0]; }
+            return list.slice(0, -1).join(', ') + ' & ' + list[list.length - 1];
+        }
+
+        function tile(player, rank, lead) {
+            var hasRing = player.progress !== undefined;
+            var leader = lead && rank === 0;
+            return '<a href="' + current().href + '" data-tile class="group relative grid grid-cols-[auto_1fr_auto_auto] items-center gap-x-3.5 rounded-2xl p-4 shadow-card transition hover:shadow-lift focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 motion-reduce:transition-none sm:flex sm:flex-col sm:gap-x-0 sm:px-4 sm:py-6 sm:text-center ' +
+                (leader ? 'bg-gradient-to-b from-white to-brand-50 ring-2 ring-brand-300 hover:ring-brand-400' : 'bg-white ring-1 ring-stone-200 hover:ring-brand-300') + '">' +
+                '<span class="relative row-span-2 h-14 w-14 shrink-0 sm:order-1 sm:row-span-1 sm:h-19 sm:w-19">' +
+                    (hasRing ? M.ring(player.progress, 'absolute inset-0 h-full w-full') : '') +
+                    M.avatar(player.n, toneOf(player.n), 'absolute ' + (hasRing ? 'inset-1.25 sm:inset-1.75' : 'inset-0') + ' text-xl sm:text-2xl') +
+                    (leader ? '<span class="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-amber-950 ring-2 ring-white">' + M.icon('crown', 'h-3.5 w-3.5', true) + '<span class="sr-only">Leading</span></span>' : '') +
+                '</span>' +
+                '<span class="col-start-2 truncate text-base font-bold sm:order-2 sm:mt-3 sm:text-lg">' + M.esc(player.n) + '</span>' +
+                '<span class="col-start-2 text-xs text-stone-600 sm:order-4 sm:mt-1">' + M.esc(player.meta) + '</span>' +
+                '<span class="col-start-3 row-span-2 row-start-1 text-3xl font-extrabold tabular-nums sm:order-3 sm:mt-0.5 sm:text-4xl">' + player.score + '</span>' +
+                '<span class="col-start-4 row-span-2 row-start-1 text-stone-400 sm:hidden">' + M.icon('chevron-right', 'h-5 w-5') + '</span>' +
+                '<span class="mt-5 hidden w-full rounded-xl bg-brand-50 py-2.5 text-sm font-bold text-brand-800 transition group-hover:bg-brand-700 group-hover:text-white sm:order-5 sm:block motion-reduce:transition-none">' + current().action + '</span>' +
+                '</a>';
+        }
+
+        function renderBusy() {
+            var g = current(), open = g.open[openIndex], list = standings(open.players);
+            $('live-label').textContent = 'Game in progress · ' + open.since;
+            $('busy-sub').textContent = list.length > 1 ? g.sub(list[0].n, list[0].score - list[1].score) : '';
+
+            $('open-games').hidden = g.open.length < 2;
+            $('open-games').innerHTML = g.open.map(function (item, index) {
+                return '<button type="button" data-open="' + index + '" aria-pressed="' + (index === openIndex) + '" class="min-h-10 rounded-full px-4 text-stone-600 hover:text-stone-900 aria-pressed:bg-white aria-pressed:text-stone-900 aria-pressed:shadow-sm focus-visible:outline-2 focus-visible:outline-brand-600">' + item.label + '</button>';
+            }).join('');
+
+            // Two and four players sit best in two columns, anything else in three
+            var columns = list.length === 2 || list.length === 4 ? 'sm:grid-cols-2' : 'sm:grid-cols-3';
+            $('tiles').className = 'mt-6 grid gap-3 ' + columns;
+            $('tiles').innerHTML = list.map(function (player, rank) { return tile(player, rank, list.length > 1); }).join('');
+        }
+
+        function renderIdle() {
+            var g = current();
+            $('idle-art').innerHTML = M.art[game];
+            $('idle-sub').textContent = 'Last played ' + g.lastWhen + ' with ' + names(g.last) + '.';
+            $('play-again').textContent = 'Play again with ' + ampersands(g.last);
+        }
+
+        function renderChips() {
+            $('chips').innerHTML = PLAYERS.map(function (name) {
+                var on = picked.indexOf(name) !== -1;
+                return '<button type="button" data-chip="' + name + '" aria-pressed="' + on + '" class="inline-flex min-h-11 items-center gap-2 rounded-full bg-white py-2 pl-2 pr-4 text-sm font-bold text-stone-800 ring-1 ring-inset ring-stone-300 transition hover:bg-stone-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 aria-pressed:bg-brand-700 aria-pressed:text-white aria-pressed:ring-brand-700 aria-pressed:hover:bg-brand-800 motion-reduce:transition-none">' +
+                    // A chosen player's avatar becomes a tick, so the choice never relies on colour alone
+                    (on ? '<span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-brand-700">' + M.icon('check', 'h-4 w-4').replace('stroke-width="1.75"', 'stroke-width="3"') + '</span>' : M.avatar(name, toneOf(name), 'h-7 w-7 text-xs')) + name + '</button>';
+            }).join('') +
+                '<button type="button" data-new-player class="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-dashed border-stone-400 px-4 text-sm font-bold text-brand-700 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">' + M.icon('plus', 'h-4 w-4') + 'New player</button>';
+
+            var button = $('start-btn'), min = current().min, count = picked.length;
+            button.disabled = count < min;
+            button.textContent = count < min ? (min === 1 ? 'Choose the players to start' : 'Choose at least ' + min + ' players') : 'Start game with ' + count + (count === 1 ? ' player' : ' players');
+        }
+
+        function renderHistory() {
+            $('history').innerHTML = current().history.map(function (item) {
+                return '<li><a href="#" class="flex items-center gap-3 px-4 py-3.5 hover:bg-stone-50 focus-visible:bg-stone-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-600">' +
+                    '<span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">' + M.icon('trophy', 'h-5 w-5') + '</span>' +
+                    '<span class="min-w-0 flex-1"><span class="block truncate text-sm font-bold">' + M.esc(item.winner) + ' <span class="font-medium text-stone-600">won with</span> ' + item.score + '</span>' +
+                    '<span class="block truncate text-xs text-stone-600">' + M.esc(item.when) + ' &middot; ' + M.esc(item.others) + '</span></span>' +
+                    '<span class="text-stone-400">' + M.icon('chevron-right', 'h-5 w-5') + '</span></a></li>';
+            }).join('');
+        }
+
+        function renderBrand() {
+            $('brand-icon').innerHTML = M.gameMark(game, 'h-5 w-5');
+            $('brand-name').textContent = current().name;
+        }
+
+        function render() {
+            renderBrand();
+            renderBusy();
+            renderIdle();
+            renderChips();
+            renderHistory();
+            $('first-art').innerHTML = M.art[game];
+        }
+
+        function pressed(selector, attribute, value) {
+            document.querySelectorAll(selector).forEach(function (button) {
+                button.setAttribute('aria-pressed', button.dataset[attribute] === value);
+            });
+        }
+
+        function setGame(next) {
+            game = next;
+            openIndex = 0;
+            picked = current().last.slice();
+            pressed('[data-game]', 'game', game);
+            render();
+        }
+
+        function setState(next) {
+            state = next;
+            $('page').dataset.view = state;
+            ['busy', 'idle', 'first'].forEach(function (name) { $('main-' + name).hidden = name !== state; });
+            pressed('[data-state]', 'state', state);
+        }
+
+        // ---- Dialogs ------------------------------------------------------------------------------------------------
+
+        function shareDialog() {
+            var list = standings(current().open[openIndex].players);
+            M.Sheet.open({
+                title: 'Share score sheets',
+                subtitle: 'Each player has their own link and anyone who has it can score for them, so only send it to that player.',
+                body: '<ul class="divide-y divide-stone-100 rounded-2xl ring-1 ring-stone-200">' + list.map(function (player) {
+                    return '<li class="flex items-center gap-3 p-3">' + M.avatar(player.n, toneOf(player.n), 'h-10 w-10 text-base') +
+                        '<span class="flex-1 font-bold">' + M.esc(player.n) + '</span>' +
+                        '<button type="button" data-copy class="inline-flex min-w-32 items-center justify-center gap-1.5 rounded-xl bg-brand-50 px-3.5 py-2.5 text-sm font-bold text-brand-800 hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-brand-600">' + M.icon('link', 'h-4 w-4') + '<span>Copy link</span></button></li>';
+                }).join('') + '</ul>' +
+                    '<button type="button" data-sheet-close class="mt-4 w-full rounded-2xl bg-stone-100 py-3.5 text-sm font-bold text-stone-800 hover:bg-stone-200 focus-visible:outline-2 focus-visible:outline-brand-600">Done</button>',
+                focus: '[data-copy]'
+            });
+        }
+
+        function finishDialog() {
+            var g = current(), list = standings(g.open[openIndex].players);
+            var unfinished = list.some(function (player) { return player.progress !== undefined && player.progress < 1; });
+            M.Sheet.open({
+                title: 'Finish this game?',
+                subtitle: list[0].n + ' is in the lead with ' + list[0].score + '. Scores are locked once the game is finished.',
+                body: '<ul class="divide-y divide-stone-100 rounded-2xl ring-1 ring-stone-200">' + list.map(function (player, rank) {
+                    return '<li class="flex items-center gap-3 px-3 py-2.5"><span class="w-5 text-center text-sm font-bold text-stone-500">' + (rank + 1) + '</span>' + M.avatar(player.n, toneOf(player.n), 'h-8 w-8 text-sm') +
+                        '<span class="flex-1 font-semibold">' + M.esc(player.n) + '</span><span class="text-lg font-extrabold tabular-nums">' + player.score + '</span></li>';
+                }).join('') + '</ul>' +
+                    (unfinished ? '<p class="mt-3 flex items-start gap-2 rounded-xl bg-amber-50 px-3 py-2.5 text-sm text-amber-900">' + M.icon('alert', 'mt-0.5 h-4 w-4 shrink-0') + 'Not everyone has scored all 13 turns yet.</p>' : '') +
+                    '<div class="mt-5 grid gap-2.5"><button type="button" data-confirm-finish class="rounded-2xl bg-brand-700 py-3.5 text-sm font-bold text-white hover:bg-brand-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">Finish game</button>' +
+                    '<button type="button" data-sheet-close class="rounded-2xl bg-stone-100 py-3.5 text-sm font-bold text-stone-800 hover:bg-stone-200 focus-visible:outline-2 focus-visible:outline-brand-600">Keep playing</button></div>',
+                focus: '[data-sheet-close]'
+            });
+        }
+
+        function deleteDialog() {
+            M.Sheet.open({
+                title: 'Delete this game?',
+                subtitle: 'This removes the game and every score in it. It can’t be undone.',
+                body: '<div class="grid gap-2.5"><button type="button" data-confirm-delete class="rounded-2xl bg-red-600 py-3.5 text-sm font-bold text-white hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Delete game</button>' +
+                    '<button type="button" data-sheet-close class="rounded-2xl bg-stone-100 py-3.5 text-sm font-bold text-stone-800 hover:bg-stone-200 focus-visible:outline-2 focus-visible:outline-brand-600">Cancel</button></div>',
+                focus: '[data-sheet-close]'
+            });
+        }
+
+        // ---- Events -------------------------------------------------------------------------------------------------
+
+        document.addEventListener('click', function (event) {
+            var target = event.target;
+            var el;
+
+            if ((el = target.closest('#controls-toggle'))) {
+                var body = $('controls-body'), show = body.classList.contains('hidden');
+                body.classList.toggle('hidden', !show);
+                body.classList.toggle('flex', show);
+                el.setAttribute('aria-expanded', show);
+                return;
+            }
+
+            if ((el = target.closest('[data-game]'))) { setGame(el.dataset.game); return; }
+            if ((el = target.closest('[data-state]'))) { setState(el.dataset.state); return; }
+            if ((el = target.closest('[data-open]'))) { openIndex = Number(el.dataset.open); renderBusy(); return; }
+
+            if ((el = target.closest('[data-chip]'))) {
+                var name = el.dataset.chip, at = picked.indexOf(name);
+                if (at === -1) { picked.push(name); } else { picked.splice(at, 1); }
+                renderChips();
+                var again = $('chips').querySelector('[data-chip="' + name + '"]');
+                if (again) { again.focus(); }
+                return;
+            }
+
+            if (target.closest('[data-new-player]')) { M.Snack.show('This opens a small form to add a player'); return; }
+            if (target.closest('#add-player')) { event.preventDefault(); M.Snack.show('This opens the add players page'); return; }
+            if (target.closest('#share-btn')) { shareDialog(); return; }
+            if (target.closest('#finish-btn')) { finishDialog(); return; }
+
+            if ((el = target.closest('#delete-btn'))) { el.closest('details').open = false; deleteDialog(); return; }
+
+            if ((el = target.closest('[data-copy]'))) {
+                var label = el.querySelector('span');
+                label.textContent = 'Copied';
+                el.classList.add('bg-emerald-50', 'text-emerald-800');
+                setTimeout(function () { label.textContent = 'Copy link'; el.classList.remove('bg-emerald-50', 'text-emerald-800'); }, 1800);
+                return;
+            }
+
+            if (target.closest('[data-confirm-finish]')) {
+                var winner = standings(current().open[openIndex].players)[0];
+                M.Sheet.close();
+                setState('idle');
+                M.Snack.show('Game finished. ' + winner.n + ' won with ' + winner.score + '.');
+                return;
+            }
+
+            if (target.closest('[data-confirm-delete]')) { M.Sheet.close(); setState('idle'); M.Snack.show('Game deleted'); return; }
+
+            if (target.closest('#play-again')) { setState('busy'); M.Snack.show('New game started with ' + names(current().last)); return; }
+            if (target.closest('#start-btn')) { M.Snack.show('This starts a game with ' + names(picked)); return; }
+            if (target.closest('#first-start')) { setState('busy'); M.Snack.show('Players added, the first game has started'); return; }
+
+            if (target.closest('a[href="#"]')) { event.preventDefault(); if (target.closest('[data-tile]')) { M.Snack.show('Only the Yahtzee score sheet is designed so far'); } return; }
+
+            // Close the options menu when clicking anywhere else
+            document.querySelectorAll('details[open]').forEach(function (details) { if (!details.contains(target)) { details.open = false; } });
+        });
+
+        M.Snack.position('bottom-24 sm:bottom-6');
+        setGame('yahtzee');
+        setState('busy');
+    })();
+</script>
+</body>
+</html>

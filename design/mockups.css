@@ -1,0 +1,3 @@
+/* Builds the CSS for the mockups in src/ from the app's own Tailwind theme (resources/css/app.css) */
+@import '../resources/css/app.css';
+@source './src';

@@ -1,26 +1,79 @@
-@import 'tailwindcss';
+/*
+ * Only the places listed below are scanned for classes (source(none) turns off Tailwind's project wide detection), so
+ * the design mockups, which use plenty of classes the app does not, never leak into the app's CSS. They are built
+ * separately by design/build, from design/mockups.css.
+ */
+@import 'tailwindcss' source(none);
 
 @source '../../resources/**/*.blade.php';
 @source '../../app/View/Components';
 @source '../../public/js';
 
+/*
+ * Figtree, self-hosted (SIL Open Font License). A friendly geometric sans with real tabular figures, which the
+ * scores need. Only the files for the characters a page uses are downloaded, names such as "Łukasz" use latin-ext.
+ */
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('/fonts/figtree-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('/fonts/figtree-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 
-    /* "Costs to Expect" brand purple. */
-    --color-brand-50: #D644D1;
-    --color-brand-100: #C739C2;
-    --color-brand-200: #B82FB3;
-    --color-brand-300: #A826A4;
-    --color-brand-400: #991E95;
-    --color-brand-500: #8A1786;
-    --color-brand-600: #7A1177;
-    --color-brand-700: #6B0B68;
-    --color-brand-800: #5C0759;
-    --color-brand-900: #4D044B;
+    /*
+     * The game scorer colour, a deep teal (OKLCH hue 200). Every scorer (Yahtzee, then Scrabble, Carcassonne) uses
+     * it, a game is told apart by its icon and name, not its colour. Text on a white or paper background should
+     * use 700 or darker (5.7:1 and up), 600 is for large text, rings and fills, white on 600 is only 4:1.
+     */
+    --color-brand-50: #EEF9FA;
+    --color-brand-100: #D8F5F6;
+    --color-brand-200: #B1ECEF;
+    --color-brand-300: #82E0E5;
+    --color-brand-400: #41CAD1;
+    --color-brand-500: #03B1B8;
+    --color-brand-600: #038D93;
+    --color-brand-700: #057176;
+    --color-brand-800: #04585C;
+    --color-brand-900: #034649;
+    --color-brand-950: #002A2C;
 
-    /* A soft tint of the brand purple, for light backgrounds and hovers. */
-    --color-brand-tint: #FBF2FA;
+    /*
+     * The Costs to Expect purple. These apps are Costs to Expect apps, so the purple is how the app says so, in the
+     * footer and on the account pages, and nowhere else. Teal and gold (amber) sit 120 degrees either side of it on
+     * the colour wheel, so the three belong together.
+     */
+    --color-cte-50: #FBF2FA;
+    --color-cte-500: #8A1786;
+    --color-cte-700: #6B0B68;
+
+    /* The page background, a warm off white that lets white cards read as paper. */
+    --color-paper: #F7F5F0;
+
+    --shadow-card: 0 1px 2px rgb(28 25 23 / 0.04), 0 4px 16px rgb(28 25 23 / 0.05);
+    --shadow-lift: 0 2px 4px rgb(28 25 23 / 0.05), 0 12px 28px rgb(28 25 23 / 0.1);
+
+    --animate-sheet-in: sheet-in 0.22s ease-out;
+
+    @keyframes sheet-in {
+        from {
+            opacity: 0;
+            transform: translateY(1rem);
+        }
+    }
 }
 
 /*
@@ -32,7 +85,7 @@
 @layer base {
     select {
         appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2378716c' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 0.5rem center;
         background-size: 1.5em 1.5em;
@@ -46,7 +99,7 @@
  */
 @layer components {
     .form-control {
-        @apply block w-full rounded-xl border-0 bg-white px-3.5 py-2.5 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-700;
+        @apply block w-full rounded-xl border-0 bg-white px-3.5 py-2.5 text-sm text-stone-900 shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-600;
     }
 
     .form-control-error {

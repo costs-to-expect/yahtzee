@@ -2,6 +2,37 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [Unreleased]
+### Added
+- Forgot password, a signed-out player can ask for a link to create a new password. The request to the API carries the
+  `COSTS_TO_EXPECT_INTERNAL_API_KEY` header, as the API requires for register and forgot password.
+- Signing out revokes the bearer token in the API, as well as forgetting the cookies.
+- Tests, they use an in-memory SQLite database and fake every request to the API, `composer test`.
+- GitHub Actions runs the tests on PHP 8.2, 8.3, 8.4 and 8.5 for every push and pull request.
+- Tailwind CSS v4 through the standalone CLI (`bin/css`), with a teal theme (Costs to Expect purple is kept for the footer
+  and the account pages) and the Figtree typeface, self-hosted in `public/fonts`.
+- A design for the home page (the Launchpad) and the score sheet in `design`, working mockups for Yahtzee that are meant
+  to carry to Scrabble and Carcassonne. The views still use Bootstrap, nothing is wired in yet.
+### Changed
+- Updated to Laravel 12 and PHPUnit 11, the app still runs on PHP 8.2.
+- The queued account deletion jobs are encrypted, they carry the player's bearer token.
+- The Docker image no longer includes `.env` and `.git`, and rebuilds quicker when only code changes.
+- The version and release date moved to `config/app/version.php`, alongside the CSS version.
+- Updated the README, `composer install`, the queue worker and the environment variables were missing.
+### Fixed
+- The stay signed-in checkbox was never submitted, so it did nothing.
+- A weak password on the create password page was a server error, the API's errors are now shown.
+- Create password sent the email and token the wrong way round when returning to the form with errors.
+- The typed password was flashed into the session, and written into the form, when sign-in or create password failed.
+- A 401 from the API when signing in was a server error.
+- The winner of a completed game was wrong for some scores, the players were not sorted properly.
+- Players typed in a textarea on Windows, or with blank lines, were created with stray line endings or as empty names.
+- Completing or deleting a game that doesn't exist was a 500 rather than a 404.
+- The public score sheet crashed when the score sheet couldn't be read from the API.
+- A failed account deletion still removed the sessions and told the player their account had been deleted.
+- The games page was a server error when the API failed, and a failure creating the Yahtzee resource right after its
+  resource type crashed instead of reporting the API's status.
+
 ## [1.11.0] - [2023-10-12]
 ### Changed
 - Added `registered_via` so the API can see where an account began.

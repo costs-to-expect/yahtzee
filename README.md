@@ -97,8 +97,10 @@ The first run downloads the right binary for your machine into `bin/`. The outpu
 `public/css/{version}/app.css`, the version is the `css` value in `config/app/version.php`, bump it when 
 the CSS changes so deployed apps don't serve stale files.
 
-The pages still use Bootstrap (`public/css/theme.css`) for now, Tailwind is set up for the move. Proposals for the 
-new home page and score sheet are in [design](design/README.md).
+The pages still use Bootstrap (`public/css/theme.css`) for now, Tailwind is set up for the move. The chosen design, a
+Launchpad home page and a new score sheet in a teal theme with Figtree (self-hosted in `public/fonts`), is in
+[design](design/README.md) with working mockups to open in a browser. Only the places listed in `resources/css/app.css`
+are scanned for classes, add a path there if classes are ever built somewhere new.
 
 ## PHP and Laravel versions
 
