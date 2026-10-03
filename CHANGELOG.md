@@ -4,6 +4,9 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 
 ## [Unreleased]
 ### Added
+- A new landing page. A score sheet to try right in the hero (the real rows, the real bonus tracker and tips, nothing is
+  sent anywhere), then "How a game night goes", four steps with one phone that changes as they scroll past (a picture
+  under each step on a small screen), and a closing call to register. `public/js/landing.js`.
 - The new design, built into every page. A Launchpad home page ("Who's scoring?", a tile for every player, the next game
   two taps away), a new score sheet (tap how many you rolled, a number pad, the totals always in view, a bonus tracker,
   an Everyone panel that updates by itself), and a teal look with the Figtree typeface for every other page. Costs to

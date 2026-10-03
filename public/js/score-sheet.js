@@ -33,12 +33,6 @@
 
     var BONUSES = ['yahtzee_bonus_one', 'yahtzee_bonus_two', 'yahtzee_bonus_three'];
     var MIN_SUM = 5, MAX_SUM = 30, TURNS = config.turns || 13;
-    var WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five'];
-
-    var PIPS = {
-        1: [[20, 20]], 2: [[11, 11], [29, 29]], 3: [[11, 11], [20, 20], [29, 29]], 4: [[11, 11], [29, 11], [11, 29], [29, 29]],
-        5: [[11, 11], [29, 11], [20, 20], [11, 29], [29, 29]], 6: [[11, 11], [29, 11], [11, 20], [29, 20], [11, 29], [29, 29]]
-    };
 
     // ---- State -------------------------------------------------------------------------------------------------------
 
@@ -84,11 +78,6 @@
 
     // ---- Rows --------------------------------------------------------------------------------------------------------
 
-    function die(face) {
-        return '<svg class="h-10 w-10 shrink-0 drop-shadow-sm" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="10" class="fill-white stroke-stone-300" stroke-width="1.5"/>' +
-            PIPS[face].map(function (pip) { return '<circle cx="' + pip[0] + '" cy="' + pip[1] + '" r="3" class="fill-brand-700"/>'; }).join('') + '</svg>';
-    }
-
     function badge(text) {
         return '<span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-xs font-extrabold text-brand-800 ring-1 ring-brand-100" aria-hidden="true">' + text + '</span>';
     }
@@ -129,33 +118,9 @@
             inner + '</button></li>';
     }
 
-    // What the upper bonus needs, in words
+    // What the upper bonus needs, in words (the words live in ui.js, the landing page demo uses them too)
     function tip(need) {
-        var remaining = UPPER.filter(function (item) { return state.upper[item.id] === undefined; });
-
-        // Only just made it, or only just missed it: worth a little fun
-        if (need === 0) { return 'Exactly 63! Scraped it by the skin of your teeth, that is 35 extra points.'; }
-        if (need < 0 && need >= -2) { return 'Just over the line and 35 extra points richer, smooth.'; }
-        if (need <= 0) { return 'Upper bonus scored, that is 35 extra points.'; }
-        if (remaining.length === 0 && need === 1) { return 'One point short of the bonus! So close you could taste it, someone has been robbed.'; }
-        if (remaining.length === 0 && need === 2) { return 'Two points short of the bonus, it slipped right through your fingers.'; }
-        if (remaining.length === 0) { return 'No upper bonus this time, you finished ' + need + ' short.'; }
-
-        var faces = remaining.reduce(function (total, item) { return total + item.face; }, 0);
-
-        for (var count = 1; count <= 5; count++) {
-            if (count * faces >= need) {
-                if (remaining.length === 1) {
-                    return WORDS[count] + ' ' + remaining[0].label.toLowerCase() + ' would get you the bonus.';
-                }
-
-                var names = remaining.map(function (item) { return item.label.toLowerCase(); });
-
-                return WORDS[count] + ' of each of the ' + names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] + ' left would get you the bonus.';
-            }
-        }
-
-        return 'The upper bonus is out of reach now, focus on the lower section.';
+        return UI.bonusTip(need, UPPER.filter(function (item) { return state.upper[item.id] === undefined; }));
     }
 
     // ---- Drawing -----------------------------------------------------------------------------------------------------
@@ -238,7 +203,7 @@
     function render() {
         var keep = focusSelector(document.activeElement);
 
-        $('upper-list').innerHTML = UPPER.map(function (item) { return rowHtml('upper', item, die(item.face)); }).join('');
+        $('upper-list').innerHTML = UPPER.map(function (item) { return rowHtml('upper', item, UI.die(item.face)); }).join('');
         $('lower-list').innerHTML = LOWER.map(function (item) { return rowHtml('lower', item, badge(item.badge)); }).join('');
 
         var upper = upperScore(), bonus = bonusScore(), lower = lowerScore(), total = totalScore(), done = turns(), need = 63 - upper;

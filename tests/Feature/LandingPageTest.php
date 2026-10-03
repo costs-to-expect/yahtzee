@@ -30,6 +30,33 @@ class LandingPageTest extends TestCase
             ->assertDontSee('noindex');
     }
 
+    public function test_the_landing_page_has_a_score_sheet_to_try_and_a_walkthrough(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('id="demo"', false)
+            ->assertSee('Try the score sheet')
+            ->assertSee('id="walk"', false)
+            ->assertSee('How a game night goes')
+            ->assertSee('js/landing.js', false);
+    }
+
+    public function test_every_step_of_the_walkthrough_has_a_picture_that_exists(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        preg_match_all('#images/([a-z-]+\.png)#', $html, $matches);
+        $pictures = array_unique($matches[1]);
+
+        foreach (['new-game.png', 'management.png', 'score-sheet.png', 'player-scores.png'] as $picture) {
+            self::assertContains($picture, $pictures);
+        }
+
+        foreach ($pictures as $picture) {
+            self::assertFileExists(public_path('images/'.$picture));
+        }
+    }
+
     public function test_the_landing_page_footer_shows_the_app_version(): void
     {
         $this->get('/')

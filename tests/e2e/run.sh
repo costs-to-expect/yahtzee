@@ -79,6 +79,7 @@ run() {
 export SCORE_CORRECTIONS=false
 start_app
 run pages.js
+run landing.js
 run flows.js
 run score-sheet.js
 run share-and-account.js

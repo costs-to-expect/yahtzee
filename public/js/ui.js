@@ -54,6 +54,49 @@
             (circumference * Math.min(1, Math.max(0, fraction))).toFixed(1) + ' ' + circumference.toFixed(1) + '" transform="rotate(-90 38 38)"/></svg>';
     }
 
+    // ---- A die, for the upper section rows -------------------------------------------------------------------------------
+
+    var PIPS = {
+        1: [[20, 20]], 2: [[11, 11], [29, 29]], 3: [[11, 11], [20, 20], [29, 29]], 4: [[11, 11], [29, 11], [11, 29], [29, 29]],
+        5: [[11, 11], [29, 11], [20, 20], [11, 29], [29, 29]], 6: [[11, 11], [29, 11], [11, 20], [29, 20], [11, 29], [29, 29]]
+    };
+
+    function die(face) {
+        return '<svg class="h-10 w-10 shrink-0 drop-shadow-sm" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="10" class="fill-white stroke-stone-300" stroke-width="1.5"/>' +
+            PIPS[face].map(function (pip) { return '<circle cx="' + pip[0] + '" cy="' + pip[1] + '" r="3" class="fill-brand-700"/>'; }).join('') + '</svg>';
+    }
+
+    // ---- The upper bonus: what it needs, in words ---------------------------------------------------------------------
+
+    var WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five'];
+
+    // need is 63 less the upper score, remaining the upper rows still to score ({label, face})
+    function bonusTip(need, remaining) {
+        // Only just made it, or only just missed it: worth a little fun
+        if (need === 0) { return 'Exactly 63! Scraped it by the skin of your teeth, that is 35 extra points.'; }
+        if (need < 0 && need >= -2) { return 'Just over the line and 35 extra points richer, smooth.'; }
+        if (need <= 0) { return 'Upper bonus scored, that is 35 extra points.'; }
+        if (remaining.length === 0 && need === 1) { return 'One point short of the bonus! So close you could taste it, someone has been robbed.'; }
+        if (remaining.length === 0 && need === 2) { return 'Two points short of the bonus, it slipped right through your fingers.'; }
+        if (remaining.length === 0) { return 'No upper bonus this time, you finished ' + need + ' short.'; }
+
+        var faces = remaining.reduce(function (total, item) { return total + item.face; }, 0);
+
+        for (var count = 1; count <= 5; count++) {
+            if (count * faces >= need) {
+                if (remaining.length === 1) {
+                    return WORDS[count] + ' ' + remaining[0].label.toLowerCase() + ' would get you the bonus.';
+                }
+
+                var names = remaining.map(function (item) { return item.label.toLowerCase(); });
+
+                return WORDS[count] + ' of each of the ' + names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] + ' left would get you the bonus.';
+            }
+        }
+
+        return 'The upper bonus is out of reach now, focus on the lower section.';
+    }
+
     // ---- The sheet: a native <dialog>, a bottom sheet on a phone and a centred dialog from sm up --------------------------
     //
     // A page can write its own <dialog class="sheet" id="..."> and open it with data-dialog-open="id", this builds the one
@@ -347,6 +390,6 @@
 
     window.UI = {
         icon: icon, avatar: avatar, ring: ring, escape: escapeHtml, tones: TONES,
-        Sheet: Sheet, Snack: Snack, confetti: confetti, copy: copyText, reducedMotion: prefersReducedMotion
+        Sheet: Sheet, Snack: Snack, bonusTip: bonusTip, die: die, confetti: confetti, copy: copyText, reducedMotion: prefersReducedMotion
     };
 })();

@@ -110,7 +110,7 @@ the server does not build it.
 Every page is built from the Blade layouts and components in `resources/views/components` (the layouts, the icon
 sprite, the avatar and ring, the sheet, the fields and alerts), the classes the pages share (buttons, cards, form
 controls) are in `resources/css/app.css`, and the scripts are plain JavaScript, no build step: `public/js/ui.js` is on
-every page (sheets, the snackbar, confetti, copy a link), `public/js/score-sheet.js` draws the score sheet. Only the
+every page (sheets, the snackbar, confetti, copy a link), `public/js/score-sheet.js` draws the score sheet and `public/js/landing.js` is the score sheet to try and the walkthrough on the landing page. Only the
 places listed in `resources/css/app.css` are scanned for classes, add a path there if classes are ever built
 somewhere new. The reasoning behind the look, the colours and the typeface is in [design](design/README.md).
 
