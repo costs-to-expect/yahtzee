@@ -215,6 +215,38 @@ class HomeTest extends TestCase
             ->assertSee(route('game.score-sheet', ['game_id' => 'g-1', 'player_id' => 'p-1']), false);
     }
 
+    public function test_open_games_on_different_days_are_told_apart_by_the_day(): void
+    {
+        $earlier = $this->game('g-1', ['p-1' => 'Ada']);
+        $earlier['created_at'] = now()->subDays(3)->setTime(19, 5)->toDateTimeString();
+        $later = $this->game('g-2', ['p-2' => 'Ben']);
+        $later['created_at'] = now()->toDateTimeString();
+        $this->fakeHome(open: [$earlier, $later], sheets: ['g-1' => [], 'g-2' => []]);
+
+        // Different days, so the day is enough
+        $response = $this->signedIn()->get('/home')->assertOk();
+        $response->assertSee(now()->subDays(3)->format('l'));
+        $response->assertSee('Today');
+    }
+
+    public function test_open_games_are_numbered_when_the_api_does_not_say_when_they_started(): void
+    {
+        $this->fakeHome(open: [$this->game('g-1', ['p-1' => 'Ada']), $this->game('g-2', ['p-2' => 'Ben'])], sheets: ['g-1' => [], 'g-2' => []]);
+
+        $this->signedIn()->get('/home')->assertOk()->assertSee('Game 1')->assertSee('Game 2');
+    }
+
+    public function test_two_games_that_started_on_the_same_day_are_told_apart_by_the_time(): void
+    {
+        $first = $this->game('g-1', ['p-1' => 'Ada']);
+        $first['created_at'] = now()->startOfDay()->setTime(10, 15)->toDateTimeString();
+        $second = $this->game('g-2', ['p-2' => 'Ben']);
+        $second['created_at'] = now()->startOfDay()->setTime(10, 45)->toDateTimeString();
+        $this->fakeHome(open: [$first, $second], sheets: ['g-1' => [], 'g-2' => []]);
+
+        $this->signedIn()->get('/home')->assertOk()->assertSee('Today, 10:15')->assertSee('Today, 10:45');
+    }
+
     public function test_a_single_open_game_has_nothing_to_switch_between(): void
     {
         $this->fakeHome(open: [$this->game('g-1', ['p-1' => 'Ada'])], sheets: ['g-1' => []]);

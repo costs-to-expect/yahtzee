@@ -53,7 +53,7 @@ final class GameBoard
                 'tone' => $tones[$player['id']] ?? 0,
                 'score' => $totals[$player['id']] ?? 0,
                 'turns' => $played,
-                'progress' => $turns_in_game > 0 ? min(1.0, $played / $turns_in_game) : 0.0,
+                'progress' => $turns_in_game > 0 ? (float) min(1.0, $played / $turns_in_game) : 0.0,
                 'leader' => false,
             ];
         }

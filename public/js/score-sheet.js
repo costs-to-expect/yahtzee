@@ -383,7 +383,6 @@
     // ---- Changing the sheet ------------------------------------------------------------------------------------------
 
     function commit(section, id, value, message) {
-        var item = find(listFor(section), id);
         var existing = state[section][id];
         var bonusBefore = bonusScore();
 
@@ -398,8 +397,6 @@
         enqueue({type: 'score', section: section, id: id, value: value, replace: existing !== undefined});
         render();
         UI.Snack.show(message, corrections ? {action: 'Undo', onAction: undo} : {});
-
-        return item;
     }
 
     function clearScore(section, id) {

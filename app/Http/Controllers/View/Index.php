@@ -100,6 +100,17 @@ class Index extends Controller
             ];
         }
 
+        // What each open game is called when there is more than one: when it started, and the time of day when two
+        // started on the same day, so they can be told apart. Without a start time they are numbered.
+        $labels = array_count_values(array_map(static fn (array $board): string => (string) $board['when'], $boards));
+        foreach ($boards as $position => $board) {
+            $boards[$position]['label'] = match (true) {
+                $board['when'] === null => 'Game ' . ($position + 1),
+                $labels[$board['when']] > 1 => $board['when'] . ', ' . $board['started']->format('H:i'),
+                default => $board['when'],
+            };
+        }
+
         $selected = 0;
         $requested = $request->query('game');
         foreach ($boards as $position => $board) {

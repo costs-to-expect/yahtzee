@@ -44,7 +44,7 @@
                                                'inline-flex min-h-10 items-center rounded-full px-4 focus-visible:outline-2 focus-visible:outline-brand-600',
                                                'bg-white text-stone-900 shadow-sm' => $position === $selected,
                                                'text-stone-600 hover:text-stone-900' => $position !== $selected,
-                                           ])>{{ $open['when'] ?? 'Game '.($position + 1) }}</a>
+                                           ])>{{ $open['label'] }}</a>
                                     @endforeach
                                 </nav>
                             @endif
