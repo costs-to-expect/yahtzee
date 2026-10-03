@@ -2,7 +2,7 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
-## [Unreleased]
+## [1.13.0] - [2026-10-03]
 ### Added
 - A new landing page. A score sheet to try right in the hero (the real rows, the real bonus tracker and tips, nothing is
   sent anywhere), then "How a game night goes", four steps with one phone that changes as they scroll past (a picture
