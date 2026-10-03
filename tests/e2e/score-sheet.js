@@ -114,6 +114,19 @@ const settle = (page, ms = 500) => page.waitForTimeout(ms);
     ok((await sheet())['lower-section'].yahtzee_bonus_one === 100, 'the bonus is stored as 100');
     ok(await page.isDisabled('[data-bonus=yahtzee_bonus_one]') === !CORRECTIONS, 'the bonus is ' + (CORRECTIONS ? 'togglable' : 'locked') + ' once on');
 
+    console.log('Bonus tracker, just over and just under');
+    for (const [scenario, expected] of [['busy', 'Exactly 63'], ['upper64', 'Just over the line'], ['upper62', 'One point short'], ['upper61', 'Two points short']]) {
+        await L.scenario(scenario);
+        await page.goto(L.APP + '/game/g-1/player/p-1/score-sheet');
+        await page.waitForSelector('#upper-list');
+        ok((await txt(page, '#tip-text')).includes('would get you the bonus') || scenario.startsWith('upper6'), scenario + ': before: ' + await txt(page, '#tip-text'));
+        await page.click(row('upper', 'sixes'));
+        await page.click('[data-count="3"]');
+        await settle(page);
+        ok((await txt(page, '#tip-text')).includes(expected), scenario + ': "' + expected + '" -> ' + await txt(page, '#tip-text'));
+    }
+    await L.scenario('busy');
+
     console.log('Failed saves');
     await L.get('/__fail?pattern=/data/p-1');
     await page.click(row('lower', 'chance'));

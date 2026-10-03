@@ -133,7 +133,12 @@
     function tip(need) {
         var remaining = UPPER.filter(function (item) { return state.upper[item.id] === undefined; });
 
+        // Only just made it, or only just missed it: worth a little fun
+        if (need === 0) { return 'Exactly 63! Scraped it by the skin of your teeth, that is 35 extra points.'; }
+        if (need < 0 && need >= -2) { return 'Just over the line and 35 extra points richer, smooth.'; }
         if (need <= 0) { return 'Upper bonus scored, that is 35 extra points.'; }
+        if (remaining.length === 0 && need === 1) { return 'One point short of the bonus! So close you could taste it, someone has been robbed.'; }
+        if (remaining.length === 0 && need === 2) { return 'Two points short of the bonus, it slipped right through your fingers.'; }
         if (remaining.length === 0) { return 'No upper bonus this time, you finished ' + need + ' short.'; }
 
         var faces = remaining.reduce(function (total, item) { return total + item.face; }, 0);

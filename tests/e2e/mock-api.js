@@ -33,6 +33,12 @@ function addGame(s, id, playerIds, opts = {}) {
     s.sheets[id] = {};
 }
 
+function withOnes(ones) {
+    const s = SCENARIOS.busy();
+    s.sheets['g-1']['p-1'] = sheet({ ones, twos: 6, threes: 9, fours: 12, fives: 15 }, { three_of_a_kind: 22, full_house: 25, yahtzee: 50 });
+    return s;
+}
+
 const SCENARIOS = {
     first() { return blank(); },
     idle() {
@@ -50,6 +56,10 @@ const SCENARIOS = {
         s.sheets['g-1']['p-3'] = sheet({ ones: 1, twos: 4, threes: 6 }, { three_of_a_kind: 18, chance: 15 });
         return s;
     },
+    // Ada has everything in the upper section but the sixes, three sixes (18) make 61, 62 or 64 depending on her ones
+    upper61() { return withOnes(1); },
+    upper62() { return withOnes(2); },
+    upper64() { return withOnes(4); },
     two() {
         const s = SCENARIOS.busy();
         addGame(s, 'g-2', ['p-2', 'p-4'], { created: iso(60 * 20) });
