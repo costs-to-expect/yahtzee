@@ -112,8 +112,7 @@ sprite, the avatar and ring, the sheet, the fields and alerts), the classes the 
 controls) are in `resources/css/app.css`, and the scripts are plain JavaScript, no build step: `public/js/ui.js` is on
 every page (sheets, the snackbar, confetti, copy a link), `public/js/score-sheet.js` draws the score sheet. Only the
 places listed in `resources/css/app.css` are scanned for classes, add a path there if classes are ever built
-somewhere new. The reasoning behind the look, the colours and the typeface is in [design](design/README.md), which
-also holds the mockups the pages were built from.
+somewhere new. The reasoning behind the look, the colours and the typeface is in [design](design/README.md).
 
 What the pages say about the game (its name, mark, words and number of turns) is in `config/app/game.php` and the marks
 are in `app/View/Icons.php`, a sibling scorer (Scrabble, Carcassonne) copies the theme and the components and changes those.

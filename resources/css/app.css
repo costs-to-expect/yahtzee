@@ -1,7 +1,6 @@
 /*
  * Only the places listed below are scanned for classes (source(none) turns off Tailwind's project wide detection), so
- * the design mockups, which use plenty of classes the app does not, never leak into the app's CSS. They are built
- * separately by design/build, from design/mockups.css.
+ * the CSS holds what the pages use and nothing else.
  */
 @import 'tailwindcss' source(none);
 

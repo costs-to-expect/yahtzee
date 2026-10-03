@@ -1,29 +1,22 @@
 # Design: the look, the home page and the score sheet
 
 The look and the two screens for the Costs to Expect game scorers: Yahtzee now, then Scrabble and Carcassonne.
-They are working mockups built with Tailwind from the app's own theme (`resources/css/app.css`).
+The design is built into the app, every page uses it. This is the reasoning behind it, for whoever changes it and
+for the Scrabble and Carcassonne scorers. The pages are the Blade layouts and components in
+`resources/views/components`, the classes they share are in `resources/css/app.css` and the scripts are in `public/js`
+(`ui.js` on every page, `score-sheet.js`), `README.md` says how they fit together. The mockups it was designed with are
+in the history of this repository, before the commit that built them into the app.
 
-> **Built.** The design is in the app: every page uses it, Bootstrap is gone. The mockups are kept as the reference for
-> the reasoning below and for the sibling scorers, they are not the source of the pages (the Blade components in
-> `resources/views/components` and `public/js` are). Where the app differs: undo, change and clear are behind
-> `SCORE_CORRECTIONS` (off until the API is confirmed to replace the score sheet), "Play again" uses the last finished
-> game, the time labels appear when the API says when a game started, and the player scores for the Everyone panel are JSON.
-> See `README.md` and `.agents/UPGRADE_REVIEW.md`.
-
-```bash
-open design/index.html     # start here, every page is a single self-contained file
-design/build               # rebuild design/*.html from design/src after editing
-```
-
-Open them on a phone as well as a laptop, a scorer is used at the table. The home page has mockup controls (dashed box)
-to switch game and state, the score sheet has prototype controls to simulate a failed save and jump to the last turn.
+Where the app differs from the design: undo, change and clear are behind `SCORE_CORRECTIONS` (off until the API is
+confirmed to replace the score sheet), "Play again" uses the last finished game, the time labels appear when the API says
+when a game started, the player scores for the Everyone panel are JSON, and the bonus tracker replaced the bonus messages.
 
 ## What was decided
 
 - **The home page is the Launchpad**: one question, "Who's scoring?", a tile for every player, the next game two taps
   away. The other two options (game cards, a league table) were dropped. A league table can still become a section
   of the page later if there is somewhere to read the statistics from.
-- **The score sheet is the working prototype**, `score-sheet.html`.
+- **The score sheet**: tap how many you rolled, a number pad, the totals always in view, a bonus tracker, everyone's scores beside it.
 - **The look is polished and friendly, not "gamer"**: warm paper, white cards, soft shadows, one deep teal, a friendly
   typeface, no neon, no dark theme, no sound effects. It has to work for Yahtzee, Scrabble and Carcassonne, so nothing in
   it is about dice.
@@ -78,7 +71,7 @@ declares no font), they all render in the system font, so this is the first to a
 
 ## The home page: the Launchpad
 
-`home.html`. On a phone a player is a one tap row with a chevron, from `sm` up it is a tile with a button, in two
+On a phone a player is a one tap row with a chevron, from `sm` up it is a tile with a button, in two
 columns for two or four players and three otherwise. The bottom tab bar (Home, Games, Players, Account) is where a thumb
 reaches, it replaces the off-canvas menu.
 
@@ -93,8 +86,7 @@ reaches, it replaces the off-canvas menu.
 **No game running**: "Play again with Ada, Ben & Cleo" is the whole page. **First visit**: one box for the names, the
 textarea the app has today.
 
-The mockup controls switch the **game**, which is the point of the design: the same page, with the game's mark, name,
-words and tile meta. Yahtzee has a ring and "8 of 13 turns", Scrabble and Carcassonne have no ring (they have no fixed
+The same page serves every game, with the game's mark, name, words and tile meta (`config/app/game.php`). Yahtzee has a ring and "8 of 13 turns", Scrabble and Carcassonne have no ring (they have no fixed
 number of turns) and show the last move.
 
 What it needs from the app:
@@ -106,10 +98,6 @@ What it needs from the app:
   number of turns (the ring).
 
 ## The score sheet
-
-`score-sheet.html` is a working prototype of everything below. Try scoring the sixes (the bonus lands), tapping Undo,
-tapping a scored row to change or clear it, scoring Chance with the number pad, and ticking "Simulate a failed save"
-before scoring something.
 
 What it fixes, from how the sheet works today (`score-sheet.blade.php`, `public/js/score-sheet.js`):
 
@@ -138,7 +126,7 @@ What it needs from the API and the app:
 ## How the next games plug in
 
 The home page and score sheet are built from the same pieces for every game. Only Yahtzee is designed, the other two
-columns are a sketch of where the same pieces would go, try them on the home page with the Game control.
+columns are a sketch of where the same pieces would go.
 
 | Piece | Yahtzee | Scrabble | Carcassonne |
 |---|---|---|---|
@@ -152,24 +140,14 @@ The same for every game: the total bar, undo, the saved state, the Everyone pane
 the footer. The number pad is the piece to build once and reuse, it is the entry for a Yahtzee sum, a Scrabble turn and
 a Carcassonne score.
 
-## Building it
+## Reusing it
 
-1. **The shared pieces first, in Tailwind**: layout, navigation (with the bottom tab bar), footer lockup, form fields,
-   flash and error messages, the sheet, the snackbar, the player avatar and ring. `design/src/shared.js` shows what each
-   one does, the app would use Blade components and a small amount of JavaScript.
-2. **The home page**, then the score sheet and its JavaScript. The prototype's script is a good starting point for the
-   interaction.
-3. **The remaining pages** (sign in, register, forgot password, account, add players, games), the account pages say
-   "Your Costs to Expect account" and carry the purple. Then remove Bootstrap, `public/package.json`, `public/yarn.lock` and
-   the `public/node_modules` dependency, the app then needs no Node or yarn at all. `public/css/theme.css` is 227 KB, the whole
-   Tailwind build is about 16 KB before any page is converted.
-
-Notes for whoever does it:
-
-- `resources/css/app.css` only scans the places it lists (`source(none)`), so the mockups never leak into the app's CSS.
-  Add a path there if classes are ever built somewhere new. Bump `css` in `config/app/version.php` when the CSS changes.
-- Scrabble and Carcassonne are separate apps, copy `resources/css/app.css` and `public/fonts` and they have the look.
-  To give one game its own accent, override `--color-brand-*` in that app, nothing else changes.
+- `resources/css/app.css` only scans the places it lists (`source(none)`), add a path there if classes are ever built
+  somewhere new. Bump `css` in `config/app/version.php` when the CSS changes and `js` when `public/js` does.
+- Scrabble and Carcassonne are separate apps, copy `resources/css/app.css`, `public/fonts`, the Blade components,
+  `app/View/Icons.php` and `public/js/ui.js` and they have the look. To give one game its own accent, override
+  `--color-brand-*` in that app, nothing else changes. Change `config/app/game.php` and write the sheet.
+- The number pad (`score-sheet.js`) is the piece to lift out and reuse.
 
 ## Not designed yet
 

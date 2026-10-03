@@ -72,7 +72,7 @@ refused by the local API until it is.
 ## Done since
 
 1. **The design is built** (`design/README.md` has the reasoning, `README.md` how it fits together). Every page uses the
-   Blade layouts and components, the Launchpad home page and the score sheet follow the mockups. Bootstrap, the SCSS,
+   Blade layouts and components, the Launchpad home page and the score sheet follow the design (the mockups were removed once it was built, they are in the history). Bootstrap, the SCSS,
    `public/package.json`, `public/yarn.lock` and axios are gone, the app needs no Node.
 2. **Scores are validated on the server** (`App\Support\ScoreRules`, `App\Actions\Game\ChangeScore`) for a signed-in
    player and a public link alike: the combination has to exist, the score has to be one it can produce, a Yahtzee bonus
@@ -113,9 +113,8 @@ refused by the local API until it is.
    register one, the account deletion jobs revoke the token, check the Forge daemon is running.
 8. **The score sheet script has no PHPUnit coverage**, `tests/e2e` drives it in Chromium against a mock of the API (every way of
    scoring, failed saves, the order of saves, links, deletion), it is not part of CI because it needs Playwright.
-9. **The bonus message endpoints** (`/game/{game}/player/{player}/bonus` and the public equivalent, `BonusMessageTest`) are
-   no longer used, the bonus tracker above the upper section replaced them. They were left alone, delete them when you are
-   sure you do not want the old messages.
+9. **The bonus messages were removed** (the endpoints, `bonus.blade.php` and `BonusMessageTest`), the bonus tracker above the upper
+   section replaced them. They are in the history if you want the old messages back.
 10. Small things left alone: the footer's version date is no longer shown, and `Controller::bootstrap()` creates another
     resource type whenever the API returns more than one. The player scores for the Everyone panel are read every ten
     seconds by every open sheet, that is one request for the game's players and one for its score sheets each time.

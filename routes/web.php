@@ -107,11 +107,6 @@ Route::get(
     [Share::class, 'playerScores']
 )->name('public.player-scores');
 
-Route::get(
-    '/public/game/{token}/bonus',
-    [Share::class, 'playerBonus']
-)->name('public.bonus');
-
 Route::group(
     [
         'middleware' => [
@@ -174,11 +169,6 @@ Route::group(
             '/game/score-upper',
             [\App\Http\Controllers\Action\Game::class, 'scoreUpper']
         )->name('game.score-upper.action');
-
-        Route::get(
-            '/game/{game_id}/player/{player_id}/bonus',
-            [Game::class, 'playerBonus']
-        )->name('game.player.bonus');
 
         // A POST, removing a player deletes their score sheet, a link or a prefetch must never do that
         Route::post(

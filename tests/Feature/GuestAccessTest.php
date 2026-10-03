@@ -25,7 +25,6 @@ class GuestAccessTest extends TestCase
             'create game' => ['POST', '/new-game'],
             'start' => ['POST', '/start'],
             'score sheet' => ['GET', '/game/g-1/player/p-1/score-sheet'],
-            'bonus message' => ['GET', '/game/g-1/player/p-1/bonus'],
             'remove player' => ['POST', '/game/g-1/player/p-1/delete'],
             'player scores' => ['GET', '/game/g-1/player-scores'],
             'complete game' => ['POST', '/game/g-1/complete'],

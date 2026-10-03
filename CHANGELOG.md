@@ -47,7 +47,9 @@ The complete changelog for the Costs to Expect REST API, our changelog follows t
 - Laravel Sanctum, the skeleton `User` model and factory, `routes/api.php`, `routes/channels.php`, the broadcast
   provider and the `users`, `password_resets` and `personal_access_tokens` tables (only when empty, the migration
   leaves a table that has rows for a person to look at).
-- The off canvas menu, the toast component and the toast messages, scores are confirmed in a snackbar.
+- The off canvas menu, the toast component and the toast messages, scores are confirmed in a snackbar, and the bonus
+  message endpoints, the bonus tracker above the upper section replaced them.
+- The design mockups, the pages are the design now (`design/README.md` keeps the reasoning).
 ### Fixed
 - The stay signed-in checkbox was never submitted, so it did nothing.
 - A weak password on the create password page was a server error, the API's errors are now shown.
