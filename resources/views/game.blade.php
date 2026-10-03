@@ -11,7 +11,7 @@
     $when = GameBoard::when($started);
     $played = $when === null ? null : (in_array($when, ['Today', 'Yesterday'], true) ? strtolower($when) : 'on '.$when);
 @endphp
-<x-layouts.app :title="$config['name'].' Game Scorer: Game'" active="games">
+<x-layouts.app :title="$config['name'].' Game Scorer: Game'" :active="$complete ? 'games' : 'home'">
     <div class="mx-auto max-w-3xl">
         <a href="{{ $complete ? route('games') : route('home') }}" class="-ml-3 inline-flex min-h-11 items-center gap-1 rounded-xl pl-2 pr-3 text-sm font-bold text-stone-700 hover:bg-stone-100 focus-visible:outline-2 focus-visible:outline-brand-600"><x-icon name="chevron-left" class="h-5 w-5" />{{ $complete ? 'All games' : 'Home' }}</a>
 

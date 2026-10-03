@@ -81,7 +81,7 @@ class SupportingClassesTest extends TestCase
         $html = (string) $this->blade('<x-layouts.guest title="Sign in">content</x-layouts.guest>');
 
         self::assertStringContainsString('/css/'.config('app.version.css').'/app.css', $html);
-        self::assertStringContainsString('/js/ui.js?v='.config('app.version.app'), $html);
+        self::assertStringContainsString('/js/ui.js?v='.config('app.version.js'), $html);
         self::assertFileExists(public_path('css/'.config('app.version.css').'/app.css'));
         self::assertFileExists(public_path('js/ui.js'));
     }

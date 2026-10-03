@@ -1,7 +1,9 @@
 # Yahtzee: upgrade and auth review
 
 **Date:** 2026-10-02  
-**Status:** Laravel 12 on PHP 8.2, tests added (354) with GitHub Actions CI, forgot password added, Tailwind set up with a teal theme, design chosen (mockups only).
+**Status:** Laravel 12 on PHP 8.2, forgot password added, the design built into every page (Tailwind, a teal theme, Figtree,
+Bootstrap and Node removed), share links encrypted, the token revoked after account deletion, the Sanctum leftovers removed.
+469 PHPUnit tests with GitHub Actions CI, and browser tests (`tests/e2e`) for the scripts.
 Open follow-ups are at the bottom.
 
 ## What this app is
@@ -19,7 +21,7 @@ It has the same shape as Budget Pro, Cashflow and Expense:
 | API client | `App\Api\{Service, Http, Uri}` | `App\Service\Api\{ApiService, Http, Uri}` | same as Budget Pro |
 | Auth | `App\Auth\Guard\Api\{Guard, UserProvider, User}` | same | same |
 | Laravel / PHP | 12 / 8.2 (was 10 / 8.2) | 11 / 8.3 | 12 / 8.4 and 8.3 |
-| CSS | Bootstrap 5, Tailwind v4 set up (teal theme) | Tailwind (v3 config) standalone CLI | Tailwind v4 standalone CLI, `bin/css` |
+| CSS | Tailwind v4 standalone CLI, `bin/css` (was Bootstrap 5) | Tailwind (v3 config) standalone CLI | Tailwind v4 standalone CLI, `bin/css` |
 | Tests | PHPUnit 11, in-memory SQLite, every API call faked | same approach | same approach |
 
 ## Auth review against Budget Pro
@@ -32,19 +34,20 @@ The API only gates two routes with `X-Internal-Api-Key` (`VerifyInternalApiKey` 
 | Internal key on register | yes | yes (`Http::post(internal: true)`) | yes, tested |
 | Internal key on forgot password | yes | no flow existed | flow added, sends the key, tested |
 | Key sent on nothing else | yes | yes | proved by tests, no other request carries it |
-| Sign-out revokes the API token | yes | no, only forgot the cookies | yes, except the account delete redirect |
+| Sign-out revokes the API token | yes | no, only forgot the cookies | yes, and the account deletion jobs revoke it once the API has been asked to delete |
 | Guard caches the resolved user | yes | no, every `Auth::user()` called the API | yes |
 | User provider authenticates with the player's token | yes | **no, it sent the cookie's name as the token** | yes |
 | `rehashPasswordIfRequired` on the provider | yes | missing, a fatal error on Laravel 11+ | yes |
 | Queued jobs that carry the token are encrypted | yes | no | yes (`ShouldBeEncrypted`) |
 | Stay signed-in checkbox works | yes | **never submitted** | yes |
 
-Two deliberate differences:
+One deliberate difference remains:
 
-- **Account deletion does not revoke the token.** Yahtzee queues the delete job with a five second delay and the job
-  uses the player's token, so the redirect that signs the player out only forgets the cookies
-  (`Guard::logout(false)`). Budget Pro's `.env.example` uses the sync queue, so its jobs have finished before it
-  revokes.
+- **Account deletion revokes the token from the queued job, not from the redirect.** Yahtzee queues the delete job with a
+  five second delay and the job uses the player's token, so the redirect that signs the player out only forgets the
+  cookies (`Guard::logout(false)`) and the job revokes the token (`App\Jobs\Concerns\RevokesBearerToken`) once the API has been
+  asked to delete, whether or not that request worked. Budget Pro's `.env.example` uses the sync queue, so its jobs have
+  finished before it revokes. If no queue worker is running the token stays valid until it expires.
 - **The sign-in request carries no bearer**, a stale token from an earlier sign-in used to be sent to the public route.
 
 Not ported because Yahtzee has no equivalent: the payment lock middleware, the registered-user bookkeeping on sign-in.
@@ -66,38 +69,59 @@ refused by the local API until it is.
 10. The games page was a server error when the API failed, and a failure creating the Yahtzee resource right after
     creating its resource type crashed instead of reporting the API's status.
 
+## Done since
+
+1. **The design is built** (`design/README.md` has the reasoning, `README.md` how it fits together). Every page uses the
+   Blade layouts and components, the Launchpad home page and the score sheet follow the mockups. Bootstrap, the SCSS,
+   `public/package.json`, `public/yarn.lock` and axios are gone, the app needs no Node.
+2. **Scores are validated on the server** (`App\Support\ScoreRules`, `App\Actions\Game\ChangeScore`) for a signed-in
+   player and a public link alike: the combination has to exist, the score has to be one it can produce, a Yahtzee bonus
+   needs a Yahtzee and a turn left to play, and a combination that is already scored is not overwritten.
+3. **Share links are encrypted** (`App\Casts\EncryptedParameters`, `share_token.parameters` is now `text`), existing rows are
+   encrypted by the migration and a row that is still plain JSON is read and encrypted when it is next saved.
+4. **The token is revoked after "Delete Yahtzee account" and "Delete account"**, by the job, once the API has been asked.
+5. **The skeleton leftovers are gone**: Sanctum, `App\Models\User`, the factory, `routes/api.php`, `routes/channels.php`, the
+   broadcast provider and the three empty tables (dropped only when empty).
+6. Removing a player from a game is a POST, it deleted a score sheet from a link.
+7. Scores are saved one at a time, in the order they were tapped. The server reads the whole sheet, adds the score and
+   writes it back, two saves at once lost one of them.
+
 ## Not changed, and worth knowing
 
-1. **MySQL is still 8.0**, which reached end of life in April 2026. The 8.4 image is already on this machine. A
-   Docker volume that has been run by 8.0 is upgraded in place by 8.4 on first start and cannot go back, take a
-   `mysqldump` first. The local database only holds sessions, cache, jobs and share links.
-2. **Share links store the owner's bearer token in plain text** (`share_token.parameters.owner_bearer`), so anyone who can
-   read that table can act as the owner until the game is completed. Options: an `encrypted:array` cast (existing rows
-   need a data migration) or storing a server side reference instead.
-3. **Scores are not validated on the server.** `scoreUpper` and `scoreLower` store any `dice`, `combo` and `score`
-   they are sent, from a signed-in player or from anyone holding a public link. See `design/README.md`, it is also
-   what makes undo safe.
-4. **After "Delete Yahtzee account" the player's token stays valid until it expires.** The cookies are forgotten
-   but the token is not revoked, the delete job could call the API's logout when it has finished.
-5. **Forgot password shows whether an email has an account** (the API's 404 is put on the form, as Budget Pro does).
+1. **MySQL is still 8.0**, which reached end of life in April 2026, to be dealt with in a server move. A Docker volume
+   that has been run by 8.0 is upgraded in place by 8.4 on first start and cannot go back, take a `mysqldump` first.
+   The local database only holds sessions, cache, jobs and share links.
+2. **The share link migration was only run on SQLite.** It changes a `json` column to `text` with `->change()` and
+   encrypts the rows, MySQL 8.0 was not available to run it on (no Docker in the session). It is plain Laravel and
+   reversible (`down()` decrypts the rows), run `php artisan migrate --pretend` and take a `mysqldump` of `share_token`
+   (it only holds links for games in progress) before deploying. Changing `APP_KEY` later makes the links of games in
+   progress unreadable.
+3. **Undo, change and clear a score are built and switched off** (`SCORE_CORRECTIONS=false`). Removing a combination only
+   works if the API replaces the score sheet it is sent rather than merging into it, nothing the app did before needed
+   that. Check on a test game (clear a score, reload) before setting it to `true`. The browser tests run it both ways
+   against a mock that replaces.
+4. **A share link stops working when the owner signs out**, the API revokes the token the link holds. Sign-out revoking
+   the token is wanted, but a game that is still being played through links ends for everyone who has one. Links are only
+   as long lived as the owner's session.
+5. **The "started 40 min ago" and "last played on" labels need a created time from the API**, the app reads `created_at`
+   (or `created`) from a game and leaves the label out when there is none, nothing else changes. "Play again" and the
+   preselected players come from the last finished game, **the app assumes the API returns the newest finished game first**
+   (the old home page's Recent Games relied on the same order), if that is not so the wrong game's players are offered.
+6. **Forgot password shows whether an email has an account** (the API's 404 is put on the form, as Budget Pro does).
    Register has always allowed this, show the confirmation page for a 404 if you would rather not.
-6. **Unused leftovers**: Sanctum, `App\Models\User`, `routes/api.php` and the `users` and `personal_access_tokens`
-   tables come from the skeleton, auth is API backed. Candidates for removal.
-7. **Production needs a queue worker** (`QUEUE_CONNECTION=database`). The new forgot password email is queued like
-   the register one, check the Forge daemon is running.
-8. **CI** is `.github/workflows/tests.yml` (the Budget Pro template, PHP 8.2 to 8.5). It has not run on GitHub yet.
-   Its commands were run on a clean checkout of the working tree, without a `.env` or any of the container's
-   environment, on PHP 8.2 in Docker and on PHP 8.5, 354 tests each. That run found the suite was borrowing the
-   application key from the dev `.env` (274 tests failed without it), `phpunit.xml` now sets its own.
-9. Small things left alone: the "is the a name taken by another player?" copy, an unclosed `<li>` in the game lists,
-   the footer's hard coded 2023, and `Controller::bootstrap()` creating another resource type whenever the API returns
-   more than one.
-10. **The design is mockups only.** `design/` holds the Launchpad home page and a score sheet prototype in the new teal
-    theme, the Costs to Expect purple is kept for the footer lockup and the account pages, `design/README.md` has the
-    reasoning and the build order. It is meant to carry to Scrabble and Carcassonne. Server side it needs score
-    validation (item 3), a way to remove a score from a sheet (undo, change and clear), the players of the last game for
-    "Play again" and a created time for "started 40 min ago". The theme in `resources/css/app.css` and the Figtree files in
-    `public/fonts` are in place, no view uses them yet.
+7. **Production needs a queue worker** (`QUEUE_CONNECTION=database`). The forgot password email is queued like the
+   register one, the account deletion jobs revoke the token, check the Forge daemon is running.
+8. **The score sheet script has no PHPUnit coverage**, `tests/e2e` drives it in Chromium against a mock of the API (every way of
+   scoring, failed saves, the order of saves, links, deletion), it is not part of CI because it needs Playwright.
+9. **The bonus message endpoints** (`/game/{game}/player/{player}/bonus` and the public equivalent, `BonusMessageTest`) are
+   no longer used, the bonus tracker above the upper section replaced them. They were left alone, delete them when you are
+   sure you do not want the old messages.
+10. Small things left alone: the footer's version date is no longer shown, and `Controller::bootstrap()` creates another
+    resource type whenever the API returns more than one. The player scores for the Everyone panel are read every ten
+    seconds by every open sheet, that is one request for the game's players and one for its score sheets each time.
+11. **The design is built for Yahtzee only.** The Scrabble and Carcassonne scorers copy `resources/css/app.css`,
+    `public/fonts`, the Blade components and `public/js/ui.js`, and change `config/app/game.php` and their own sheet, see
+    `design/README.md`. Not designed: dark mode and the Scrabble and Carcassonne sheets themselves.
 
 ## Moving to PHP 8.4 or later
 

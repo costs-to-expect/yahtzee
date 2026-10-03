@@ -1,8 +1,14 @@
 # Design: the look, the home page and the score sheet
 
 The look and the two screens for the Costs to Expect game scorers: Yahtzee now, then Scrabble and Carcassonne.
-They are working mockups built with Tailwind from the app's own theme (`resources/css/app.css`), nothing is wired into
-the app yet and the Bootstrap pages are untouched.
+They are working mockups built with Tailwind from the app's own theme (`resources/css/app.css`).
+
+> **Built.** The design is in the app: every page uses it, Bootstrap is gone. The mockups are kept as the reference for
+> the reasoning below and for the sibling scorers, they are not the source of the pages (the Blade components in
+> `resources/views/components` and `public/js` are). Where the app differs: undo, change and clear are behind
+> `SCORE_CORRECTIONS` (off until the API is confirmed to replace the score sheet), "Play again" uses the last finished
+> game, the time labels appear when the API says when a game started, and the player scores for the Everyone panel are JSON.
+> See `README.md` and `.agents/UPGRADE_REVIEW.md`.
 
 ```bash
 open design/index.html     # start here, every page is a single self-contained file

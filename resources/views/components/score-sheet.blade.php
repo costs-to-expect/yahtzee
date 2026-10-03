@@ -139,5 +139,5 @@
 
 <script type="application/json" id="sheet-config">@json($config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)</script>
 @push('scripts')
-    <script src="{{ asset('js/score-sheet.js') }}?v={{ config('app.version.app') }}" defer></script>
+    <script src="{{ asset('js/score-sheet.js') }}?v={{ config('app.version.js') }}" defer></script>
 @endpush

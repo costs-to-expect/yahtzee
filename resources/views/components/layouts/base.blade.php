@@ -27,7 +27,7 @@
 
 {{ $slot }}
 
-<script src="{{ asset('js/ui.js') }}?v={{ config('app.version.app') }}" defer></script>
+<script src="{{ asset('js/ui.js') }}?v={{ config('app.version.js') }}" defer></script>
 @stack('scripts')
 </body>
 </html>

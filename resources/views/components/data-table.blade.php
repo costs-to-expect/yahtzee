@@ -2,7 +2,7 @@
 {{-- What is deleted, or what stays: the content, what it is and where it lives --}}
 <section {{ $attributes }}>
     <h2 class="text-sm font-extrabold uppercase tracking-wider text-stone-600">{{ $title }}</h2>
-    <div class="mt-2 overflow-x-auto rounded-2xl bg-white shadow-card ring-1 ring-stone-200/70">
+    <div class="mt-2 overflow-x-auto rounded-2xl bg-white shadow-card ring-1 ring-stone-200/70 focus-visible:outline-2 focus-visible:outline-brand-600" role="region" aria-label="{{ $title }}" tabindex="0">
         <table class="w-full min-w-[30rem] text-left text-sm">
             <thead class="bg-stone-50 text-xs uppercase tracking-wider text-stone-600">
                 <tr>

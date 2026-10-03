@@ -352,6 +352,7 @@
             // No connection, the API is down or the session ended: keep the score on the screen and offer a retry
             if (status === 419 || status === 401) { sessionEnded = true; }
             unsaved[key(operation.section, operation.id)] = operation;
+            UI.Snack.show(sessionEnded ? 'You have been signed out, the score is safe on this screen' : 'Not saved, we\u2019ll keep it here until it is', sessionEnded ? {duration: 8000} : {action: 'Retry', onAction: retryAll, duration: 8000});
         }
 
         render();

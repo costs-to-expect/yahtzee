@@ -58,7 +58,7 @@
                             @endif
                         </p>
 
-                        <x-player-tiles :standings="$standings" :game-id="$board['id']" />
+                        <x-player-tiles :standings="$standings" :game-id="$board['id']" class="mt-6" />
 
                         <x-game-actions :game-id="$board['id']" />
                     </div>

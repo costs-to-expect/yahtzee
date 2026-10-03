@@ -2,7 +2,7 @@
 {{-- Who is playing, best score first: a tile per player that opens their score sheet. Two and four players sit best
      in two columns, anything else in three. --}}
 @php($game = config('app.game'))
-<div @class(['mt-6 grid gap-3', 'sm:grid-cols-2' => in_array(count($standings), [2, 4], true), 'sm:grid-cols-3' => ! in_array(count($standings), [2, 4], true)])>
+<div {{ $attributes->class(['grid gap-3', 'sm:grid-cols-2' => in_array(count($standings), [2, 4], true), 'sm:grid-cols-3' => ! in_array(count($standings), [2, 4], true)]) }}>
     @foreach ($standings as $player)
         <a href="{{ route('game.score-sheet', ['game_id' => $gameId, 'player_id' => $player['id']]) }}"
            @class([
