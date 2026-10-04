@@ -5,7 +5,7 @@ const fs = require('fs');
 const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const pages = [
     ['/', 'guest'], ['/sign-in', 'guest'], ['/register', 'guest'], ['/forgot-password', 'guest'], ['/create-password?token=t&email=a@b.c', 'guest'], ['/nope', 'guest'],
-    ['/home', 'auth'], ['/games', 'auth'], ['/games/g-1', 'auth'], ['/games/g-old', 'auth'], ['/players', 'auth'], ['/new-game', 'auth'], ['/new-player', 'auth'], ['/add-players-to-game/g-1', 'auth'], ['/account', 'auth'], ['/account/confirm-delete-yahtzee-account', 'auth'],
+    ['/home', 'auth'], ['/games', 'auth'], ['/games/g-1', 'auth'], ['/games/g-old', 'auth'], ['/stats', 'auth'], ['/players', 'auth'], ['/new-game', 'auth'], ['/new-player', 'auth'], ['/add-players-to-game/g-1', 'auth'], ['/account', 'auth'], ['/account/confirm-delete-yahtzee-account', 'auth'],
     ['/game/g-1/player/p-1/score-sheet', 'auth'], ['/game/g-old/player/p-1/score-sheet', 'auth'],
 ];
 (async () => {

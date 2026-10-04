@@ -2,7 +2,7 @@
 const L = require('./lib');
 const SHOTS = process.env.E2E_SHOTS || require('os').tmpdir();
 const guest = ['/', '/sign-in', '/register', '/forgot-password', '/forgot-password-confirmation', '/create-password?token=t1&email=ada@example.test', '/create-new-password?encrypted_token=e1&email=ada@example.test', '/create-new-password-confirmation', '/registration-complete', '/nope'];
-const authed = ['/home', '/home?game=g-2', '/games', '/games/g-1', '/games/g-old', '/players', '/new-game', '/new-player', '/add-players-to-game/g-1', '/account', '/account/confirm-delete-yahtzee-account', '/account/confirm-delete-account', '/game/g-1/player/p-1/score-sheet', '/game/g-old/player/p-1/score-sheet'];
+const authed = ['/home', '/home?game=g-2', '/games', '/games/g-1', '/games/g-old', '/stats', '/players', '/new-game', '/new-player', '/add-players-to-game/g-1', '/account', '/account/confirm-delete-yahtzee-account', '/account/confirm-delete-account', '/game/g-1/player/p-1/score-sheet', '/game/g-old/player/p-1/score-sheet'];
 
 async function check(page, path, kind, name) {
     const errors = [];
