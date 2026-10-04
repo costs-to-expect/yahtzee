@@ -38,7 +38,9 @@ return [
             'driver'       => 'database',
             'table'        => 'jobs',
             'queue'        => 'default',
-            'retry_after'  => 90,
+            // Longer than the longest job (App\Jobs\BackfillStats, 15 minutes), otherwise a second worker picks up a
+            // job that is still running. The cost is how long a job whose worker died waits to be tried again.
+            'retry_after'  => 960,
             'after_commit' => false,
         ],
 

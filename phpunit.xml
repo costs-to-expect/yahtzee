@@ -42,6 +42,9 @@
         <env name="ERROR_EMAIL" value="errors@yahtzee.test" force="true"/>
         <env name="SESSION_NAME_USER" value="yahtzee_user" force="true"/>
         <env name="SESSION_NAME_BEARER" value="yahtzee_bearer" force="true"/>
+        <!-- The stats job waits between its requests to the API, a test has nothing to wait for -->
+        <env name="STATS_BACKFILL_PAUSE_MS" value="0" force="true"/>
+        <env name="STATS_BACKFILL_BACKOFF_SECONDS" value="0" force="true"/>
 
         <!-- Laravel reads $_SERVER before $_ENV, and the container's real variables (docker compose loads
              .env into them) land there, so <env> alone loses to them. tests/TestCase.php refuses to boot
@@ -66,5 +69,7 @@
         <server name="ERROR_EMAIL" value="errors@yahtzee.test" force="true"/>
         <server name="SESSION_NAME_USER" value="yahtzee_user" force="true"/>
         <server name="SESSION_NAME_BEARER" value="yahtzee_bearer" force="true"/>
+        <server name="STATS_BACKFILL_PAUSE_MS" value="0" force="true"/>
+        <server name="STATS_BACKFILL_BACKOFF_SECONDS" value="0" force="true"/>
     </php>
 </phpunit>

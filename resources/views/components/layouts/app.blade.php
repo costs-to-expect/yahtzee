@@ -9,6 +9,7 @@
     $tabs = [
         'home' => ['label' => 'Home', 'icon' => 'home', 'route' => 'home'],
         'games' => ['label' => 'Games', 'icon' => 'games', 'route' => 'games'],
+        'stats' => ['label' => 'Stats', 'icon' => 'stats', 'route' => 'stats'],
         'players' => ['label' => 'Players', 'icon' => 'players', 'route' => 'players'],
         'account' => ['label' => 'Account', 'icon' => 'account', 'route' => 'account'],
     ];
@@ -21,7 +22,7 @@
             <x-brand :href="route('home')" />
 
             <nav class="hidden items-center gap-1 sm:flex" aria-label="Main">
-                @foreach (['home', 'games', 'players'] as $key)
+                @foreach (['home', 'games', 'stats', 'players'] as $key)
                     <a href="{{ route($tabs[$key]['route']) }}" @if ($active === $key) aria-current="page" @endif
                        @class([
                            'rounded-full px-4 py-2 text-sm focus-visible:outline-2 focus-visible:outline-brand-600',
@@ -52,7 +53,7 @@
 
     {{-- Phone navigation: where a thumb reaches --}}
     <nav data-tab-bar class="fixed inset-x-0 bottom-0 z-30 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden" aria-label="Main">
-        <ul class="mx-auto grid max-w-md grid-cols-4">
+        <ul class="mx-auto grid max-w-md grid-cols-5">
             @foreach ($tabs as $key => $tab)
                 <li>
                     <a href="{{ route($tab['route']) }}" @if ($active === $key) aria-current="page" @endif

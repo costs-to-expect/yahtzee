@@ -5,6 +5,7 @@ namespace App\Actions\Game;
 
 use App\Actions\Action;
 use App\Api\Service;
+use App\Models\GameStat;
 use App\Models\ShareToken;
 
 /**
@@ -18,7 +19,8 @@ class Delete extends Action
         Service $api,
         string $resource_type_id,
         string $resource_id,
-        string $game_id
+        string $game_id,
+        string $user_id
     ): int
     {
         $game_response = $api->getGame(
@@ -95,6 +97,9 @@ class Delete extends Action
             }
 
             ShareToken::query()->where('game_id', $game_id)->delete();
+
+            // The game is gone from the API, it must not stay in the stats
+            GameStat::query()->where('user_id', $user_id)->where('game_id', $game_id)->delete();
 
         } catch (\Exception $e) {
             abort(500, $e->getMessage());

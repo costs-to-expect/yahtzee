@@ -43,10 +43,15 @@ export ERROR_EMAIL=errors@yahtzee.test COSTS_TO_EXPECT_INTERNAL_API_KEY=local-ke
 export DB_CONNECTION=sqlite DB_DATABASE="$WORK/e2e.sqlite"
 export SESSION_DRIVER=file CACHE_DRIVER=file QUEUE_CONNECTION=sync MAIL_MAILER=log LOG_CHANNEL=stderr
 export SESSION_NAME_USER=yahtzee_user SESSION_NAME_BEARER=yahtzee_bearer SESSION_DOMAIN=null SESSION_CONNECTION=null
+export STATS_BACKFILL_PAUSE_MS=0 STATS_BACKFILL_BACKOFF_SECONDS=0
 export E2E_APP="http://127.0.0.1:${APP_PORT}" E2E_API="http://127.0.0.1:${API_PORT}"
 
 touch "$DB_DATABASE"
 (cd "$ROOT" && php artisan migrate --force --quiet) || { echo "The migrations failed" >&2; exit 1; }
+
+# The stats of the player the mock signs in, see seed-stats.php, so the job that collects older games does not run in
+# the browser (PHPUnit tests it) and /stats has something to show
+(cd "$ROOT" && php artisan tinker --execute="$(cat "$HERE/seed-stats.php")" > "$WORK/seed.log" 2>&1) || { echo "Seeding the stats failed, see $WORK/seed.log" >&2; cat "$WORK/seed.log" >&2; exit 1; }
 
 port_is_free() { ! (exec 3<>"/dev/tcp/127.0.0.1/$1") 2>/dev/null; }
 

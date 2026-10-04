@@ -2,6 +2,32 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.14.0] - [2026-10-04]
+### Added
+- Stats. A new page with the records (highest score, most wins, most consecutive wins, lowest score, most consecutive
+  losses, most Yahtzees in a game, most consecutive games with a Yahtzee), who holds each one and when, and a card for
+  each player: games, wins and win rate, average, highest and lowest score, Yahtzees and their longest winning, losing
+  and Yahtzee streaks. A Stats tab in the navigation, five tabs on a phone.
+- The stats are kept in the app's own database (`game_stat`), a row for each player in each game that everyone played
+  all 13 turns of, recorded when the game is completed. A tie for the top score is a win for everyone who tied, a game
+  with one player is not a win or a loss, see the README.
+- The games finished before the stats existed are collected by a job, one for each player, ever, started the first time
+  a signed-in player visits the home page or the stats page (`App\Jobs\BackfillStats`, its progress is the row in
+  `stats_backfill`). It needs the queue worker and the player's token, so it is started by the player, not for everyone at
+  once. If the player signs out it carries on the next time they visit. The stats page says while it is counting, if
+  it gave up, and how many games could not be counted and why. `STATS_BACKFILL_PAUSE_MS` and
+  `STATS_BACKFILL_BACKOFF_SECONDS` set the pace of its requests to the API.
+- Tests for all of it. The browser tests visit the stats page, with stats seeded for the player the mock API signs in.
+### Changed
+- Deleting a game, an account or a Yahtzee account deletes its stats.
+- `retry_after` for the database queue is 960 seconds, it was 90. The collecting job is allowed 15 minutes and the queue
+  must wait longer than that before it gives a job to a second worker. Run `php artisan queue:restart` when deploying.
+- The players page links to the stats, it said they were coming soon.
+- CSS v1.1.0.
+- The README says what the app's own database holds, and has a section about the stats and the job.
+### Removed
+- "Stats (coming soon)" from the landing page.
+
 ## [1.13.0] - [2026-10-03]
 ### Added
 - A new landing page. A score sheet to try right in the hero (the real rows, the real bonus tracker and tips, nothing is

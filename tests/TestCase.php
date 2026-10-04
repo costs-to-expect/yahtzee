@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Jobs\BackfillStats;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
@@ -41,5 +43,10 @@ abstract class TestCase extends BaseTestCase
 
         // A request a test has not faked is a failing test, never a call to the real API.
         Http::preventStrayRequests();
+
+        // Visiting the home page or the stats starts the job that collects a player's older games, which reads the
+        // API for hours of games, a test that is not about it only wants to know it was started. The tests of the job
+        // run it themselves.
+        Bus::fake([BackfillStats::class]);
     }
 }

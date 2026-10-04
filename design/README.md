@@ -15,8 +15,12 @@ when a game started, the player scores for the Everyone panel are JSON, and the 
 
 - **The home page is the Launchpad**: one question, "Who's scoring?", a tile for every player, the next game two taps
   away. The other two options (game cards, a league table) were dropped. A league table can still become a section
-  of the page later if there is somewhere to read the statistics from.
+  of the page later, the numbers it needs are on the Stats page now.
 - **The score sheet**: tap how many you rolled, a number pad, the totals always in view, a bonus tracker, everyone's scores beside it.
+- **Stats are cards, not a table**: each record is a card with its value, who holds it and when, gold for the good ones
+  and quiet for the lows (none of them is a warning), and each player is a card too, so nothing scrolls sideways on a
+  phone. A record with a lot of holders names three and counts the rest. While the older games are still being counted
+  the page says so, it never claims there are no stats.
 - **The look is polished and friendly, not "gamer"**: warm paper, white cards, soft shadows, one deep teal, a friendly
   typeface, no neon, no dark theme, no sound effects. It has to work for Yahtzee, Scrabble and Carcassonne, so nothing in
   it is about dice.

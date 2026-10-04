@@ -58,6 +58,48 @@ final class ScoreRules
     }
 
     /**
+     * Whether every turn has been played: all thirteen combinations are on the sheet, a scratched one (0) counts. The
+     * Yahtzee bonuses are not turns, and a sheet with a combination missing is never finished however many entries
+     * it has.
+     */
+    public static function isFinished(array $sheet): bool
+    {
+        foreach (array_keys(self::UPPER) as $combination) {
+            if (array_key_exists($combination, $sheet['upper-section'] ?? []) === false) {
+                return false;
+            }
+        }
+
+        foreach ([...array_keys(self::FIXED), ...self::SUMS] as $combination) {
+            if (array_key_exists($combination, $sheet['lower-section'] ?? []) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * The Yahtzees scored on the sheet: the Yahtzee itself (50) and a bonus for each extra one. A scratched Yahtzee
+     * (0) is not one, and the sheet cannot say whether one was rolled and then scored somewhere else, so this is
+     * the Yahtzees scored, not the Yahtzees rolled.
+     */
+    public static function yahtzees(array $sheet): int
+    {
+        $lower = $sheet['lower-section'] ?? [];
+
+        $yahtzees = ($lower['yahtzee'] ?? null) === self::FIXED['yahtzee'] ? 1 : 0;
+
+        foreach (self::BONUSES as $bonus) {
+            if (array_key_exists($bonus, $lower)) {
+                $yahtzees++;
+            }
+        }
+
+        return $yahtzees;
+    }
+
+    /**
      * @return array{upper: int, bonus: int, lower: int, total: int}
      */
     public static function totals(array $sheet): array

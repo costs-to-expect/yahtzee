@@ -41,6 +41,110 @@ class ScoreRulesTest extends TestCase
     }
 
     /**
+     * Every combination scored once, a game that has been played to the end. The overrides change a score, they can't
+     * add a combination.
+     *
+     * @param array<string, int> $upper
+     * @param array<string, int> $lower
+     */
+    private function finishedSheet(array $upper = [], array $lower = []): array
+    {
+        return $this->sheet(
+            array_replace(['ones' => 3, 'twos' => 6, 'threes' => 9, 'fours' => 12, 'fives' => 15, 'sixes' => 18], $upper),
+            array_replace(
+                ['three_of_a_kind' => 20, 'four_of_a_kind' => 0, 'full_house' => 25, 'small_straight' => 30, 'large_straight' => 40, 'yahtzee' => 50, 'chance' => 22],
+                $lower
+            )
+        );
+    }
+
+    public function test_there_is_a_turn_for_every_combination_except_the_yahtzee_bonuses(): void
+    {
+        self::assertSame(ScoreRules::TURNS, count(ScoreRules::UPPER) + count(ScoreRules::FIXED) + count(ScoreRules::SUMS));
+        self::assertSame(ScoreRules::TURNS, ScoreRules::turns($this->finishedSheet()));
+    }
+
+    public function test_a_sheet_is_finished_when_every_combination_is_scored(): void
+    {
+        self::assertTrue(ScoreRules::isFinished($this->finishedSheet()));
+    }
+
+    public function test_a_scratched_combination_still_counts_as_played(): void
+    {
+        self::assertTrue(ScoreRules::isFinished($this->finishedSheet(['ones' => 0, 'sixes' => 0], ['yahtzee' => 0, 'full_house' => 0, 'four_of_a_kind' => 0])));
+    }
+
+    public function test_a_sheet_with_any_one_combination_missing_is_not_finished(): void
+    {
+        $finished = $this->finishedSheet();
+
+        foreach (['upper-section', 'lower-section'] as $section) {
+            foreach (array_keys($finished[$section]) as $combination) {
+                $sheet = $finished;
+                unset($sheet[$section][$combination]);
+
+                self::assertFalse(ScoreRules::isFinished($sheet), 'Finished without ' . $combination);
+            }
+        }
+    }
+
+    public function test_an_empty_or_partial_sheet_is_not_finished(): void
+    {
+        self::assertFalse(ScoreRules::isFinished([]));
+        self::assertFalse(ScoreRules::isFinished($this->sheet()));
+        self::assertFalse(ScoreRules::isFinished(['upper-section' => $this->finishedSheet()['upper-section']]));
+        self::assertFalse(ScoreRules::isFinished(['lower-section' => $this->finishedSheet()['lower-section']]));
+    }
+
+    public function test_the_yahtzee_bonuses_and_unknown_combinations_do_not_finish_a_sheet(): void
+    {
+        $short = $this->finishedSheet();
+        unset($short['upper-section']['sixes']);
+
+        $short['lower-section'] += ['yahtzee_bonus_one' => 100, 'yahtzee_bonus_two' => 100, 'yahtzee_bonus_three' => 100];
+        self::assertFalse(ScoreRules::isFinished($short));
+
+        $short['upper-section']['sevens'] = 7;
+        self::assertFalse(ScoreRules::isFinished($short));
+    }
+
+    public function test_the_yahtzee_bonuses_do_not_stop_a_finished_sheet_being_finished(): void
+    {
+        self::assertTrue(ScoreRules::isFinished($this->finishedSheet([], ['yahtzee_bonus_one' => 100, 'yahtzee_bonus_two' => 100])));
+    }
+
+    /**
+     * @return array<string, array{array<string, int>, int}>
+     */
+    public static function yahtzeeSheets(): array
+    {
+        return [
+            'an empty sheet' => [[], 0],
+            'the yahtzee has not been scored' => [['chance' => 22], 0],
+            'a scratched yahtzee' => [['yahtzee' => 0], 0],
+            'a yahtzee' => [['yahtzee' => 50], 1],
+            'a yahtzee and a bonus' => [['yahtzee' => 50, 'yahtzee_bonus_one' => 100], 2],
+            'a yahtzee and all three bonuses' => [['yahtzee' => 50, 'yahtzee_bonus_one' => 100, 'yahtzee_bonus_two' => 100, 'yahtzee_bonus_three' => 100], 4],
+            'the other combinations are not yahtzees' => [['large_straight' => 40, 'full_house' => 25, 'chance' => 30], 0],
+        ];
+    }
+
+    /**
+     * @param array<string, int> $lower
+     */
+    #[DataProvider('yahtzeeSheets')]
+    public function test_the_yahtzees_scored_are_the_yahtzee_and_its_bonuses(array $lower, int $yahtzees): void
+    {
+        self::assertSame($yahtzees, ScoreRules::yahtzees($this->sheet([], $lower)));
+    }
+
+    public function test_a_sheet_with_no_lower_section_has_no_yahtzees(): void
+    {
+        self::assertSame(0, ScoreRules::yahtzees([]));
+        self::assertSame(0, ScoreRules::yahtzees(['upper-section' => ['ones' => 3]]));
+    }
+
+    /**
      * @return array<string, array{string, string, mixed, bool}>
      */
     public static function scores(): array

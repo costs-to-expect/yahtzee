@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Jobs;
 
+use App\Actions\Stats\DeleteStats;
 use App\Jobs\DeleteAccount;
 use App\Jobs\DeleteYahtzeeAccount;
+use App\Models\GameStat;
+use App\Models\StatsBackfill;
 use App\Notifications\ApiError;
 use App\Notifications\Bye;
 use App\Notifications\ByeBye;
@@ -240,5 +243,117 @@ class DeleteAccountJobsTest extends TestCase
         DeleteYahtzeeAccount::dispatch('the-bearer', 'rt-1', 'r-1', 'user-1', 'ada@example.test');
 
         Notification::assertSentOnDemand(Bye::class);
+    }
+
+    // The stats
+
+    private function stats(string $user_id): void
+    {
+        foreach (['g-1', 'g-2'] as $game_id) {
+            foreach (['p-1', 'p-2'] as $player_id) {
+                GameStat::create([
+                    'user_id' => $user_id, 'game_id' => $game_id, 'player_id' => $player_id, 'player_name' => 'Ada', 'players_in_game' => 2,
+                    'score' => 200, 'upper' => 60, 'upper_bonus' => 0, 'lower' => 140, 'yahtzees' => 0, 'sheet' => [],
+                    'game_created_at' => '2026-09-01 18:00:00',
+                ]);
+            }
+        }
+
+        StatsBackfill::create(['user_id' => $user_id, 'state' => StatsBackfill::COMPLETE]);
+    }
+
+    /**
+     * @return array{int, int} the stats and the backfill rows of the user
+     */
+    private function statsOf(string $user_id): array
+    {
+        return [
+            GameStat::query()->where('user_id', $user_id)->count(),
+            StatsBackfill::query()->where('user_id', $user_id)->count(),
+        ];
+    }
+
+    public function test_deleting_the_account_forgets_the_stats_of_the_player_and_only_theirs(): void
+    {
+        Notification::fake();
+        $this->stats('user-1');
+        $this->stats('someone-else');
+        Http::fake([
+            'api.test/v3/auth/user/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
+
+        DeleteAccount::dispatch('the-bearer', 'user-1', 'ada@example.test');
+
+        self::assertSame([0, 0], $this->statsOf('user-1'));
+        self::assertSame([4, 1], $this->statsOf('someone-else'));
+    }
+
+    public function test_deleting_the_yahtzee_account_forgets_the_stats_of_the_player_and_only_theirs(): void
+    {
+        Notification::fake();
+        $this->stats('user-1');
+        $this->stats('someone-else');
+        Http::fake([
+            'api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
+
+        DeleteYahtzeeAccount::dispatch('the-bearer', 'rt-1', 'r-1', 'user-1', 'ada@example.test');
+
+        self::assertSame([0, 0], $this->statsOf('user-1'));
+        self::assertSame([4, 1], $this->statsOf('someone-else'));
+    }
+
+    public function test_the_stats_stay_when_the_api_does_not_delete_the_account(): void
+    {
+        Notification::fake();
+        $this->stats('user-1');
+        Http::fake([
+            'api.test/v3/auth/user/request-delete' => Http::response(['message' => 'The API is down'], 503),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
+
+        DeleteAccount::dispatch('the-bearer', 'user-1', 'ada@example.test');
+
+        self::assertSame([4, 1], $this->statsOf('user-1'));
+    }
+
+    public function test_the_stats_stay_when_the_api_does_not_delete_the_yahtzee_account(): void
+    {
+        Notification::fake();
+        $this->stats('user-1');
+        Http::fake([
+            'api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'The API is down'], 503),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
+
+        DeleteYahtzeeAccount::dispatch('the-bearer', 'rt-1', 'r-1', 'user-1', 'ada@example.test');
+
+        self::assertSame([4, 1], $this->statsOf('user-1'));
+    }
+
+    public function test_forgetting_a_user_with_no_stats_is_not_a_problem(): void
+    {
+        $this->stats('someone-else');
+
+        (new DeleteStats())('nobody');
+
+        self::assertSame([4, 1], $this->statsOf('someone-else'));
+    }
+
+    public function test_a_player_who_comes_back_to_yahtzee_after_deleting_it_has_the_job_that_collects_their_games_again(): void
+    {
+        Notification::fake();
+        $this->stats('user-1');
+        Http::fake([
+            'api.test/v3/auth/user/permitted-resource-types/rt-1/resources/r-1/request-delete' => Http::response(['message' => 'Request received'], 201),
+            'api.test/v3/auth/logout' => Http::response(['message' => 'Account signed out'], 200),
+        ]);
+
+        DeleteYahtzeeAccount::dispatch('the-bearer', 'rt-1', 'r-1', 'user-1', 'ada@example.test');
+
+        // The row that said it had run is gone, so the next visit claims it again
+        self::assertTrue(StatsBackfill::claim('user-1'));
     }
 }

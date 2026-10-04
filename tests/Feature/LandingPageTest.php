@@ -64,6 +64,15 @@ class LandingPageTest extends TestCase
             ->assertSee('v'.config('app.version.app'));
     }
 
+    public function test_the_landing_page_does_not_promise_stats_that_are_not_there_yet(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('stats-heading', false)
+            ->assertDontSee('coming soon')
+            ->assertDontSee('All the stats you could possibly want');
+    }
+
     public function test_the_authentication_pages_are_not_indexed(): void
     {
         foreach (['/sign-in', '/register'] as $uri) {
