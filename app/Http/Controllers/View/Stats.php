@@ -5,6 +5,7 @@ namespace App\Http\Controllers\View;
 
 use App\Http\Controllers\Controller;
 use App\Models\GameStat;
+use App\Models\StatsBackfill;
 use App\Support\GameBoard;
 use App\Support\GameStats;
 use App\Support\StatsPage;
@@ -21,8 +22,13 @@ class Stats extends Controller
         // Like every signed-in page, this asks the API for the resource, so a token that has been revoked stops here
         $this->bootstrap($request);
 
+        // A player can come straight here, a bookmark, before they have been to the home page
+        $this->startStatsBackfill($request);
+
+        $user_id = $this->userId($request);
+
         $rows = GameStat::query()
-            ->where('user_id', $this->userId($request))
+            ->where('user_id', $user_id)
             ->get(['game_id', 'player_id', 'player_name', 'score', 'yahtzees', 'game_created_at'])
             ->toArray();
 
@@ -41,6 +47,7 @@ class Stats extends Controller
             'stats',
             [
                 'games' => $stats['games'],
+                'backfill' => StatsPage::backfill(StatsBackfill::query()->where('user_id', $user_id)->first()),
                 'cards' => StatsPage::records($stats['records']),
                 'players' => StatsPage::players($stats['players']),
                 'tones' => GameBoard::tones($players),

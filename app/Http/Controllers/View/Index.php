@@ -20,6 +20,9 @@ class Index extends Controller
     {
         $this->bootstrap($request);
 
+        // The home page is where a signed-in player lands, so their older games are collected from the first visit
+        $this->startStatsBackfill($request);
+
         $user = $this->api->getAuthUser();
 
         if ($user['status'] !== 200) {

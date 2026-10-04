@@ -137,11 +137,6 @@
         </div>
     </section>
 
-    <section class="card mt-6 flex flex-col justify-center text-center" aria-labelledby="stats-heading">
-        <h2 id="stats-heading" class="text-2xl font-extrabold tracking-tight">Stats <span class="font-semibold text-stone-500">(coming soon)</span></h2>
-        <p class="mt-2 text-stone-700">All the stats you could possibly want are coming soon, we are working out the best way to visualise everything.</p>
-    </section>
-
     @push('scripts')
         <script src="{{ asset('js/landing.js') }}?v={{ config('app.version.js') }}" defer></script>
     @endpush

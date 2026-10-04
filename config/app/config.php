@@ -15,4 +15,9 @@ return [
     // Undo, change and clear a score. They remove a key from the stored score sheet, which needs the API to replace
     // the sheet it is sent, switch them on once that has been confirmed against the API
     'score_corrections' => (bool) env('SCORE_CORRECTIONS', false),
+    // The job that collects the stats of a player's finished games waits this many milliseconds between its requests,
+    // the API allows a player 300 a minute and the player is using it too, and this many seconds when the API says
+    // it is being asked for too much
+    'stats_backfill_pause_ms' => (int) env('STATS_BACKFILL_PAUSE_MS', 400),
+    'stats_backfill_backoff_seconds' => (int) env('STATS_BACKFILL_BACKOFF_SECONDS', 60),
 ];

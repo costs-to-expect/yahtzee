@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use App\Models\StatsBackfill;
 use App\Support\GameStats;
 use App\Support\StatsPage;
 use Carbon\CarbonImmutable;
@@ -215,5 +216,96 @@ class StatsPageTest extends TestCase
         foreach ($player as $key => $value) {
             self::assertSame($value, $card[$key], $key);
         }
+    }
+
+    // What it says about the job that collects the older games
+
+    /**
+     * @param array<string, mixed> $attributes
+     */
+    private function backfill(string $state, array $attributes = []): ?array
+    {
+        return StatsPage::backfill(new StatsBackfill(['state' => $state] + $attributes));
+    }
+
+    public function test_a_player_who_has_never_had_the_job_is_told_nothing(): void
+    {
+        self::assertNull(StatsPage::backfill(null));
+    }
+
+    public function test_while_it_runs_the_player_is_told_how_far_it_has_got(): void
+    {
+        $notice = $this->backfill(StatsBackfill::RUNNING, ['games_total' => 160, 'games_seen' => 42]);
+
+        self::assertSame('counting', $notice['kind']);
+        self::assertSame('Counting your older games', $notice['title']);
+        self::assertSame('42 of 160 games checked so far. Refresh to see how far it has got.', $notice['text']);
+    }
+
+    public function test_a_job_that_has_not_read_the_list_yet_says_it_is_getting_started(): void
+    {
+        foreach ([StatsBackfill::QUEUED, StatsBackfill::RUNNING, StatsBackfill::PAUSED] as $state) {
+            foreach ([['games_total' => null], ['games_total' => 0]] as $attributes) {
+                $notice = $this->backfill($state, $attributes);
+
+                self::assertSame('counting', $notice['kind'], $state);
+                self::assertSame('We’re getting started, it takes a minute or two. Refresh to see how far it has got.', $notice['text'], $state);
+            }
+        }
+    }
+
+    public function test_a_job_that_gave_up_says_so_without_the_error(): void
+    {
+        $notice = $this->backfill(StatsBackfill::FAILED, ['last_error' => 'The API answered 503 with a secret']);
+
+        self::assertSame('failed', $notice['kind']);
+        self::assertSame('We couldn’t count all your older games', $notice['title']);
+        self::assertStringNotContainsString('503', $notice['text']);
+        self::assertStringNotContainsString('secret', $notice['text']);
+    }
+
+    public function test_a_job_that_counted_everything_has_nothing_to_say(): void
+    {
+        self::assertNull($this->backfill(StatsBackfill::COMPLETE, ['games_total' => 12, 'games_seen' => 12, 'games_counted' => 12, 'games_skipped' => 0]));
+    }
+
+    public function test_the_games_that_were_not_counted_are_added_up_with_the_reasons(): void
+    {
+        $notice = $this->backfill(StatsBackfill::COMPLETE, ['games_skipped' => 6, 'skipped' => ['unfinished' => 4, 'mismatch' => 2]]);
+
+        self::assertSame('skipped', $notice['kind']);
+        self::assertNull($notice['title']);
+        self::assertSame('6 older games weren’t counted: 4 weren’t played to the end and 2 had scores that didn’t add up.', $notice['text']);
+    }
+
+    public function test_one_game_that_was_not_counted_is_a_game_not_games(): void
+    {
+        self::assertSame(
+            '1 older game wasn’t counted: 1 wasn’t played to the end.',
+            $this->backfill(StatsBackfill::COMPLETE, ['games_skipped' => 1, 'skipped' => ['unfinished' => 1]])['text']
+        );
+        self::assertSame(
+            '1 older game wasn’t counted: 1 couldn’t be read.',
+            $this->backfill(StatsBackfill::COMPLETE, ['games_skipped' => 1, 'skipped' => ['unreadable' => 1]])['text']
+        );
+    }
+
+    public function test_all_three_reasons_are_listed_in_the_same_order_whatever_order_they_were_found(): void
+    {
+        $notice = $this->backfill(StatsBackfill::COMPLETE, ['games_skipped' => 7, 'skipped' => ['unreadable' => 1, 'mismatch' => 2, 'unfinished' => 4]]);
+
+        self::assertSame('7 older games weren’t counted: 4 weren’t played to the end, 2 had scores that didn’t add up and 1 couldn’t be read.', $notice['text']);
+    }
+
+    public function test_a_reason_nobody_hit_is_not_mentioned(): void
+    {
+        $notice = $this->backfill(StatsBackfill::COMPLETE, ['games_skipped' => 3, 'skipped' => ['unfinished' => 3, 'mismatch' => 0]]);
+
+        self::assertSame('3 older games weren’t counted: 3 weren’t played to the end.', $notice['text']);
+    }
+
+    public function test_skipped_games_with_no_reasons_recorded_are_still_counted(): void
+    {
+        self::assertSame('2 older games weren’t counted.', $this->backfill(StatsBackfill::COMPLETE, ['games_skipped' => 2])['text']);
     }
 }

@@ -10,13 +10,31 @@
         </p>
     </div>
 
-    @if ($games === 0)
-        <div class="card mt-6 text-center">
-            <div class="flex justify-center"><x-art /></div>
-            <h2 class="mt-4 text-xl font-extrabold tracking-tight">No stats yet.</h2>
-            <p class="mt-1 text-stone-600">They appear when you finish a game that everyone played to the end, all {{ $turns }} turns.</p>
-            <a href="{{ route('game.create.view') }}" class="btn btn-primary mt-5">Start a game</a>
+    @if ($backfill !== null && $backfill['kind'] === 'skipped')
+        <p class="mt-3 text-sm text-stone-600" data-backfill="skipped">{{ $backfill['text'] }}</p>
+    @elseif ($backfill !== null)
+        <div @class(['alert mt-5', 'alert-info' => $backfill['kind'] === 'counting', 'alert-warning' => $backfill['kind'] === 'failed']) role="status" data-backfill="{{ $backfill['kind'] }}">
+            <x-icon :name="$backfill['kind'] === 'failed' ? 'alert' : 'info'" class="mt-0.5 h-5 w-5 shrink-0" />
+            <div class="min-w-0">
+                <p class="font-bold">{{ $backfill['title'] }}</p>
+                <p class="mt-0.5">{{ $backfill['text'] }}</p>
+                @if ($backfill['kind'] === 'counting')
+                    <a href="{{ route('stats') }}" class="btn-link mt-1">Refresh</a>
+                @endif
+            </div>
         </div>
+    @endif
+
+    @if ($games === 0)
+        {{-- While the older games are being counted there is nothing to show yet, and nothing to say there are no stats --}}
+        @if (($backfill['kind'] ?? null) !== 'counting')
+            <div class="card mt-6 text-center">
+                <div class="flex justify-center"><x-art /></div>
+                <h2 class="mt-4 text-xl font-extrabold tracking-tight">No stats yet.</h2>
+                <p class="mt-1 text-stone-600">They appear when you finish a game that everyone played to the end, all {{ $turns }} turns.</p>
+                <a href="{{ route('game.create.view') }}" class="btn btn-primary mt-5">Start a game</a>
+            </div>
+        @endif
     @else
         <section class="mt-6" aria-labelledby="records-heading">
             <h2 id="records-heading" class="text-lg font-extrabold tracking-tight">Records</h2>

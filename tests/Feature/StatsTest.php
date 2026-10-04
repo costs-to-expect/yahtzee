@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Jobs\BackfillStats;
 use App\Models\GameStat;
+use App\Models\StatsBackfill;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Tests\Feature\Concerns\FakesTheApi;
@@ -21,6 +24,10 @@ class StatsTest extends TestCase
         parent::setUp();
 
         $this->travelTo(Carbon::parse('2026-10-05 12:00:00', 'UTC'));
+
+        // These are about a player whose older games have been collected, the tests of the job and of the notices
+        // about it say otherwise
+        StatsBackfill::create(['user_id' => self::USER_ID, 'state' => StatsBackfill::COMPLETE]);
     }
 
     private function stat(string $game_id, string $created, string $player_id, string $name, int $score, int $yahtzees = 0, string $user_id = self::USER_ID, int $players_in_game = 2): void
@@ -311,5 +318,129 @@ class StatsTest extends TestCase
             ->assertOk()
             ->assertDontSee('coming soon')
             ->assertSee('Stats</a> page', false);
+    }
+
+    // The job that collects the older games
+
+    private function backfill(string $state, array $attributes = []): void
+    {
+        StatsBackfill::query()->delete();
+        StatsBackfill::create(['user_id' => self::USER_ID, 'state' => $state] + $attributes);
+    }
+
+    public function test_the_first_visit_starts_the_job_and_says_the_games_are_being_counted(): void
+    {
+        StatsBackfill::query()->delete();
+
+        $this->signedIn()->get('/stats')
+            ->assertOk()
+            ->assertSee('data-backfill="counting"', false)
+            ->assertSee('Counting your older games')
+            ->assertSee('We’re getting started')
+            ->assertDontSee('No stats yet.');
+
+        Bus::assertDispatchedTimes(BackfillStats::class, 1);
+        $this->assertDatabaseHas('stats_backfill', ['user_id' => self::USER_ID, 'state' => StatsBackfill::QUEUED]);
+    }
+
+    public function test_a_second_visit_does_not_start_it_again(): void
+    {
+        StatsBackfill::query()->delete();
+
+        $this->signedIn()->get('/stats')->assertOk();
+        $this->signedIn()->get('/stats')->assertOk();
+
+        Bus::assertDispatchedTimes(BackfillStats::class, 1);
+    }
+
+    public function test_a_player_whose_games_have_been_collected_does_not_start_it_again(): void
+    {
+        $this->signedIn()->get('/stats')->assertOk()->assertDontSee('data-backfill', false);
+
+        Bus::assertNotDispatched(BackfillStats::class);
+    }
+
+    public function test_while_it_runs_the_page_says_how_far_it_has_got_and_offers_a_refresh(): void
+    {
+        $this->backfill(StatsBackfill::RUNNING, ['games_total' => 160, 'games_seen' => 42, 'games_counted' => 40, 'games_skipped' => 2]);
+        $this->threeGames();
+
+        $this->signedIn()->get('/stats')
+            ->assertOk()
+            ->assertSee('data-backfill="counting"', false)
+            ->assertSee('Counting your older games')
+            ->assertSee('42 of 160 games checked so far')
+            ->assertSee('class="btn-link mt-1">Refresh</a>', false)
+            ->assertSee('Highest score')
+            ->assertSee('records-heading', false);
+    }
+
+    public function test_while_it_runs_and_nothing_is_counted_yet_the_page_is_not_a_claim_there_are_no_stats(): void
+    {
+        $this->backfill(StatsBackfill::RUNNING, ['games_total' => 160, 'games_seen' => 3]);
+
+        $this->signedIn()->get('/stats')
+            ->assertOk()
+            ->assertSee('3 of 160 games checked so far')
+            ->assertDontSee('No stats yet.')
+            ->assertDontSee('Start a game')
+            // Not a page of records that all say nobody has done anything
+            ->assertDontSee('records-heading', false)
+            ->assertDontSee('players-heading', false)
+            ->assertDontSee('data-record', false)
+            ->assertDontSee('Nobody has won a game yet');
+    }
+
+    public function test_a_job_that_gave_up_says_so_and_the_stats_so_far_are_still_there(): void
+    {
+        $this->backfill(StatsBackfill::FAILED, ['last_error' => 'The API answered 500']);
+        $this->threeGames();
+
+        $this->signedIn()->get('/stats')
+            ->assertOk()
+            ->assertSee('data-backfill="failed"', false)
+            ->assertSee('We couldn’t count all your older games')
+            ->assertSee('alert-warning', false)
+            ->assertDontSee('The API answered 500')
+            ->assertSee('Highest score');
+
+        Bus::assertNotDispatched(BackfillStats::class);
+    }
+
+    public function test_a_job_that_gave_up_does_not_hide_that_there_are_no_stats(): void
+    {
+        $this->backfill(StatsBackfill::FAILED);
+
+        $this->signedIn()->get('/stats')
+            ->assertOk()
+            ->assertSee('We couldn’t count all your older games')
+            ->assertSee('No stats yet.');
+    }
+
+    public function test_when_it_has_finished_the_page_says_how_many_games_were_not_counted_and_why(): void
+    {
+        $this->backfill(StatsBackfill::COMPLETE, ['games_total' => 160, 'games_seen' => 160, 'games_counted' => 154, 'games_skipped' => 6, 'skipped' => ['unfinished' => 4, 'mismatch' => 2]]);
+        $this->threeGames();
+
+        $this->signedIn()->get('/stats')
+            ->assertOk()
+            ->assertSee('data-backfill="skipped"', false)
+            ->assertSee('6 older games weren’t counted: 4 weren’t played to the end and 2 had scores that didn’t add up.')
+            ->assertDontSee('Counting your older games');
+    }
+
+    public function test_when_it_has_finished_and_counted_everything_there_is_nothing_to_say(): void
+    {
+        $this->backfill(StatsBackfill::COMPLETE, ['games_total' => 3, 'games_seen' => 3, 'games_counted' => 3]);
+        $this->threeGames();
+
+        $this->signedIn()->get('/stats')->assertOk()->assertDontSee('data-backfill', false);
+    }
+
+    public function test_only_the_signed_in_players_job_is_described(): void
+    {
+        StatsBackfill::create(['user_id' => 'someone-else', 'state' => StatsBackfill::FAILED]);
+
+        $this->signedIn()->get('/stats')->assertOk()->assertDontSee('data-backfill', false);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Game\ChangeScore;
+use App\Actions\Stats\StartBackfill;
 use App\Api\Service;
 use App\Support\GameBoard;
 use App\Support\ScoreRules;
@@ -13,6 +14,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
+use Throwable;
 
 /**
  * @author Dean Blackborough <dean@g3d-development.com>
@@ -55,6 +57,24 @@ class Controller extends BaseController
         }
 
         return $user_id;
+    }
+
+    /**
+     * Starts the job that collects the stats of the player's older games if it needs starting, see StartBackfill. It
+     * needs the resource, so it comes after bootstrap(). A problem starting it is reported and never stops the page.
+     */
+    protected function startStatsBackfill(Request $request): void
+    {
+        try {
+            (new StartBackfill())(
+                $this->userId($request),
+                $request->cookie($this->config['cookie_bearer']),
+                $this->resource_type_id,
+                $this->resource_id
+            );
+        } catch (Throwable $e) {
+            report($e);
+        }
     }
 
     protected function bootstrap(Request $request)

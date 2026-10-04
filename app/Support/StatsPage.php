@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Models\StatsBackfill;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
@@ -14,6 +15,17 @@ use Carbon\CarbonInterface;
  */
 final class StatsPage
 {
+    /**
+     * Why games were not counted, how it reads for one game and for more than one. The order they are listed in.
+     *
+     * @var array<string, array{string, string}>
+     */
+    private const SKIPPED = [
+        GameStatBuilder::UNFINISHED => ['wasn’t played to the end', 'weren’t played to the end'],
+        GameStatBuilder::MISMATCH => ['had scores that didn’t add up', 'had scores that didn’t add up'],
+        GameStatBuilder::UNREADABLE => ['couldn’t be read', 'couldn’t be read'],
+    ];
+
     /** A record with more holders than this says how many more there are */
     public const MAX_HOLDERS = 3;
 
@@ -75,6 +87,64 @@ final class StatsPage
         }
 
         return $cards;
+    }
+
+    /**
+     * What to tell the player about the job that collects the stats of their older games, null when there is nothing
+     * to say. Counting and failed are for the top of the page, skipped is a note: when the job has finished, how
+     * many games it could not count and why.
+     *
+     * @return array{kind: string, title: string|null, text: string}|null
+     */
+    public static function backfill(?StatsBackfill $backfill): ?array
+    {
+        if ($backfill === null) {
+            return null;
+        }
+
+        return match ($backfill->state) {
+            StatsBackfill::COMPLETE => self::skipped($backfill),
+            StatsBackfill::FAILED => [
+                'kind' => 'failed',
+                'title' => 'We couldn’t count all your older games',
+                'text' => 'We’ve been told and will look into it. The stats below are for the games counted so far.',
+            ],
+            default => [
+                'kind' => 'counting',
+                'title' => 'Counting your older games',
+                'text' => $backfill->games_total === null || $backfill->games_total === 0
+                    ? 'We’re getting started, it takes a minute or two. Refresh to see how far it has got.'
+                    : $backfill->games_seen . ' of ' . $backfill->games_total . ' games checked so far. Refresh to see how far it has got.',
+            ],
+        };
+    }
+
+    /**
+     * @return array{kind: string, title: string|null, text: string}|null
+     */
+    private static function skipped(StatsBackfill $backfill): ?array
+    {
+        if ($backfill->games_skipped === 0) {
+            return null;
+        }
+
+        $reasons = [];
+        foreach (self::SKIPPED as $reason => [$one, $many]) {
+            $count = (int) ($backfill->skipped[$reason] ?? 0);
+
+            if ($count > 0) {
+                $reasons[] = $count . ' ' . ($count === 1 ? $one : $many);
+            }
+        }
+
+        $games = $backfill->games_skipped;
+
+        return [
+            'kind' => 'skipped',
+            'title' => null,
+            'text' => $games . ' older ' . ($games === 1 ? 'game wasn’t' : 'games weren’t') . ' counted'
+                . ($reasons === [] ? '.' : ': ' . GameBoard::names($reasons) . '.'),
+        ];
     }
 
     /**
