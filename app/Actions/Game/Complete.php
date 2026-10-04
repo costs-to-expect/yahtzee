@@ -6,6 +6,11 @@ namespace App\Actions\Game;
 use App\Actions\Action;
 use App\Api\Service;
 use App\Models\ShareToken;
+use App\Notifications\ApiError;
+use App\Support\GameStatBuilder;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Notification;
+use Throwable;
 
 /**
  * @author Dean Blackborough <dean@g3d-development.com>
@@ -18,7 +23,8 @@ class Complete extends Action
         Service $api,
         string $resource_type_id,
         string $resource_id,
-        string $game_id
+        string $game_id,
+        string $user_id
     ): int
     {
         $game_response = $api->getGame(
@@ -80,9 +86,60 @@ class Complete extends Action
         );
 
         if ($update_game_response['status'] === 204) {
+            $this->recordStats(
+                $user_id,
+                $game_response['content'],
+                $assigned_players_response['content'],
+                $game_score_sheets_response['content']
+            );
+
             return 204;
         }
 
         return $update_game_response['status'];
+    }
+
+    /**
+     * Records the stats of the game from the players and score sheets that have just been fetched. The game is
+     * complete by now and the stats are never allowed to change that, a failure is reported and the game carries on.
+     *
+     * A game that was not played to the end is not counted, that is normal and nobody is told. A game that
+     * should have been counted and was not is reported.
+     *
+     * @param array<string, mixed> $game
+     * @param array<int, array<string, mixed>> $assigned_players
+     * @param array<int, mixed> $score_sheets
+     */
+    private function recordStats(string $user_id, array $game, array $assigned_players, array $score_sheets): void
+    {
+        try {
+            $players = array_map(
+                static fn (array $player): array => [
+                    'id' => $player['category']['id'],
+                    'name' => $player['category']['name'],
+                ],
+                $assigned_players
+            );
+
+            $result = (new RecordStats())($user_id, $game, $players, $score_sheets, now());
+
+            if ($result->reason === GameStatBuilder::UNREADABLE || $result->reason === GameStatBuilder::MISMATCH) {
+                $this->reportStatsProblem(
+                    'The stats for game ' . ($game['id'] ?? 'with no id') . ' were not recorded',
+                    'The game was completed but its score sheets are ' . $result->reason . ', see GameStatBuilder'
+                );
+            }
+        } catch (Throwable $e) {
+            $this->reportStatsProblem(
+                'Unable to record the stats for game ' . ($game['id'] ?? 'with no id'),
+                $e->getMessage()
+            );
+        }
+    }
+
+    private function reportStatsProblem(string $error, string $message): void
+    {
+        Notification::route('mail', Config::get('app.config')['error_email'])
+            ->notify(new ApiError($error, $message));
     }
 }

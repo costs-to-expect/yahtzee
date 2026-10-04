@@ -34,6 +34,24 @@ trait BuildsApiFixtures
     }
 
     /**
+     * A score sheet for a game that has been played to the end, every combination is scored (285 points with the
+     * upper bonus and a Yahtzee). The overrides change the score of a combination, they can't add one.
+     *
+     * @param array<string, int> $upper e.g. ['ones' => 0]
+     * @param array<string, int> $lower e.g. ['yahtzee' => 0]
+     */
+    protected function finishedScoreSheet(array $upper = [], array $lower = []): array
+    {
+        return $this->scoreSheet(
+            array_replace(['ones' => 3, 'twos' => 6, 'threes' => 9, 'fours' => 12, 'fives' => 15, 'sixes' => 18], $upper),
+            array_replace(
+                ['three_of_a_kind' => 20, 'four_of_a_kind' => 0, 'full_house' => 25, 'small_straight' => 30, 'large_straight' => 40, 'yahtzee' => 50, 'chance' => 22],
+                $lower
+            )
+        );
+    }
+
+    /**
      * A game as returned when requesting items with include-players.
      *
      * @param array<string, string> $players player id => name

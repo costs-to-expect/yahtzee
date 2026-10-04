@@ -42,6 +42,21 @@ class Controller extends BaseController
         $this->item_subtype_id = $this->config['item_subtype_id'];
     }
 
+    /**
+     * The Costs to Expect user who is signed in, the stats are kept for them. The app has no users of its own, the
+     * cookie is encrypted and set when the player signs in, the signed-in pages can't be reached without it.
+     */
+    protected function userId(Request $request): string
+    {
+        $user_id = $request->cookie($this->config['cookie_user']);
+
+        if (is_string($user_id) === false || $user_id === '') {
+            abort(401, 'Please sign in again');
+        }
+
+        return $user_id;
+    }
+
     protected function bootstrap(Request $request)
     {
         $this->api = new Service($request->cookie($this->config['cookie_bearer']));

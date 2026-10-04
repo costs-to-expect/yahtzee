@@ -3,7 +3,7 @@
         <div class="flex flex-wrap items-end justify-between gap-3">
             <div>
                 <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl">Players</h1>
-                <p class="mt-1 text-stone-600">Everyone who can play in a game. Statistics are coming soon.</p>
+                <p class="mt-1 text-stone-600">Everyone who can play in a game. How they are doing is on the <a href="{{ route('stats') }}" class="text-link">Stats</a> page.</p>
             </div>
             <a href="{{ route('player.create.view') }}" class="btn btn-primary"><x-icon name="user-plus" class="h-5 w-5" />New player</a>
         </div>

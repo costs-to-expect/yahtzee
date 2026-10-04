@@ -108,7 +108,8 @@ class Game extends Controller
                 $this->api,
                 $this->resource_type_id,
                 $this->resource_id,
-                $game_id
+                $game_id,
+                $this->userId($request)
             );
 
             if ($result === 204) {
@@ -133,7 +134,8 @@ class Game extends Controller
                 $this->api,
                 $this->resource_type_id,
                 $this->resource_id,
-                $game_id
+                $game_id,
+                $this->userId($request)
             );
 
             if ($result === 204) {
@@ -193,7 +195,8 @@ class Game extends Controller
                 $this->api,
                 $this->resource_type_id,
                 $this->resource_id,
-                $game_id
+                $game_id,
+                $this->userId($request)
             );
 
             if ($result === 204) {

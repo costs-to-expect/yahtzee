@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\GameStat;
+use App\Support\GameStats;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -98,6 +99,46 @@ class GameStatTest extends TestCase
         foreach (['players_in_game', 'score', 'upper', 'upper_bonus', 'lower', 'yahtzees'] as $column) {
             self::assertIsInt($stat->{$column}, $column);
         }
+    }
+
+    public function test_the_stats_are_worked_out_from_the_rows_as_the_table_returns_them(): void
+    {
+        $games = [
+            ['g-1', '2026-10-01 18:30:00', ['p-1' => ['Ada', 285, 1], 'p-2' => ['Ben', 105, 0]]],
+            ['g-2', '2026-10-02 18:30:00', ['p-1' => ['Ada', 150, 0], 'p-2' => ['Ben', 250, 2]]],
+        ];
+
+        foreach ($games as [$game_id, $created, $players]) {
+            foreach ($players as $player_id => [$name, $score, $yahtzees]) {
+                GameStat::create($this->row([
+                    'game_id' => $game_id,
+                    'player_id' => $player_id,
+                    'player_name' => $name,
+                    'score' => $score,
+                    'yahtzees' => $yahtzees,
+                    'game_created_at' => $created,
+                ]));
+            }
+        }
+
+        GameStat::create($this->row(['user_id' => 'u-2', 'game_id' => 'g-3', 'score' => 999]));
+
+        // The columns the stats need, not the sheets, and as the arrays the page will hand over
+        $rows = GameStat::query()
+            ->where('user_id', 'u-1')
+            ->get(['game_id', 'player_id', 'player_name', 'score', 'yahtzees', 'game_created_at'])
+            ->toArray();
+
+        $stats = GameStats::summarise($rows);
+
+        self::assertSame(2, $stats['games']);
+        self::assertSame(285, $stats['records']['highest_score']['value']);
+        self::assertSame('g-1', $stats['records']['highest_score']['holders'][0]['game_id']);
+        self::assertSame('2026-10-01 18:30:00', $stats['records']['highest_score']['holders'][0]['from']);
+        self::assertSame(105, $stats['records']['lowest_score']['value']);
+        self::assertSame(['Ada', 'Ben'], array_column($stats['records']['most_wins']['holders'], 'player_name'));
+        self::assertSame(2, $stats['records']['most_yahtzees_in_a_game']['value']);
+        self::assertSame('Ben', $stats['records']['most_yahtzees_in_a_game']['holders'][0]['player_name']);
     }
 
     public function test_the_completed_time_is_optional_the_created_time_is_not(): void

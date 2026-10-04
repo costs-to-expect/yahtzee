@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Models\GameStat;
 use App\Models\ShareToken;
+use App\Notifications\ApiError;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
+use Illuminate\Notifications\AnonymousNotifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Tests\Feature\Concerns\FakesTheApi;
 use Tests\TestCase;
@@ -377,6 +383,68 @@ class GameFlowTest extends TestCase
         $this->assertDatabaseCount('share_token', 1);
     }
 
+    private function statRow(string $user_id, string $game_id, string $player_id): void
+    {
+        GameStat::create([
+            'user_id' => $user_id,
+            'game_id' => $game_id,
+            'player_id' => $player_id,
+            'player_name' => self::PLAYER_NAMES[$player_id],
+            'players_in_game' => 2,
+            'score' => 200,
+            'upper' => 60,
+            'upper_bonus' => 0,
+            'lower' => 140,
+            'yahtzees' => 0,
+            'sheet' => $this->finishedScoreSheet(),
+            'game_created_at' => '2026-10-01 18:30:00',
+            'game_completed_at' => '2026-10-01 19:10:00',
+        ]);
+    }
+
+    private function fakeDeletingGame(array $overrides = []): void
+    {
+        $this->fakeApi($overrides + [
+            $this->items('/g-1?include-players=1') => Http::response($this->game('g-1', ['p-1' => 'Ada', 'p-2' => 'Ben']), 200),
+            $this->items('/g-1/data') => Http::response($this->scoreSheets(['p-1' => $this->scoreSheet(), 'p-2' => $this->scoreSheet()]), 200),
+            $this->items('/g-1/data/p-1') => Http::response(null, 204),
+            $this->items('/g-1/data/p-2') => Http::response(null, 204),
+            $this->items('/g-1/categories') => Http::response($this->assignedPlayers(['p-1' => 'Ada', 'p-2' => 'Ben']), 200),
+            $this->items('/g-1/categories/ga-p-1') => Http::response(null, 204),
+            $this->items('/g-1/categories/ga-p-2') => Http::response(null, 204),
+            $this->items('/g-1') => Http::response(null, 204),
+        ]);
+    }
+
+    public function test_deleting_a_game_removes_its_stats_and_only_its_stats(): void
+    {
+        $this->statRow(self::USER_ID, 'g-1', 'p-1');
+        $this->statRow(self::USER_ID, 'g-1', 'p-2');
+        $this->statRow(self::USER_ID, 'g-2', 'p-1');
+        $this->statRow('someone-else', 'g-1', 'p-1');
+
+        $this->fakeDeletingGame();
+
+        $this->signedIn()->post('/game/g-1/delete')->assertRedirect(route('home'));
+
+        self::assertSame(
+            [['someone-else', 'g-1', 'p-1'], [self::USER_ID, 'g-2', 'p-1']],
+            GameStat::query()->orderBy('user_id')->get()->map(fn (GameStat $stat) => [$stat->user_id, $stat->game_id, $stat->player_id])->all()
+        );
+    }
+
+    public function test_a_failure_deleting_a_game_keeps_its_stats(): void
+    {
+        $this->statRow(self::USER_ID, 'g-1', 'p-1');
+        $this->statRow(self::USER_ID, 'g-1', 'p-2');
+
+        $this->fakeDeletingGame([$this->items('/g-1') => Http::response(['message' => 'Locked'], 403)]);
+
+        $this->signedIn()->post('/game/g-1/delete')->assertStatus(500);
+
+        $this->assertDatabaseCount('game_stat', 2);
+    }
+
     // Completing a game
 
     private function fakeCompletingGame(array $scores, array $overrides = []): void
@@ -500,5 +568,172 @@ class GameFlowTest extends TestCase
         self::assertSame(['p-1', 'p-2'], array_map(fn (Request $request) => $request['category_id'], $this->sent('POST', '/items/g-new/categories')));
         $this->assertDatabaseHas('share_token', ['game_id' => 'g-new', 'player_id' => 'p-2']);
         $this->assertDatabaseMissing('share_token', ['game_id' => 'g-1']);
+    }
+
+    // The stats of a completed game
+
+    /**
+     * A game that has been played to the end, Ada scores 285 with a Yahtzee and Ben 105. The game says when it was
+     * created, as the API does.
+     *
+     * @param array<string, mixed> $overrides
+     * @param array<string, mixed> $game_fields what the API says about the game, besides its players
+     * @param array<string, array> $sheets player id => score sheet
+     */
+    private function fakeCompletingFinishedGame(array $overrides = [], ?array $game_fields = null, ?array $sheets = null): void
+    {
+        $players = ['p-1' => 'Ada', 'p-2' => 'Ben'];
+
+        $sheets ??= [
+            'p-1' => $this->finishedScoreSheet(),
+            'p-2' => $this->finishedScoreSheet(
+                ['ones' => 2, 'twos' => 4, 'threes' => 6, 'fours' => 8, 'fives' => 10, 'sixes' => 12],
+                ['three_of_a_kind' => 18, 'full_house' => 0, 'large_straight' => 0, 'yahtzee' => 0, 'chance' => 15]
+            ),
+        ];
+
+        $this->fakeApi($overrides + [
+            $this->items('/g-1?include-players=1') => Http::response(
+                $this->game('g-1', $players) + ($game_fields ?? ['created' => '2026-10-01 18:30:00', 'updated' => '2026-10-01 18:35:00']),
+                200
+            ),
+            $this->items('/g-1/categories') => Http::response($this->assignedPlayers($players), 200),
+            $this->items('/g-1/data') => Http::response($this->scoreSheets($sheets), 200),
+            $this->items('/g-1') => Http::response(null, 204),
+        ]);
+    }
+
+    public function test_completing_a_finished_game_records_its_stats_for_the_signed_in_player(): void
+    {
+        Notification::fake();
+        $this->travelTo(Carbon::parse('2026-10-04 21:15:30', 'UTC'));
+        $this->fakeCompletingFinishedGame();
+
+        $this->signedIn()->post('/game/g-1/complete')->assertRedirect(route('home'));
+
+        $this->assertDatabaseCount('game_stat', 2);
+        foreach ([['p-1', 'Ada', 285, 1], ['p-2', 'Ben', 105, 0]] as [$player_id, $name, $score, $yahtzees]) {
+            $this->assertDatabaseHas('game_stat', [
+                'user_id' => self::USER_ID,
+                'game_id' => 'g-1',
+                'player_id' => $player_id,
+                'player_name' => $name,
+                'players_in_game' => 2,
+                'score' => $score,
+                'yahtzees' => $yahtzees,
+                'game_created_at' => '2026-10-01 18:30:00',
+                'game_completed_at' => '2026-10-04 21:15:30',
+            ]);
+        }
+        self::assertSame($this->finishedScoreSheet(), GameStat::query()->where('player_id', 'p-1')->firstOrFail()->sheet);
+
+        Notification::assertNothingSent();
+    }
+
+    public function test_the_stats_are_not_sent_to_the_api(): void
+    {
+        $this->fakeCompletingFinishedGame();
+
+        $this->signedIn()->post('/game/g-1/complete')->assertRedirect(route('home'));
+
+        $payload = $this->sent('PATCH', '/items/g-1')[0]->data();
+
+        self::assertSame(['game', 'winner_id', 'score', 'complete'], array_keys($payload));
+    }
+
+    public function test_a_game_that_was_not_played_to_the_end_is_completed_but_not_counted_and_nobody_is_told(): void
+    {
+        Notification::fake();
+
+        $ben = $this->finishedScoreSheet();
+        unset($ben['upper-section']['sixes']);
+        $ben['score'] = \App\Support\ScoreRules::totals($ben);
+
+        $this->fakeCompletingFinishedGame(sheets: ['p-1' => $this->finishedScoreSheet(), 'p-2' => $ben]);
+
+        $this->signedIn()->post('/game/g-1/complete')->assertRedirect(route('home'));
+
+        self::assertCount(1, $this->sent('PATCH', '/items/g-1'));
+        $this->assertDatabaseCount('game_stat', 0);
+        Notification::assertNothingSent();
+    }
+
+    public function test_a_game_whose_sheets_cannot_be_counted_is_completed_and_reported(): void
+    {
+        Notification::fake();
+
+        $ben = $this->finishedScoreSheet();
+        $ben['score']['total']++;
+
+        $this->fakeCompletingFinishedGame(sheets: ['p-1' => $this->finishedScoreSheet(), 'p-2' => $ben]);
+
+        $this->signedIn()->post('/game/g-1/complete')->assertRedirect(route('home'));
+
+        self::assertCount(1, $this->sent('PATCH', '/items/g-1'));
+        $this->assertDatabaseCount('game_stat', 0);
+
+        Notification::assertSentOnDemand(
+            ApiError::class,
+            fn (ApiError $notification, array $channels, AnonymousNotifiable $notifiable) => $notifiable->routes['mail'] === 'errors@yahtzee.test'
+                && $notification->toArray($notifiable)['error'] === 'The stats for game g-1 were not recorded'
+                && str_contains($notification->toArray($notifiable)['message'], 'mismatch')
+        );
+    }
+
+    public function test_a_game_the_api_gives_no_start_time_for_is_completed_and_reported(): void
+    {
+        Notification::fake();
+        $this->fakeCompletingFinishedGame(game_fields: []);
+
+        $this->signedIn()->post('/game/g-1/complete')->assertRedirect(route('home'));
+
+        $this->assertDatabaseCount('game_stat', 0);
+        Notification::assertSentOnDemand(
+            ApiError::class,
+            fn (ApiError $notification) => str_contains($notification->toArray(null)['message'], 'unreadable')
+        );
+    }
+
+    public function test_a_failure_recording_the_stats_is_reported_and_the_game_is_still_completed(): void
+    {
+        Notification::fake();
+        $this->fakeCompletingFinishedGame();
+
+        Schema::drop('game_stat');
+
+        $this->signedIn()->post('/game/g-1/complete')->assertRedirect(route('home'));
+
+        self::assertCount(1, $this->sent('PATCH', '/items/g-1'));
+        Notification::assertSentOnDemand(
+            ApiError::class,
+            fn (ApiError $notification) => $notification->toArray(null)['error'] === 'Unable to record the stats for game g-1'
+        );
+    }
+
+    public function test_the_stats_are_not_recorded_when_the_game_cannot_be_completed(): void
+    {
+        Notification::fake();
+        $this->fakeCompletingFinishedGame([$this->items('/g-1') => Http::response(['message' => 'The API is down'], 503)]);
+
+        $this->signedIn()->post('/game/g-1/complete')->assertStatus(500);
+
+        $this->assertDatabaseCount('game_stat', 0);
+    }
+
+    public function test_complete_and_play_again_records_the_stats_too(): void
+    {
+        $this->fakeCompletingFinishedGame([
+            $this->items() => Http::response(['id' => 'g-new'], 201),
+            $this->items('/g-new/categories') => fn (Request $request) => Http::response([
+                'category' => ['id' => $request['category_id'], 'name' => self::PLAYER_NAMES[$request['category_id']]],
+            ], 201),
+        ]);
+
+        $this->signedIn()
+            ->post('/game/g-1/complete-and-play-again')
+            ->assertRedirect(route('game.show', ['game_id' => 'g-new']));
+
+        $this->assertDatabaseCount('game_stat', 2);
+        $this->assertDatabaseHas('game_stat', ['user_id' => self::USER_ID, 'game_id' => 'g-1', 'player_id' => 'p-1', 'score' => 285]);
     }
 }

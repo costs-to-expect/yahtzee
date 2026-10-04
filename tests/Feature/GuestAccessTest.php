@@ -20,6 +20,7 @@ class GuestAccessTest extends TestCase
         return [
             'home' => ['GET', '/home'],
             'games' => ['GET', '/games'],
+            'stats' => ['GET', '/stats'],
             'game overview' => ['GET', '/games/g-1'],
             'new game form' => ['GET', '/new-game'],
             'create game' => ['POST', '/new-game'],

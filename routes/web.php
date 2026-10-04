@@ -5,6 +5,7 @@ use App\Http\Controllers\View\Game;
 use App\Http\Controllers\View\Index;
 use App\Http\Controllers\View\Player;
 use App\Http\Controllers\View\Share;
+use App\Http\Controllers\View\Stats;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
@@ -149,6 +150,11 @@ Route::group(
             '/games/{game_id}',
             [Game::class, 'show']
         )->name('game.show');
+
+        Route::get(
+            '/stats',
+            [Stats::class, 'index']
+        )->name('stats');
 
         Route::post(
             '/game/{game_id}/complete',
