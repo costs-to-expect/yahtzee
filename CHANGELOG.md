@@ -2,6 +2,15 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.15.0] - [2026-10-25]
+### Changed
+- The app runs on PHP 8.5, it was 8.2. The Dockerfile uses `php:8.5-apache`, `require.php` is `^8.5` and
+  `config.platform.php` is pinned to 8.5.12, the first release `roave/security-advisories` does not report as
+  vulnerable. The lock file has a new hash and no package changed. Set the server's PHP to 8.5.12 or later before
+  deploying, `composer install` refuses to run on anything older, and run `php artisan queue:restart` afterwards.
+- GitHub Actions runs the tests on PHP 8.5 only, it ran 8.2, 8.3, 8.4 and 8.5.
+- The README says how to move to a newer PHP.
+
 ## [1.14.0] - [2026-10-04]
 ### Added
 - Stats. A new page with the records (highest score, most wins, most consecutive wins, lowest score, most consecutive
