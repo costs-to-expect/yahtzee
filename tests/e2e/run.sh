@@ -88,6 +88,7 @@ run landing.js
 run flows.js
 run score-sheet.js
 run share-and-account.js
+run hidden-scoreboard.js
 [ -n "$FILTER" ] && [[ "accessibility.js" == *"$FILTER"* ]] && run accessibility.js
 
 if [ -z "$FILTER" ] || [[ "score-sheet.js" == *"$FILTER"* ]]; then

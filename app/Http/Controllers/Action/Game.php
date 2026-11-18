@@ -9,6 +9,7 @@ use App\Actions\Game\Create;
 use App\Actions\Game\Delete;
 use App\Actions\Game\Start;
 use App\Http\Controllers\Controller;
+use App\Models\ShareToken;
 use App\Support\ScoreRules;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -29,7 +30,7 @@ class Game extends Controller
             $this->api,
             $this->resource_type_id,
             $this->resource_id,
-            $request->only(['name', 'description', 'players'])
+            $request->only(['name', 'description', 'players', 'hide_scoreboard'])
         );
 
         if ($result === 201) {
@@ -128,6 +129,9 @@ class Game extends Controller
     {
         $this->bootstrap($request);
 
+        // Completing the game deletes its share tokens, and with them the setting, so the next game's is read first
+        $hide_scoreboard = (new ShareToken())->scoreboardHiddenFor($game_id);
+
         $action = new Complete();
         try {
             $result = $action(
@@ -165,7 +169,8 @@ class Game extends Controller
                     [
                         'name' => 'Yahtzee game',
                         'description' => 'Yahtzee game create via the Yahtzee app',
-                        'players' => $players
+                        'players' => $players,
+                        'hide_scoreboard' => $hide_scoreboard
                     ]
                 );
 

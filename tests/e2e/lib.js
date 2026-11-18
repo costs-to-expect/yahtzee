@@ -37,9 +37,10 @@ module.exports = { chromium, APP, API, get, scenario, browser, context, login };
 
 const { execSync } = require('child_process');
 
-// The app issues a public link for every player when it creates a game, games the mock starts with have none
-function seedTokens(game, players) {
-    const code = "App\\Models\\ShareToken::query()->delete();" + players.map(([id, name]) => `App\\Models\\ShareToken::issue('rt-1','r-1','${game}','${id}','${name}','mock-token');`).join('');
+// The app issues a public link for every player when it creates a game, games the mock starts with have none. Pass true
+// as the last argument for a game whose public scoreboard is switched off, as it is when the box is ticked
+function seedTokens(game, players, hideScoreboard = false) {
+    const code = "App\\Models\\ShareToken::query()->delete();" + players.map(([id, name]) => `App\\Models\\ShareToken::issue('rt-1','r-1','${game}','${id}','${name}','mock-token',${hideScoreboard ? 'true' : 'false'});`).join('');
     return execSync(`php artisan tinker --execute="${code.replace(/"/g, '\\"')}"`, { cwd: require('path').resolve(__dirname, '../..'), stdio: 'pipe' }).toString();
 }
 module.exports.seedTokens = seedTokens;

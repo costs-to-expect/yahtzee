@@ -187,6 +187,23 @@
         @apply inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full bg-white py-2 pl-2 pr-4 text-sm font-bold text-stone-800 ring-1 ring-inset ring-stone-300 transition hover:bg-stone-50 motion-reduce:transition-none;
     }
 
+    /* A setting for the game that is about to start: a checkbox you can see and tap, with what it does underneath */
+    .toggle {
+        @apply flex cursor-pointer items-start gap-3 rounded-2xl bg-white px-4 py-3 text-left ring-1 ring-inset ring-stone-300 transition hover:bg-stone-50 has-checked:bg-brand-50 has-checked:ring-brand-600 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand-600 motion-reduce:transition-none;
+    }
+
+    .toggle-box {
+        @apply mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-brand-700;
+    }
+
+    .toggle-title {
+        @apply block text-sm font-bold text-stone-800;
+    }
+
+    .toggle-help {
+        @apply mt-0.5 block text-sm text-stone-600;
+    }
+
     .alert {
         @apply flex items-start gap-3 rounded-2xl px-4 py-3.5 text-sm;
     }

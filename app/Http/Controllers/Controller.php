@@ -193,6 +193,8 @@ class Controller extends BaseController
      *
      * @param array<string, string> $urls where to save, where to read everyone's scores and where to go back to
      * @param array<string, string> $ids sent with every save by the signed-in page, the public link knows its own
+     * @param bool $scoreboard false when the person running the game switched off the public scoreboard (the "Everyone"
+     *      panel), the page does not draw it and the script never reads everyone's scores
      */
     protected function sheetConfig(
         Service $api,
@@ -202,7 +204,8 @@ class Controller extends BaseController
         string $player_name,
         bool $complete,
         array $urls,
-        array $ids = []
+        array $ids = [],
+        bool $scoreboard = true
     ): array
     {
         $players_response = $api->getPlayers($resource_type_id, ['collection' => true]);
@@ -223,6 +226,7 @@ class Controller extends BaseController
             'tones' => (object) GameBoard::tones($players),
             'urls' => $urls,
             'ids' => (object) $ids,
+            'scoreboard' => $scoreboard,
         ];
     }
 

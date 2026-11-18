@@ -30,7 +30,7 @@
                 <x-player-tiles :standings="$standings" :game-id="$game['id']" />
                 <x-game-actions :game-id="$game['id']" />
             </div>
-            <x-game-dialogs :board="$board" :standings="$standings" :share-tokens="$share_tokens" :leader="$leader" />
+            <x-game-dialogs :board="$board" :standings="$standings" :share-tokens="$share_tokens" :hidden-scoreboards="$hidden_scoreboards" :leader="$leader" />
         @else
             <ul class="card-list mt-6">
                 @foreach ($scores as $__score)

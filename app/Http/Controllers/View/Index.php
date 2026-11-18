@@ -123,6 +123,7 @@ class Index extends Controller
         }
 
         $share_tokens = (new ShareToken())->getShareTokens(array_column($boards, 'id'));
+        $hidden_scoreboards = (new ShareToken())->hiddenScoreboards(array_column($boards, 'id'));
 
         // The last game that was played, its players are the ones "Play again" and the next game start with
         $last_game = null;
@@ -180,6 +181,7 @@ class Index extends Controller
                 'boards' => $boards,
                 'selected' => $selected,
                 'share_tokens' => $share_tokens,
+                'hidden_scoreboards' => $hidden_scoreboards,
                 'last_game' => $last_game,
                 'history' => $history,
 

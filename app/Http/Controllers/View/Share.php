@@ -19,6 +19,12 @@ class Share extends Controller
     {
         $parameters = ShareToken::parametersFor($token);
 
+        // The page does not ask for this when the scoreboard is off, the link is still public so it has to refuse here
+        // too, otherwise anyone holding it could read everyone's scores from the address
+        if ($parameters['hide_scoreboard']) {
+            abort(403, 'The scoreboard is switched off for this game');
+        }
+
         $api = new Service($parameters['owner_bearer']);
 
         $players_response = $api->getAssignedGamePlayers(
@@ -95,6 +101,18 @@ class Share extends Controller
 
         $score_sheet = $player_score_sheet['content']['value'];
 
+        $urls = [
+            'upper' => route('public.score-upper.action', ['token' => $token]),
+            'lower' => route('public.score-lower.action', ['token' => $token]),
+            'clear' => route('public.score-clear.action', ['token' => $token]),
+            'players' => route('public.player-scores', ['token' => $token]),
+        ];
+
+        // With the scoreboard off the page does not advertise the address of everyone's scores
+        if ($parameters['hide_scoreboard']) {
+            unset($urls['players']);
+        }
+
         return view(
             'public-score-sheet',
             [
@@ -112,12 +130,9 @@ class Share extends Controller
                     $parameters['player_id'],
                     $parameters['player_name'],
                     $game['complete'] === 1,
-                    [
-                        'upper' => route('public.score-upper.action', ['token' => $token]),
-                        'lower' => route('public.score-lower.action', ['token' => $token]),
-                        'clear' => route('public.score-clear.action', ['token' => $token]),
-                        'players' => route('public.player-scores', ['token' => $token]),
-                    ]
+                    $urls,
+                    [],
+                    ! $parameters['hide_scoreboard']
                 ),
             ]
         );
