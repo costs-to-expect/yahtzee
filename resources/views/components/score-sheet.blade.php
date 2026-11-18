@@ -6,11 +6,16 @@
     $name = $config['player']['name'];
     $tone = $config['tones']->{$config['player']['id']} ?? 0;
     $max_turns = $config['turns'];
+
+    // The "Everyone" panel is the public scoreboard, the person running the game can switch it off for the public links,
+    // the page is then a single, narrower column (the signed-in page always has it)
+    $scoreboard = ($config['scoreboard'] ?? true) !== false;
+    $width = $scoreboard ? 'max-w-5xl' : 'max-w-3xl';
 @endphp
 
 {{-- The score sheet has its own bar, the totals have to stay in view while scoring --}}
 <nav class="border-b border-stone-200 bg-white" aria-label="Score sheet">
-    <div class="mx-auto flex h-14 max-w-5xl items-center justify-between gap-2 px-2 sm:px-4">
+    <div class="mx-auto flex h-14 {{ $width }} items-center justify-between gap-2 px-2 sm:px-4">
         @if (! $public)
             <a href="{{ $config['urls']['back'] }}" class="-ml-1 inline-flex min-h-11 items-center gap-1 rounded-xl pl-1 pr-3 text-sm font-bold text-stone-700 hover:bg-stone-100 focus-visible:outline-2 focus-visible:outline-brand-600"><x-icon name="chevron-left" class="h-5 w-5" />Game</a>
         @else
@@ -25,7 +30,7 @@
 </nav>
 
 <div id="help" hidden class="border-b border-brand-100 bg-brand-50">
-    <div class="mx-auto max-w-5xl px-4 py-3.5 text-sm text-stone-800">
+    <div class="mx-auto {{ $width }} px-4 py-3.5 text-sm text-stone-800">
         <p class="font-extrabold text-brand-900">How to score</p>
         @if ($config['corrections'])
             <p class="mt-1 max-w-2xl">Tap a combination, say how it went and you&rsquo;re done. Made a mistake? Tap <strong>Undo</strong> straight after, or tap the score later to change or clear it. Nothing here is permanent until the game is finished.</p>
@@ -37,7 +42,7 @@
 
 {{-- Totals stay in view while you score, so you always see what a score did --}}
 <header class="sticky top-0 z-20 border-b border-stone-200 bg-white/95 backdrop-blur">
-    <div class="mx-auto flex max-w-5xl items-end gap-3 px-4 pb-2.5 pt-3 sm:gap-6">
+    <div class="mx-auto flex {{ $width }} items-end gap-3 px-4 pb-2.5 pt-3 sm:gap-6">
         <div class="min-w-0">
             <p class="text-[11px] font-bold uppercase tracking-wider text-stone-600">Total <span id="turn-label" class="font-semibold normal-case tracking-normal text-stone-600">&middot; {{ $turns }} of {{ $max_turns }} turns</span></p>
             <p id="total" class="mt-0.5 inline-block origin-left text-4xl font-extrabold leading-none tabular-nums" aria-live="polite">{{ $totals['total'] }}</p>
@@ -57,7 +62,7 @@
         @endfor
     </div>
     <div id="banner" hidden class="border-t border-amber-200 bg-amber-50">
-        <div class="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2 text-sm text-amber-900">
+        <div class="mx-auto flex {{ $width }} items-center gap-3 px-4 py-2 text-sm text-amber-900">
             <x-icon name="alert" class="h-5 w-5 shrink-0" />
             <p id="banner-text" class="flex-1 font-semibold"></p>
             <button type="button" id="banner-retry" class="min-h-10 rounded-lg bg-amber-100 px-4 font-bold hover:bg-amber-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700">Retry</button>
@@ -65,7 +70,7 @@
     </div>
 </header>
 
-<div class="mx-auto max-w-5xl px-4 pb-20 pt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start lg:gap-8">
+<div @class(['mx-auto px-4 pb-20 pt-5', $width, 'lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start lg:gap-8' => $scoreboard])>
 
     <main class="space-y-6">
         <noscript>
@@ -125,14 +130,16 @@
         </section>
     </main>
 
-    <aside class="mt-8 lg:sticky lg:top-28 lg:mt-0" aria-labelledby="everyone-heading">
-        <div class="flex items-baseline justify-between">
-            <h2 id="everyone-heading" class="text-lg font-extrabold tracking-tight">Everyone</h2>
-            <p class="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600"><span class="relative flex h-2 w-2" aria-hidden="true"><span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span></span>Live</p>
-        </div>
-        <ul id="everyone" class="card-list mt-3" aria-live="off"></ul>
-        <p class="mt-2.5 px-1 text-xs text-stone-600">Scores update by themselves, you never need to refresh.</p>
-    </aside>
+    @if ($scoreboard)
+        <aside class="mt-8 lg:sticky lg:top-28 lg:mt-0" aria-labelledby="everyone-heading">
+            <div class="flex items-baseline justify-between">
+                <h2 id="everyone-heading" class="text-lg font-extrabold tracking-tight">Everyone</h2>
+                <p class="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600"><span class="relative flex h-2 w-2" aria-hidden="true"><span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span></span>Live</p>
+            </div>
+            <ul id="everyone" class="card-list mt-3" aria-live="off"></ul>
+            <p class="mt-2.5 px-1 text-xs text-stone-600">Scores update by themselves, you never need to refresh.</p>
+        </aside>
+    @endif
 </div>
 
 <x-footer />

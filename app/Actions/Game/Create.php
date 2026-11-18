@@ -36,6 +36,10 @@ class Create extends Action
 
             $this->game_id = $create_game_response['content']['id'];
 
+            // One value for the whole game. It arrives as the checkbox's "1" (an unchecked box sends nothing, so the
+            // scoreboard is shown) or as a bool when a game is started from another one (play again)
+            $hide_scoreboard = filter_var($input['hide_scoreboard'] ?? false, FILTER_VALIDATE_BOOLEAN);
+
             foreach ($input['players'] as $player) {
                 $response = $api->addPlayerToGame(
                     $resource_type_id,
@@ -51,7 +55,8 @@ class Create extends Action
                         $this->game_id,
                         $player,
                         $response['content']['category']['name'],
-                        request()->cookie($config['cookie_bearer'])
+                        request()->cookie($config['cookie_bearer']),
+                        $hide_scoreboard
                     );
                 } catch (\Exception) {
                     abort(500, 'Failed to create share token for player, create token manually');

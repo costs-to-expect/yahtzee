@@ -117,6 +117,7 @@ class Game extends Controller
                 'game' => $game['content'],
                 'game_scores' => $game_scores,
                 'share_tokens' => (new ShareToken())->getShareTokens([$game['content']['id']]),
+                'hidden_scoreboards' => (new ShareToken())->hiddenScoreboards([$game['content']['id']]),
                 'tones' => $tones,
                 'standings' => $standings,
                 'started' => GameBoard::startedAt($game['content']),

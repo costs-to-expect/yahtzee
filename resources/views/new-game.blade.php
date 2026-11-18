@@ -18,6 +18,8 @@
                         <p class="form-error" role="alert"><x-icon name="alert" class="mt-0.5 h-4 w-4 shrink-0" /><span>{{ implode(' ', $player_errors) }}</span></p>
                     @endif
 
+                    <x-scoreboard-toggle class="mt-5" :checked="(bool) old('hide_scoreboard')" />
+
                     <input type="hidden" name="name" value="{{ $game['game_name'] }}">
                     <input type="hidden" name="description" value="{{ $game['game_description'] }}">
                     <button type="submit" data-picker-submit class="btn btn-primary btn-block mt-6">Start game</button>

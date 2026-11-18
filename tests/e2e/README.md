@@ -28,6 +28,7 @@ If node can't find Playwright set `PLAYWRIGHT_PATH` to it, to use a Chromium Pla
 | `landing.js` | The landing page signed out: the score sheet to try (opening a row, scoring, the bonus, nothing sent), the walkthrough following the scroll, the pictures without scripts, axe |
 | `score-sheet.js` | Every way of scoring, the number pad, the done card, failed saves and retry, saves arriving in order. With `CORRECTIONS=1` (the runner does this against an app started with `SCORE_CORRECTIONS=true`) undo, change and clear |
 | `share-and-account.js` | A public link, requests that must be refused, an expired session, completing a game, a finished sheet, signing out and deleting an account, and that the token is revoked after the deletion request |
+| `hidden-scoreboard.js` | A game started with the public scoreboard switched off: the public score sheet has no Everyone panel, never asks for everyone's scores (and the address answers 403), still scores, the owner still sees everything, and a game with the scoreboard still shows it |
 | `accessibility.js` | [axe-core](https://github.com/dequelabs/axe-core) on every page and every dialog, only run when asked for |
 
 The stats page reads the app's own database, not the API, so `run.sh` seeds the stats of the player the mock signs in

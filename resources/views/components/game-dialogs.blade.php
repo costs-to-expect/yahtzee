@@ -1,4 +1,4 @@
-@props(['board', 'standings', 'shareTokens', 'leader' => null])
+@props(['board', 'standings', 'shareTokens', 'hiddenScoreboards' => [], 'leader' => null])
 {{-- The dialogs for a game in progress: share the public links, finish, remove a player and delete --}}
 @php
     $game = config('app.game');
@@ -22,6 +22,10 @@
             </li>
         @endforeach
     </ul>
+    @if ($hiddenScoreboards[$board['id']] ?? false)
+        {{-- Set when the game was started, the host sees every score on this page, the players do not --}}
+        <p class="mt-3 text-sm text-stone-600">The scoreboard is hidden on these links, players only see their own score sheet.</p>
+    @endif
     <button type="button" data-dialog-close class="btn btn-quiet btn-block mt-4">Done</button>
 </x-sheet>
 

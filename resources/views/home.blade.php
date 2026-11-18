@@ -83,7 +83,8 @@
                                 @foreach ($last_game['players'] as $last_player)
                                     <input type="hidden" name="players[]" value="{{ $last_player['id'] }}">
                                 @endforeach
-                                <button type="submit" class="btn btn-primary btn-block mt-6 py-4 text-base sm:w-auto sm:min-w-80">Play again with {{ GameBoard::ampersands($last_names) }}</button>
+                                <x-scoreboard-toggle id="hide-scoreboard-again" class="mx-auto mt-6 max-w-md" />
+                                <button type="submit" class="btn btn-primary btn-block mt-4 py-4 text-base sm:w-auto sm:min-w-80">Play again with {{ GameBoard::ampersands($last_names) }}</button>
                             </form>
                             <p class="mt-3 text-sm text-stone-600">Same players, fresh score sheets.</p>
                         @else
@@ -137,6 +138,8 @@
                             <p class="form-error"><x-icon name="alert" class="mt-0.5 h-4 w-4 shrink-0" /><span>{{ implode(' ', $player_errors) }}</span></p>
                         @endif
 
+                        <x-scoreboard-toggle id="hide-scoreboard-next" class="mt-4" />
+
                         @php($count = count($picked))
                         <button type="submit" data-picker-submit class="btn btn-primary btn-block mt-5" @disabled($count < $game['min_players'])>
                             @if ($count < $game['min_players'])
@@ -181,6 +184,6 @@
     </div>
 
     @if ($state === 'busy')
-        <x-game-dialogs :board="$board" :standings="$standings" :share-tokens="$share_tokens" :leader="$leader" />
+        <x-game-dialogs :board="$board" :standings="$standings" :share-tokens="$share_tokens" :hidden-scoreboards="$hidden_scoreboards" :leader="$leader" />
     @endif
 </x-layouts.app>

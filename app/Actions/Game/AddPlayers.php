@@ -29,6 +29,9 @@ class AddPlayers extends Action
             return 422;
         }
 
+        // A player added later gets the same public score sheet as the others, with or without the scoreboard
+        $hide_scoreboard = (new ShareToken())->scoreboardHiddenFor($game_id);
+
         foreach ($input['players'] as $player) {
             $response = $api->addPlayerToGame(
                 $resource_type_id,
@@ -48,7 +51,8 @@ class AddPlayers extends Action
                         $game_id,
                         $player,
                         $response['content']['category']['name'],
-                        request()->cookie($config['cookie_bearer'])
+                        request()->cookie($config['cookie_bearer']),
+                        $hide_scoreboard
                     );
                 } catch (\Exception) {
                     abort(500, 'Failed to create share token for player, create token manually');

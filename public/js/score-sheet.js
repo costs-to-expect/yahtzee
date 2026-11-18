@@ -1,7 +1,7 @@
 /*
  * The score sheet. The page (resources/views/components/score-sheet.blade.php) holds the totals bar and the places to
  * draw into, the sheet itself and the settings come from the JSON in #sheet-config. This script draws every row, takes
- * the scores, saves them and keeps "Everyone" up to date.
+ * the scores, saves them and keeps "Everyone" up to date (unless the public scoreboard is switched off for the game).
  *
  * Scores are saved one at a time, in the order they were tapped: the server reads the whole sheet, adds the score and
  * writes it back, so two saves at once would lose one of them. The screen updates straight away and a pill says
@@ -50,6 +50,11 @@
     var previousTotal = null;
     var everyone = [];         // the players, as last read from the server
     var sessionEnded = false;
+
+    // The person running the game can switch the public scoreboard off. There is then no "Everyone" panel to draw into and
+    // nothing to read: the address is not even in the config, and the "waiting for" line on the done card, which comes
+    // from the same read, stays empty
+    var scoreboard = config.scoreboard !== false && typeof config.urls.players === 'string';
 
     function fromSheet(sheet) {
         return {upper: Object.assign({}, sheet['upper-section'] || {}), lower: Object.assign({}, sheet['lower-section'] || {})};
@@ -158,7 +163,9 @@
     }
 
     function renderEveryone() {
-        var me = {id: config.player.id, name: config.player.name, total: totalScore(), turns: turns(), you: true};
+        if (!scoreboard) { return; }
+
+        var me ={id: config.player.id, name: config.player.name, total: totalScore(), turns: turns(), you: true};
         var people = everyone.filter(function (person) { return person.id !== me.id; }).map(function (person) {
             return {id: person.id, name: person.name, total: person.total, turns: person.turns, you: false};
         });
@@ -594,7 +601,10 @@
     }
 
     render();
-    readEveryone();
-    window.setInterval(readEveryone, 10000);
-    document.addEventListener('visibilitychange', readEveryone);
+
+    if (scoreboard) {
+        readEveryone();
+        window.setInterval(readEveryone, 10000);
+        document.addEventListener('visibilitychange', readEveryone);
+    }
 })();

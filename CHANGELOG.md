@@ -2,6 +2,12 @@
 
 The complete changelog for the Costs to Expect REST API, our changelog follows the format defined at https://keepachangelog.com/en/1.0.0/
 
+## [1.16.0] - [2026-11-18]
+### Added
+- Added an option when starting a game to hide the scoreboard on the public scoresheets. 
+### Changed
+- Games that were started before this release are not changed, the column defaults to showing the scoreboard.
+
 ## [1.15.0] - [2026-10-25]
 ### Changed
 - The app runs on PHP 8.5, it was 8.2. The Dockerfile uses `php:8.5-apache`, `require.php` is `^8.5` and
