@@ -195,6 +195,14 @@ token**, so the parameters are encrypted with `APP_KEY` in the `share_token` tab
 who can read the table but not the key learns nothing. Changing `APP_KEY` makes the links of games in progress
 unreadable, so change it between games. A link stops working when the owner signs out (the API revokes the token).
 
+The person running the game can switch off the public scoreboard (the "Everyone" panel) when they start it. That is the
+`hide_scoreboard` column of `share_token`, written with the same value on every token of a game (it is not one of the
+encrypted parameters), so it is removed with the tokens when the game is completed or deleted. The column defaults to
+false, so a game that was in progress before it existed keeps the scoreboard. With it set the public score sheet is drawn
+without the panel, its config leaves out the address of everyone's scores and `/public/game/{token}/player-scores`
+answers 403. The signed-in pages always show everything. A game is created in three places (`Actions\Game\Create`, `Start`
+and `AddPlayers`), a new one has to pass the game's value to `ShareToken::issue()`.
+
 ## PHP and Laravel versions
 
 The app runs on Laravel 12 and PHP 8.5, `composer.json` pins the platform to 8.5.12 so a `composer update` on a newer 
